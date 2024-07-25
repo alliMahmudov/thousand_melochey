@@ -43,20 +43,72 @@ class AppHelpers {
     required BuildContext context,
     EdgeInsets? padding,
     String? title,
-    Widget? contentWidget,
     String? content,
-    required List<Widget> actions,
+    required Function? onTap,
     // required bool isDarkMode,
 
   }) {
     showAdaptiveDialog(
         context: context,
-        builder: (BuildContext context) => AlertDialog.adaptive(
-          contentPadding: padding ,
-          titlePadding: padding,
-          title: title != null ? Text(title) : null,
-          content: contentWidget ?? Text(content ?? ""),
-          actions: actions,
+        builder: (BuildContext context) => AlertDialog(
+          contentPadding: const EdgeInsets.all(20),
+          //titlePadding: padding,
+          content: Column(
+            spacing: 20,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                title ?? "",
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      onTap?.call();
+                    },
+                    style: TextButton.styleFrom(
+                      maximumSize: Size(100.sp, 40.sp),
+                      minimumSize: Size(100.sp, 40.sp),
+                      backgroundColor: AppColors.primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50.0),
+                      ),),
+                    child: const Text(
+                      "Выйти",
+                      style: TextStyle(
+                          color: AppColors.white,
+                          fontWeight: FontWeight.bold
+                      ),
+                    ),
+                  ),
+                  const Spacer(),
+                  TextButton(
+                    onPressed: () {
+                      AppNavigator.pop();
+                    },
+                    style: TextButton.styleFrom(
+                        maximumSize: Size(100.sp, 40.sp),
+                        minimumSize: Size(100.sp, 40.sp),
+                        backgroundColor: Colors.black12,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50.0),
+                        )),
+                    child: const Text(
+                      "Остаться",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
         ));
   }
 

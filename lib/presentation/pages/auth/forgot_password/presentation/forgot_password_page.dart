@@ -17,19 +17,20 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
     final notifier = ref.read(forgotPassProvider.notifier);
     final state = ref.watch(forgotPassProvider);
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text("Восстановления пароля"),
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            spacing: 24.sp,
             children: [
-              100.verticalSpace,
-             const Center(child: Text("Forgot password?", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),)),
-              40.verticalSpace,
+              Spacer(
+                flex: 1,
+              ),
               CustomTextField(controller: notifier.emailController, title: "Email", labelText: "Enter your email"),
-
-              40.verticalSpace,
-
               CustomButtonWidget(title: "Next", isLoading: state.isLoading, onTap: (){
                 notifier.forgotPass(
                   success: (){
@@ -37,7 +38,9 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
                   }
                 );
               }),
-
+              Spacer(
+                flex: 2,
+              )
             ],
           ),
         ),

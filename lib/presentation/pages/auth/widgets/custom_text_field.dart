@@ -56,6 +56,10 @@ class CustomTextField extends ConsumerWidget {
         8.verticalSpace,
         TextFormField(
           enabled: enabled,
+          onTapOutside: (e) {
+            focusNode?.unfocus();
+            FocusManager.instance.primaryFocus?.unfocus();
+          },
           onTap: () {
             FocusScope.of(context).requestFocus(focusNode);
           },
@@ -65,7 +69,7 @@ class CustomTextField extends ConsumerWidget {
           textInputAction: TextInputAction.next,
           keyboardType: keyboardType,
           controller: controller,
-          obscuringCharacter: "*",
+          obscuringCharacter: "●",
           style: keyboardType == TextInputType.phone ||
                   keyboardType == TextInputType.number
               ? const TextStyle(
@@ -84,6 +88,7 @@ class CustomTextField extends ConsumerWidget {
                     ]
                   : [],
           obscureText: (obscureText ?? false) ? state.onSecureText : false,
+
           decoration: InputDecoration(
               suffixIcon: obscureText ?? false
                   ? Padding(
@@ -125,7 +130,6 @@ class CustomTextField extends ConsumerWidget {
                 borderRadius: BorderRadius.circular(20),
               ),
               hintText: keyboardType == TextInputType.phone ? "" : labelText,
-              hintStyle: const TextStyle(color: Colors.black54),
               errorText: errorText),
           validator: (value) {
             if (value == null) {

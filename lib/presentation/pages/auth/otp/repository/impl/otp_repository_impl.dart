@@ -17,7 +17,6 @@ class OTPRepositoryImpl extends OTPRepository{
       'otp': otp
     };
 
-
     try {
       final client = inject<HttpService>().client(requireAuth: false);
       final response = await client.post('api/verify-otp/', data: data);
@@ -37,6 +36,28 @@ class OTPRepositoryImpl extends OTPRepository{
           statusCode: NetworkExceptions.getDioStatus(e));
     }
   }
-
-
+  
+  @override
+  Future<ApiResult> resendOTP({required String email}) async {
+    final data = <String, String>{
+      "email": email
+    };
+   try{
+     final client = inject<HttpService>().client(requireAuth: false);
+     final response = await client.post('api/resend-otp', data: data);
+     return ApiResult.success(data: response.data.toString());
+   } on DioException catch(e){
+     debugPrint('==> resend OTP failure: $e');
+     return ApiResult.failure(
+         error: NetworkExceptions.getDioException(e),
+         statusCode: NetworkExceptions.getDioStatus(e),
+       data: AppApiErrorHelper.message(e.response?.data));
+   } catch (e){
+     debugPrint("==> resend OTP failure: $e");
+     return ApiResult.failure(
+         error: NetworkExceptions.getDioException(e),
+         statusCode: NetworkExceptions.getDioStatus(e),
+     );
+   }
+  }
 }

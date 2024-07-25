@@ -8,18 +8,14 @@ class FavoritePage extends ConsumerStatefulWidget {
 }
 
 class _FavoritePageState extends ConsumerState<FavoritePage> {
-
   @override
   Widget build(BuildContext context) {
     final notifier = ref.read(favoritesProvider.notifier);
     final state = ref.watch(favoritesProvider);
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: AppColors.backgroundColor,
-          elevation: 0,
           title: const Text(
             "Favorites",
-            style: TextStyle(color: Colors.black),
           ),
         ),
         body: RefreshIndicator(
@@ -85,22 +81,27 @@ class _FavoritePageState extends ConsumerState<FavoritePage> {
                                   isFavorite: true,
                                   isFavProduct: true,
                                   onTap: () {
-                                    notifier.removeFromFavorites(productID: favProduct?.id ?? 0,
-                                        success: (){
+                                    notifier.removeFromFavorites(
+                                        productID: favProduct?.id ?? 0,
+                                        success: () {
                                           notifier.getFavoritesList();
                                         });
                                   },
-                                  addToCart: (){},
+                                  addToCart: () {},
                                 );
                               },
                               // Number of grid items
                             ),
                           )
-                        : const SliverToBoxAdapter(
+                        : const SliverFillRemaining(
                             child: Center(
-                              child: Text("Something went wrong"),
+                              child: Text(
+                                "No favorite items",
+                                style: TextStyle(
+                                    fontSize: 24, fontWeight: FontWeight.w500),
+                              ),
                             ),
-                          )
+                          ),
               ],
             ),
           ),

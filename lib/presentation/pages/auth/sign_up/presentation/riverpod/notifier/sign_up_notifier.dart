@@ -18,57 +18,44 @@ class SignUpNotifier extends StateNotifier<SignUpState> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-
   Future<void> signUp({
     VoidCallback? checkYourNetwork,
     VoidCallback? success,
     VoidCallback? unAuthorised,
-  }) async  {
-    if(mounted){
+    required BuildContext context
+  }) async {
+    if (mounted) {
       state = state.copyWith(isLoading: true);
     }
     final connected = await AppConnectivity.connectivity();
-    // if(emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
     if (connected) {
-   /*   String email = emailController.text.replaceAll(RegExp(
+      /*   String email = emailController.text.replaceAll(RegExp(
           r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'), '')*/
       final response = await _signUpRepository.register(
         name: nameController.text,
         email: emailController.text,
         phone: phoneController.text,
         password: passwordController.text,
-        // passwordConfirmation: passwordConfirmationController.text,
       );
       response.when(
         success: (data) async {
           state = state.copyWith(isLogin: true, isLoading: false, data: data);
-
-          AppHelpers.showMaterialBannerSuccess(message: data.message.toString());
+          AppHelpers.showMaterialBannerSuccess(
+              message: data.message.toString());
           success?.call();
-
-          // await LocalStorage.instance.setEmail(data.data?.user?.email);
-          // await LocalStorage.instance.setUserName(data.data?.user?.name);
-          // await LocalStorage.instance.setID(data.data?.user?.id);
-          // await LocalStorage.instance.setPhoneNumber(
-          //     data.data?.user?.phoneNumber);
         },
-        failure: (failure, status,errorMessage) {
-            state = state.copyWith(isLoading: false, isLoginError: true,errorMessage: errorMessage);
-
-
+        failure: (failure, status, errorMessage) {
+          state = state.copyWith(
+              isLoading: false, isLoginError: true, errorMessage: errorMessage);
           if (failure == const NetworkExceptions.unauthorisedRequest()) {
             unAuthorised?.call();
           }
-          log(errorMessage);
           AppHelpers.showMaterialBannerError(
               errorMessage: errorMessage.toString());
-          if (
-          ( !errorMessage.toString().toUpperCase().contains("PASSWORD"))
-              &&
-              !errorMessage.toString().toUpperCase().contains("PHONE")
-              &&
-              !errorMessage.toString().toUpperCase().contains("NAME")
-          ) {
+          if ((!errorMessage.toString().toUpperCase().contains("PASSWORD")) &&
+              !errorMessage.toString().toUpperCase().contains("PHONE") &&
+              !errorMessage.toString().toUpperCase().contains("NAME")) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(errorMessage.toString())));
             AppHelpers.showMaterialBannerError(
                 errorMessage: errorMessage.toString());
           }
@@ -80,17 +67,14 @@ class SignUpNotifier extends StateNotifier<SignUpState> {
     }
   }
 
-  textFormIsNotEmpty() {
-  // if(mounted){
-     if(
-     passwordController.text != "" &&
-         nameController.text != "" &&
-         // passwordConfirmationController.text.isNotEmpty &&
-         emailController.text != "" && phoneController.text != "") {
-       state = state.copyWith(isValid: true);
-     } else {
-       state = state.copyWith(isValid: false);
-
-   }
+  void validator() {
+    if (passwordController.text.length > 7 &&
+        nameController.text.isNotEmpty &&
+        phoneController.text.length == 14 &&
+        emailController.text.isNotEmpty) {
+      state = state.copyWith(isValid: true);
+    } else {
+      state = state.copyWith(isValid: false);
+    }
   }
 }

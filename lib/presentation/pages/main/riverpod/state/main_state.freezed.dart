@@ -29,7 +29,9 @@ mixin _$MainState {
       throw _privateConstructorUsedError;
   List<String> get icons => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of MainState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $MainStateCopyWith<MainState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -60,6 +62,8 @@ class _$MainStateCopyWithImpl<$Res, $Val extends MainState>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of MainState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -136,6 +140,8 @@ class __$$MainStateImplCopyWithImpl<$Res>
       _$MainStateImpl _value, $Res Function(_$MainStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of MainState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -289,7 +295,9 @@ class _$MainStateImpl implements _MainState {
       const DeepCollectionEquality().hash(_listKey),
       const DeepCollectionEquality().hash(_icons));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of MainState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$MainStateImplCopyWith<_$MainStateImpl> get copyWith =>
@@ -316,17 +324,20 @@ abstract class _MainState implements MainState {
   @override
   String get loadingText;
   @override
-  String get userType;
-  @override // @Default(false) bool showFloatingButtonHome,
+  String get userType; // @Default(false) bool showFloatingButtonHome,
 //InternetStatus? connectionStatus,
 //LocalStorageDebtActionsResponse? debtActionsResponse,
+  @override
   List<NavItemEnum> get navItem;
   @override
   List<GlobalKey<NavigatorState>> get listKey;
   @override
   List<String> get icons;
+
+  /// Create a copy of MainState
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$MainStateImplCopyWith<_$MainStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

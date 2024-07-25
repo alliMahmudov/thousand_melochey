@@ -32,7 +32,9 @@ mixin _$CartState {
   CreateOrderResponse? get orders => throw _privateConstructorUsedError;
   GetOrderResponse? get getOrders => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CartState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $CartStateCopyWith<CartState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -67,6 +69,8 @@ class _$CartStateCopyWithImpl<$Res, $Val extends CartState>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of CartState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -167,6 +171,8 @@ class __$$CartStateImplCopyWithImpl<$Res>
       _$CartStateImpl _value, $Res Function(_$CartStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CartState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -334,7 +340,9 @@ class _$CartStateImpl implements _CartState {
       orders,
       getOrders);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CartState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CartStateImplCopyWith<_$CartStateImpl> get copyWith =>
@@ -380,8 +388,11 @@ abstract class _CartState implements CartState {
   CreateOrderResponse? get orders;
   @override
   GetOrderResponse? get getOrders;
+
+  /// Create a copy of CartState
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CartStateImplCopyWith<_$CartStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -25,13 +25,9 @@ class _CartPageState extends ConsumerState<CartPage> {
     final state = ref.watch(cartProvider);
     return Scaffold(
         appBar: AppBar(
-            backgroundColor: AppColors.backgroundColor,
-            elevation: 0,
-            centerTitle: true,
             title: const Text(
               "Cart",
-              style: TextStyle(color: Colors.black),
-            )),
+            ),),
         body: RawScrollbar(
           controller: notifier.scrollController,
           thumbColor: AppColors.primaryColor.withOpacity(.8),

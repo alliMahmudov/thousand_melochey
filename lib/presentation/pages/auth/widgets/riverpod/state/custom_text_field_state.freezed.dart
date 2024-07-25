@@ -19,7 +19,9 @@ mixin _$CustomTextFieldState {
   bool get onSecureText => throw _privateConstructorUsedError;
   String get errorValidation => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CustomTextFieldState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $CustomTextFieldStateCopyWith<CustomTextFieldState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -44,6 +46,8 @@ class _$CustomTextFieldStateCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of CustomTextFieldState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -82,6 +86,8 @@ class __$$CustomTextFieldStateImplCopyWithImpl<$Res>
       $Res Function(_$CustomTextFieldStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CustomTextFieldState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -133,7 +139,9 @@ class _$CustomTextFieldStateImpl implements _CustomTextFieldState {
   @override
   int get hashCode => Object.hash(runtimeType, onSecureText, errorValidation);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CustomTextFieldState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CustomTextFieldStateImplCopyWith<_$CustomTextFieldStateImpl>
@@ -151,8 +159,11 @@ abstract class _CustomTextFieldState implements CustomTextFieldState {
   bool get onSecureText;
   @override
   String get errorValidation;
+
+  /// Create a copy of CustomTextFieldState
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CustomTextFieldStateImplCopyWith<_$CustomTextFieldStateImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

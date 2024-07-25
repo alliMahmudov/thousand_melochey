@@ -49,7 +49,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
     VoidCallback? success,
   }) async {
     state = state.copyWith(isProductLoading: true);
-    final jwtToken = await SP.readFromSP("JWT");
+    final jwtToken = await SP.getJWT("JWT");
     final response = await _homeRepository.getProducts(jwtToken: "jwt=$jwtToken");
     response.when(
       success: (data) async {

@@ -32,12 +32,8 @@ class _HomePageState extends ConsumerState<HomePage>
     final state = ref.watch(homeProvider);
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: AppColors.backgroundColor,
-          elevation: 0,
-          centerTitle: true,
           title: const Text(
             "1000 Melochey",
-            style: TextStyle(color: Colors.black),
           ),
         ),
         body: Padding(
@@ -46,59 +42,6 @@ class _HomePageState extends ConsumerState<HomePage>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               12.verticalSpace,
-              /*Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
-                    height: 50.h,
-                    width: 300.w,
-                    child: TextFormField(
-                      textInputAction: TextInputAction.next,
-                      decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.search),
-                        hintText: "Looking for utilies",
-                        contentPadding: const EdgeInsets.symmetric(vertical: 0),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.r),
-                        ),
-                      ),
-                    ),
-                  ),
-                  CircleAvatar(
-                    backgroundColor: AppColors.primaryColor,
-                    radius: 24.r,
-                    child: const Icon(
-                      Icons.settings,
-                      color: AppColors.white,
-                    ),
-                  ),
-                ],
-              ),
-              Padding(
-                padding:
-                    EdgeInsets.symmetric(horizontal: 8.0.w, vertical: 10.0.h),
-                child: InkWell(
-                  onTap: (){
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Item added to wishlist'),
-                        duration: Duration(seconds: 2),
-                        action: SnackBarAction(
-                          label: 'Undo',
-                          onPressed: () {
-                            // Implement undo logic here
-                          },
-                        ),
-                      ),
-                    );
-                  },
-                  child: Text(
-                    "Select category",
-                    style:
-                        TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500),
-                  ),
-                ),
-              ),*/
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 12.h),
                 child: Container(

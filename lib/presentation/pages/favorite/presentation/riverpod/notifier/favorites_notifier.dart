@@ -41,7 +41,7 @@ class FavoritesNotifier extends StateNotifier<FavoritesState> {
     //required String jwtToken
   }) async {
     state = state.copyWith(isFavoritesLoading: true);
-    final jwtToken = await SP.readFromSP("JWT");
+    final jwtToken = await SP.getJWT("JWT");
     final response =
         await _favoritesRepository.getFavoritesList(jwtToken: "jwt=$jwtToken");
     response.when(
@@ -70,7 +70,7 @@ class FavoritesNotifier extends StateNotifier<FavoritesState> {
     //required String jwtToken
   }) async {
     state = state.copyWith(isLoading: true);
-    final jwtToken = await SP.readFromSP("JWT");
+    final jwtToken = await SP.getJWT("JWT");
     final response = await _favoritesRepository.addToFavorites(
         productID: productID, jwtToken: "jwt=$jwtToken");
     response.when(success: (data) {
@@ -94,7 +94,7 @@ class FavoritesNotifier extends StateNotifier<FavoritesState> {
   }) async {
     state = state.copyWith(isLoading: true);
 
-    final jwtToken = await SP.readFromSP("JWT");
+    final jwtToken = await SP.getJWT("JWT");
     final response = await _favoritesRepository.removeFromFavorites(
         productID: productID, jwtToken: "jwt=$jwtToken");
     response.when(success: (data) {

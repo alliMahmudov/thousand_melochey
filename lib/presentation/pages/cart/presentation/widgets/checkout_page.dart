@@ -29,6 +29,7 @@ class _CheckOutPageState extends ConsumerState<CheckOutPage> {
               labelText: "Enter your phone number*",
               errorText:
                   AppTextFieldErrorsStatus.status(state.errorMessage, "phone"),
+              keyboardType: TextInputType.phone,
             ),
             12.verticalSpace,
             CustomTextField(

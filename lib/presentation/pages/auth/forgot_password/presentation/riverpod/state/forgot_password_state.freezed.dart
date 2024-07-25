@@ -29,7 +29,9 @@ mixin _$ForgotPasswordState {
   TextEditingController? get passwordController =>
       throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ForgotPasswordState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ForgotPasswordStateCopyWith<ForgotPasswordState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -63,6 +65,8 @@ class _$ForgotPasswordStateCopyWithImpl<$Res, $Val extends ForgotPasswordState>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ForgotPasswordState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -151,6 +155,8 @@ class __$$ForgotPassStateImplCopyWithImpl<$Res>
       _$ForgotPassStateImpl _value, $Res Function(_$ForgotPassStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ForgotPasswordState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -295,7 +301,9 @@ class _$ForgotPassStateImpl implements _ForgotPassState {
       emailController,
       passwordController);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ForgotPasswordState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ForgotPassStateImplCopyWith<_$ForgotPassStateImpl> get copyWith =>
@@ -336,8 +344,11 @@ abstract class _ForgotPassState implements ForgotPasswordState {
   TextEditingController? get emailController;
   @override
   TextEditingController? get passwordController;
+
+  /// Create a copy of ForgotPasswordState
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ForgotPassStateImplCopyWith<_$ForgotPassStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+import 'package:thousand_melochey/core/handlers/sp.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -24,121 +26,93 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     final state = ref.watch(profileProvider);
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: AppColors.backgroundColor,
-          elevation: 0,
-          centerTitle: true,
           title: const Text(
-            "Profile",
-            style: TextStyle(color: Colors.black),
-          )),
+        "Профиль",
+      )),
       body: RefreshIndicator(
         onRefresh: () {
           return notifier.getUserInfo();
         },
         child: Column(
           children: [
-            12.verticalSpace,
-            Center(
-              child: CircleAvatar(
-                radius: 50.r,
-                child: Icon(
-                  Icons.person,
-                  size: 38.sp,
-                ),
+            60.verticalSpace,
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 34.0.w),
+              child: Row(
+                spacing: 20.sp,
+                children: [
+                  Center(
+                    child: CircleAvatar(
+                      radius: 30.r,
+                      child: Icon(
+                        Icons.person,
+                        size: 24.sp,
+                      ),
+                    ),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    spacing: 10.sp,
+                    children: [
+                      state.isUserInfoLoading
+                          ? Shimmer.fromColors(
+                              baseColor: Colors.black12,
+                              highlightColor: Colors.grey.shade300,
+                              child: Container(
+                                width: 90.w,
+                                height: 20.h,
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 5),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12.r),
+                                    color: AppColors.white),
+                                // height: 100.0,
+                              ),
+                            )
+                          : Text(
+                              state.userInfo?.name ?? "NULL",
+                              style: TextStyle(fontSize: 16.sp),
+                            ),
+                      state.isUserInfoLoading
+                          ? Shimmer.fromColors(
+                              baseColor: Colors.black12,
+                              highlightColor: Colors.grey.shade300,
+                              child: Container(
+                                width: 90.w,
+                                height: 20.h,
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 5),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12.r),
+                                    color: AppColors.white),
+                                // height: 100.0,
+                              ),
+                            )
+                          : Text(
+                              state.userInfo?.email ?? "NULL",
+                            ),
+                    ],
+                  )
+                ],
               ),
             ),
             12.verticalSpace,
-            state.isUserInfoLoading
-                ? Shimmer.fromColors(
-                    baseColor: Colors.black12,
-                    highlightColor: Colors.grey.shade300,
-                    child: Container(
-                      width: 90.w,
-                      height: 20.h,
-                      margin: const EdgeInsets.symmetric(horizontal: 5),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12.r),
-                          color: AppColors.white),
-                      // height: 100.0,
-                    ),
-                  )
-                : state.userInfo != null
-                    ? Text(
-                        state.userInfo?.name ?? "NULL",
-                        style: const TextStyle(
-                            fontSize: 22, fontWeight: FontWeight.w500),
-                      )
-                    : const SizedBox.shrink(),
-
-            4.verticalSpace,
-
-            state.isUserInfoLoading
-                ? Shimmer.fromColors(
-                    baseColor: Colors.black12,
-                    highlightColor: Colors.grey.shade300,
-                    child: Container(
-                      width: 120.w,
-                      height: 18.h,
-                      margin: const EdgeInsets.symmetric(horizontal: 5),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12.r),
-                          color: AppColors.white),
-                    ),
-                  )
-                : state.userInfo != null
-                    ? Text(state.userInfo?.email ?? "NULL")
-                    : const SizedBox.shrink(),
-            12.verticalSpace,
             //   SectionButtonWidget(icon: Icons.person_outline, title: "Profile", onTap: (){}),
             SectionButtonWidget(
-                icon: Icons.event_note,
-                title: "Orders",
-                onTap: () {
-                  AppNavigator.push(AllOrdersRoute());
-                }),
+                icon: CupertinoIcons.profile_circled,
+                title: "Личные данные",
+                onTap: () {}),
             SectionButtonWidget(
-                icon: Icons.location_on_outlined,
-                title: "Address",
+                icon: Icons.receipt_long_outlined,
+                title: "Мои заказы",
                 onTap: () {
-                  AppHelpers.showCustomAlertDialog(
-                      context: context,
-                      padding: const EdgeInsets.all(12),
-                      title: "Address",
-                      content: "Usta Shirin Street, 122/1",
-                      actions: [
-                        Material(
-                          child: Column(
-                            children: [
-                              /* InkWell(
-                          onTap:( ){
-                            launchUrl(
-                                Uri.parse("https://yandex.com/navi/?whatshere%5Bzoom%5D=19&whatshere%5Bpoint%5D=69.253385,41.355337"),
-                            );
-                          },
-                          child: Container(
-                            color: Colors.grey.withOpacity(.2),
-                            alignment: Alignment.center,
-                            padding: EdgeInsets.all(12),
-                              child: Text('Location'))),*/
-
-                              InkWell(
-                                  onTap: () {
-                                    AppNavigator.pop();
-                                  },
-                                  child: Container(
-                                      alignment: Alignment.center,
-                                      padding: const EdgeInsets.all(12),
-                                      child: const Text('close'))),
-                            ],
-                          ),
-                        )
-                      ]);
+                  AppNavigator.push(const AllOrdersRoute());
                 }),
             SectionButtonWidget(
                 icon: Icons.support_agent,
-                title: "Connect with us",
+                title: "Связаться с нами",
                 onTap: () {
-                  AppHelpers.showCustomAlertDialog(
+                  /*AppHelpers.showCustomAlertDialog(
                       context: context,
                       padding: const EdgeInsets.all(12),
                       title: "Connact number",
@@ -154,64 +128,122 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                                   padding: const EdgeInsets.all(12),
                                   child: const Text('close'))),
                         )
-                      ]);
+                      ]);*/
+                }),
+            SectionButtonWidget(
+                icon: Icons.language,
+                title: "Язык приложения",
+                onTap: () {
+                  showModalBottomSheet(context: context,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(20),
+                        ),
+                      ),
+                      builder: (context){
+                    return Container(
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12))
+                      ),
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        spacing: 10,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Spacer(flex: 3,),
+                                Center(child: Text("Выберите язык", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.sp),)),
+                                const Spacer(flex: 2,),
+                                InkWell(
+                                  onTap: (){
+                                    AppNavigator.pop();
+                                  },
+                                  child: const CircleAvatar(
+                                    radius: 16,
+                                    backgroundColor: AppColors.primaryColor,
+                                    child: Center(
+                                      child: Icon(Icons.close),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                            },
+                            child: Column(
+                              children: [
+                                ListTile(
+                                  minTileHeight: 55.h,
+                                  title: const Text(
+                                    "O'zbek tili",
+                                  ),
+                                  trailing: Transform.scale(
+                                    scale: 1.5,
+                                    child: CupertinoRadio(
+                                      toggleable: true,
+                                        inactiveColor: AppColors.backgroundColor,
+                                        activeColor: AppColors.primaryColor,
+                                        value: "uz",
+                                        groupValue: 'uz',
+                                        onChanged: (value) {
+                                          //langNotifier.changeLang("uz");
+                                        }),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          InkWell(
+                            child: Column(
+                              children: [
+                                ListTile(
+                                  minTileHeight: 55.h,
+                                  title: const Text(
+                                    "Русский язык",
+                                  ),
+                                  trailing: Transform.scale(
+                                    scale: 1.5,
+                                    child: CupertinoRadio(
+                                      toggleable: true,
+                                        inactiveColor: AppColors.backgroundColor,
+                                        activeColor: AppColors.primaryColor,
+                                        value: true,
+                                        groupValue: 'uz',
+                                        onChanged: (value) {
+                                          //langNotifier.changeLang("uz");
+                                        }),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const Divider(thickness: .6, color: Colors.grey),
+                          CustomButtonWidget(title: 'Применить', isLoading: false, onTap: (){}),
+                          10.h.verticalSpace,
+                        ],
+                      ),
+                    );
+                  });
                 }),
             SectionButtonWidget(
                 icon: Icons.exit_to_app,
-                title: "Sign out",
+                title: "Выйти",
                 onTap: () {
-                  /*AppHelpers.showCustomAlertDialog(context: context,
-                  padding: EdgeInsets.all(12),
-                  title: "Do you want to log out?",
-                  actions: [
-                    Material(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          InkWell(
-                              onTap:( ){
-                                AppNavigator.pop();
-                              },
-                              child: Container(
-                                  alignment: Alignment.center,
-                                  padding: EdgeInsets.all(12),
-                                  child: Text('cancel', style: TextStyle(color:AppColors.primaryColor ),))),    InkWell(
-                              onTap:( ){
-                                AppNavigator.pop();
-                              },
-                              child: Container(
-                                  alignment: Alignment.center,
-                                  padding: EdgeInsets.all(12),
-                                  child: Text('confirm', style: TextStyle(color: AppColors.primaryColor),))),
-                        ],
-                      ),
-                    )
-                  ]);*/
-
-                  showAdaptiveDialog(
+                  AppHelpers.showCustomAlertDialog(
                       context: context,
-                      builder: (context) {
-                        return AlertDialog.adaptive(
-                          title: const Text("Are you sure you want to logout?"),
-                          actions: [
-                            TextButton(
-                                onPressed: () {
-                                  AppNavigator.pop();
-                                },
-                                child: const Text("Cancel")),
-                            TextButton(
-                                onPressed: () {
-                                  notifier.logOut(
-                                    success: (){
-                                      AppNavigator.pushAndPopUntil(
-                                          const WelcomeRoute());
-                                    }
-                                  );
-
-                                },
-                                child: const Text("Log out")),
-                          ],
-                        );
+                      title: "Вы хотите выйти?",
+                      onTap: () {
+                        notifier.logOut(success: () {
+                          AppNavigator.pushAndPopUntil(const SignInRoute());
+                          SP.deleteJWT();
+                        });
                       });
                 }),
           ],

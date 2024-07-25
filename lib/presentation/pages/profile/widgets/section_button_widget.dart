@@ -14,11 +14,9 @@ class SectionButtonWidget extends StatelessWidget {
         onTap();
       },
       child: Container(
-        //color: Colors.red,
         height: 50,
         padding: EdgeInsets.symmetric(horizontal: 26.0.w),
         child: ListTile(
-          //tileColor: AppColors.backgroundColor,
           leading: Icon(
             icon,
             color: AppColors.primaryColor,
@@ -34,7 +32,7 @@ class SectionButtonWidget extends StatelessWidget {
             size: 26,
           ),
           contentPadding: const EdgeInsets.symmetric(horizontal: 0),
-          shape: const Border(bottom: BorderSide(color: Colors.grey, width: 1)),
+          shape: const Border(bottom: BorderSide(color: Colors.black12, width: 1)),
         ),
       ),
     );

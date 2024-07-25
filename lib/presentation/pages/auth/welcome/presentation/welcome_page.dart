@@ -1,4 +1,5 @@
 
+import 'package:thousand_melochey/core/handlers/sp.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
 
 @RoutePage()
@@ -10,6 +11,25 @@ class WelcomePage extends StatefulWidget {
 }
 
 class _WelcomePageState extends State<WelcomePage> {
+  @override
+  void initState() {
+    nextPage();
+    super.initState();
+  }
+
+  nextPage()async{
+    final jwt = await SP.getJWT("JWT");
+    //await Future.delayed(Duration(milliseconds: await isLogin() ? 500 : 0,seconds: await isLogin() ? 0 : 2));
+      if(jwt == null){
+        AppNavigator.pushAndPopUntil(const SignInRoute());
+      } else {
+        AppNavigator.pushAndPopUntil(const MainRoute());
+      }
+    }
+  Future<bool> isLogin()async{
+
+    return await SP.getJWT("JWT") != "";
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

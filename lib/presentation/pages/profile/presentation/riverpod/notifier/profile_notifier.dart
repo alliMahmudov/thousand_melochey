@@ -51,7 +51,7 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
     state = state.copyWith(
       isUserInfoLoading: true,
     );
-    final jwtToken = await SP.readFromSP("JWT");
+    final jwtToken = await SP.getJWT("JWT");
     final response =
         await _profileRepository.getUserInfo(jwtToken: 'jwt=$jwtToken');
     response.when(

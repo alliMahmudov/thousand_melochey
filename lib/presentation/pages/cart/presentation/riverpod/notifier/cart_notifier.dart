@@ -34,7 +34,7 @@ class CartNotifier extends StateNotifier<CartState> {
         postalCodeController.text.isNotEmpty) {
       if (connectivity) {
         state = state.copyWith(isLoading: true);
-        final jwtToken = await SP.readFromSP("JWT");
+        final jwtToken = await SP.getJWT("JWT");
         final response = await _cartRepository.fillAddress(
             jwtToken: "jwt=$jwtToken",
             address: addressController.text,
@@ -75,7 +75,7 @@ class CartNotifier extends StateNotifier<CartState> {
     VoidCallback? success,
   }) async {
     state = state.copyWith(isProductLoading: true);
-    final jwtToken = await SP.readFromSP("JWT");
+    final jwtToken = await SP.getJWT("JWT");
     final response =
         await _cartRepository.getCartProducts(jwtToken: "jwt=$jwtToken");
     response.when(success: (data) async {
@@ -99,7 +99,7 @@ class CartNotifier extends StateNotifier<CartState> {
     required BuildContext context,
   }) async {
     state = state.copyWith(isLoading: true);
-    final jwtToken = await SP.readFromSP("JWT");
+    final jwtToken = await SP.getJWT("JWT");
     final response =
         await _cartRepository.addToCart(jwtToken: "jwt=$jwtToken", id: id);
     response.when(success: (data) async {
@@ -124,7 +124,7 @@ class CartNotifier extends StateNotifier<CartState> {
     required BuildContext context,
   }) async {
     state = state.copyWith(isLoading: true);
-    final jwtToken = await SP.readFromSP("JWT");
+    final jwtToken = await SP.getJWT("JWT");
     final response =
         await _cartRepository.removeFromCart(jwtToken: "jwt=$jwtToken", id: id);
     response.when(success: (data) async {
@@ -149,7 +149,7 @@ class CartNotifier extends StateNotifier<CartState> {
     required BuildContext context,
   }) async {
     state = state.copyWith(isLoading: true);
-    final jwtToken = await SP.readFromSP("JWT");
+    final jwtToken = await SP.getJWT("JWT");
     final response =
         await _cartRepository.deleteFromCart(jwtToken: "jwt=$jwtToken", id: id);
     response.when(success: (data) async {
@@ -173,7 +173,7 @@ class CartNotifier extends StateNotifier<CartState> {
     VoidCallback? success,
   }) async {
     state = state.copyWith(isLoading: true);
-    final jwtToken = await SP.readFromSP("JWT");
+    final jwtToken = await SP.getJWT("JWT");
     final response =
     await _cartRepository.createOrder(jwtToken: "jwt=$jwtToken");
     response.when(success: (data) async {
@@ -195,7 +195,7 @@ class CartNotifier extends StateNotifier<CartState> {
     VoidCallback? success,
   }) async {
     state = state.copyWith(isLoading: true);
-    final jwtToken = await SP.readFromSP("JWT");
+    final jwtToken = await SP.getJWT("JWT");
     final response =
     await _cartRepository.getOrders(jwtToken: "jwt=$jwtToken");
     response.when(success: (data) async {

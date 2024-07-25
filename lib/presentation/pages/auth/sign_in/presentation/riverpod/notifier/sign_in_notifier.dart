@@ -1,3 +1,4 @@
+import 'package:overlay_kit/overlay_kit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:thousand_melochey/core/handlers/jwt_token.dart';
 import 'package:thousand_melochey/core/handlers/sp.dart';
@@ -19,49 +20,75 @@ class SignInNotifier extends StateNotifier<SignInState> {
     VoidCallback? checkYourNetwork,
     VoidCallback? unAuthorised,
     VoidCallback? success,
+    required BuildContext context
   }) async {
-    final connectivity = await AppConnectivity.connectivity();
-    if (emailController.text.isNotEmpty &&
-        passwordController.text.isNotEmpty) {
-      if (connectivity) {
-        state = state.copyWith(isLoading: true);
-        final response = await _loginRepository.login(
-          email: emailController.text,
-          password: passwordController.text,
-        );
-        response.when(
-          success: (data) async {
-            state = state.copyWith(isLoading: false, signInData: data);
-            SP.saveToSP('JWT', data.jwt ?? "");
-            success?.call();
-          },
-          failure: (failure, status, data) {
-            state = state.copyWith(
-                isLoading: false, isLoginError: true, signInData: data);
-            if (failure == const NetworkExceptions.unauthorisedRequest()) {
-              unAuthorised?.call();
-            }
-            debugPrint('==> Sign in notifier failure: $failure');
-          },
-        );
+    try {
+      final connectivity = await AppConnectivity.connectivity();
+
+      if (emailController.text.isNotEmpty &&
+          passwordController.text.isNotEmpty) {
+        if (connectivity) {
+          state = state.copyWith(isLoading: true);
+          final response = await _loginRepository.login(
+            email: emailController.text,
+            password: passwordController.text,
+          );
+          response.when(
+            success: (data) async {
+              state = state.copyWith(isLoading: false, signInData: data);
+              SP.setJWT('JWT', data.jwt ?? "");
+              success?.call();
+            },
+            failure: (failure, status, errorMessage) {
+              state = state.copyWith(
+                  isLoading: false,
+                  isLoginError: true,
+                  errorMessage: errorMessage);
+              if (failure == const NetworkExceptions.unauthorisedRequest()) {
+                unAuthorised?.call();
+              }
+              if (!errorMessage.toString().contains("email") &&
+                  !errorMessage.toString().contains("password")) {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(errorMessage)));
+              }
+              debugPrint('==> sign in failure: $failure');
+            },
+          );
+        } else {
+          state = state.copyWith(isLoading: false);
+          checkYourNetwork?.call();
+        }
       } else {
-        checkYourNetwork?.call();
+        if (emailController.text.isEmpty) {
+          state = state.copyWith(errorMessage: "email");
+        }
+        if (passwordController.text.isEmpty) {
+          state = state.copyWith(errorMessage: "password");
+        }
+        state = state.copyWith(isLoading: false);
       }
-    } else {
-      if (emailController.text.isEmpty) {
-        state = state.copyWith(errorMessage: "email");
+    }catch (e) {
+      OverlayLoadingProgress.stop();
+      if(context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            showCloseIcon: true,
+            margin: EdgeInsets.all(12),
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: AppColors.primaryColor,
+            content: Text("CATCH")));
       }
-      if (passwordController.text.isEmpty) {
-        state = state.copyWith(errorMessage: "password");
-      }
+      state = state.copyWith(
+        isLoading: false,
+        isLoginError: true,
+      );
     }
   }
+
   validator() {
-    if (emailController.text.isNotEmpty &&
-        passwordController.text.isNotEmpty) {
-      state = state.copyWith(isValid: false);
-    } else {
+    if (emailController.text.isNotEmpty && passwordController.text.length > 7) {
       state = state.copyWith(isValid: true);
+    } else {
+      state = state.copyWith(isValid: false);
     }
   }
 
