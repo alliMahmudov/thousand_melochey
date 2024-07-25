@@ -9,10 +9,10 @@ class AppRouter extends _$AppRouter {
   @override
   List<AutoRoute> get routes => [
         CupertinoRoute(
-            page: WelcomeRoute.page, path: "/welcome"),
+            page: WelcomeRoute.page, initial: true, path: "/welcome"),
         CupertinoRoute(page: SignInRoute.page, path: "/sign_in"),
         CupertinoRoute(page: SignUpRoute.page, path: "/sign_up"),
-        CupertinoRoute(page: MainRoute.page,  initial: true, path: "/main"),
+        CupertinoRoute(page: MainRoute.page,  path: "/main"),
         CupertinoRoute(page: HomeRoute.page, path: "/home"),
         CupertinoRoute(page: OTPRoute.page, path: "/OTP"),
         CupertinoRoute(
