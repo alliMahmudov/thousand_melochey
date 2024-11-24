@@ -21,7 +21,6 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
     return Form(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: AppBar(),
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(20),

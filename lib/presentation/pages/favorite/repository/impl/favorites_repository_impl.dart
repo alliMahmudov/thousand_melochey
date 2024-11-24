@@ -5,10 +5,10 @@ import 'package:thousand_melochey/presentation/pages/favorite/repository/favorit
 
 class FavoritesRepositoryImpl extends FavoritesRepository {
   @override
-  Future<ApiResult> getFavoritesList({required String jwtToken}) async {
+  Future<ApiResult> getFavoritesList() async {
     try {
       final client = inject<HttpService>()
-          .client(requireAuth: true, isToken: true, jwtToken: jwtToken);
+          .client(requireAuth: true, isToken: true);
       final response = await client.get("/api/user/favorites/");
 
       return ApiResult.success(
@@ -31,9 +31,9 @@ class FavoritesRepositoryImpl extends FavoritesRepository {
 
   @override
   Future<ApiResult> addToFavorites(
-      {required int productID, required String jwtToken}) async {
+      {required int productID}) async {
     try {
-      final client = inject<HttpService>().client(isToken: true, jwtToken: jwtToken);
+      final client = inject<HttpService>().client(isToken: true);
       final response = await client.post("api/products/favorites/$productID/");
       return ApiResult.success(
           data: AddToFavoritesResponse.fromJson(response.data));
@@ -54,11 +54,11 @@ class FavoritesRepositoryImpl extends FavoritesRepository {
 
   @override
   Future<ApiResult> removeFromFavorites(
-      {required int productID, required String jwtToken}) async {
+      {required int productID}) async {
     try {
-      final client = inject<HttpService>().client(isToken: true, jwtToken: jwtToken);
+      final client = inject<HttpService>().client(isToken: true);
       final response = await client.delete('api/products/favorites/$productID/');
-      return const ApiResult.success(data: "Removed from favorites");
+      return ApiResult.success(data: "Removed from favorites ${response.data}");
     } on DioException catch (e) {
       debugPrint("==> remove from favorites: ${e.response?.data}");
       return ApiResult.failure(

@@ -22,7 +22,9 @@ mixin _$FavoritesState {
   bool get isCollapse => throw _privateConstructorUsedError;
   bool get isError => throw _privateConstructorUsedError;
   bool get isFavoritesLoading => throw _privateConstructorUsedError;
-  bool get isFavorite => throw _privateConstructorUsedError;
+  bool get isFavorite =>
+      throw _privateConstructorUsedError; //@Default([]) List favProducts,
+  List<int>? get favProducts => throw _privateConstructorUsedError;
   ProductsResponse? get products => throw _privateConstructorUsedError;
   FavoritesResponse? get favoritesList => throw _privateConstructorUsedError;
   AddToFavoritesResponse? get addToFavorites =>
@@ -47,6 +49,7 @@ abstract class $FavoritesStateCopyWith<$Res> {
       bool isError,
       bool isFavoritesLoading,
       bool isFavorite,
+      List<int>? favProducts,
       ProductsResponse? products,
       FavoritesResponse? favoritesList,
       AddToFavoritesResponse? addToFavorites});
@@ -72,6 +75,7 @@ class _$FavoritesStateCopyWithImpl<$Res, $Val extends FavoritesState>
     Object? isError = null,
     Object? isFavoritesLoading = null,
     Object? isFavorite = null,
+    Object? favProducts = freezed,
     Object? products = freezed,
     Object? favoritesList = freezed,
     Object? addToFavorites = freezed,
@@ -105,6 +109,10 @@ class _$FavoritesStateCopyWithImpl<$Res, $Val extends FavoritesState>
           ? _value.isFavorite
           : isFavorite // ignore: cast_nullable_to_non_nullable
               as bool,
+      favProducts: freezed == favProducts
+          ? _value.favProducts
+          : favProducts // ignore: cast_nullable_to_non_nullable
+              as List<int>?,
       products: freezed == products
           ? _value.products
           : products // ignore: cast_nullable_to_non_nullable
@@ -137,6 +145,7 @@ abstract class _$$FavoritesStateImplCopyWith<$Res>
       bool isError,
       bool isFavoritesLoading,
       bool isFavorite,
+      List<int>? favProducts,
       ProductsResponse? products,
       FavoritesResponse? favoritesList,
       AddToFavoritesResponse? addToFavorites});
@@ -160,6 +169,7 @@ class __$$FavoritesStateImplCopyWithImpl<$Res>
     Object? isError = null,
     Object? isFavoritesLoading = null,
     Object? isFavorite = null,
+    Object? favProducts = freezed,
     Object? products = freezed,
     Object? favoritesList = freezed,
     Object? addToFavorites = freezed,
@@ -193,6 +203,10 @@ class __$$FavoritesStateImplCopyWithImpl<$Res>
           ? _value.isFavorite
           : isFavorite // ignore: cast_nullable_to_non_nullable
               as bool,
+      favProducts: freezed == favProducts
+          ? _value._favProducts
+          : favProducts // ignore: cast_nullable_to_non_nullable
+              as List<int>?,
       products: freezed == products
           ? _value.products
           : products // ignore: cast_nullable_to_non_nullable
@@ -220,9 +234,11 @@ class _$FavoritesStateImpl implements _FavoritesState {
       this.isError = false,
       this.isFavoritesLoading = false,
       this.isFavorite = false,
+      final List<int>? favProducts,
       this.products,
       this.favoritesList,
-      this.addToFavorites});
+      this.addToFavorites})
+      : _favProducts = favProducts;
 
   @override
   @JsonKey()
@@ -245,6 +261,18 @@ class _$FavoritesStateImpl implements _FavoritesState {
   @override
   @JsonKey()
   final bool isFavorite;
+//@Default([]) List favProducts,
+  final List<int>? _favProducts;
+//@Default([]) List favProducts,
+  @override
+  List<int>? get favProducts {
+    final value = _favProducts;
+    if (value == null) return null;
+    if (_favProducts is EqualUnmodifiableListView) return _favProducts;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   @override
   final ProductsResponse? products;
   @override
@@ -254,7 +282,7 @@ class _$FavoritesStateImpl implements _FavoritesState {
 
   @override
   String toString() {
-    return 'FavoritesState(isLoading: $isLoading, isResponseError: $isResponseError, isNotEmpty: $isNotEmpty, isCollapse: $isCollapse, isError: $isError, isFavoritesLoading: $isFavoritesLoading, isFavorite: $isFavorite, products: $products, favoritesList: $favoritesList, addToFavorites: $addToFavorites)';
+    return 'FavoritesState(isLoading: $isLoading, isResponseError: $isResponseError, isNotEmpty: $isNotEmpty, isCollapse: $isCollapse, isError: $isError, isFavoritesLoading: $isFavoritesLoading, isFavorite: $isFavorite, favProducts: $favProducts, products: $products, favoritesList: $favoritesList, addToFavorites: $addToFavorites)';
   }
 
   @override
@@ -275,6 +303,8 @@ class _$FavoritesStateImpl implements _FavoritesState {
                 other.isFavoritesLoading == isFavoritesLoading) &&
             (identical(other.isFavorite, isFavorite) ||
                 other.isFavorite == isFavorite) &&
+            const DeepCollectionEquality()
+                .equals(other._favProducts, _favProducts) &&
             (identical(other.products, products) ||
                 other.products == products) &&
             (identical(other.favoritesList, favoritesList) ||
@@ -293,6 +323,7 @@ class _$FavoritesStateImpl implements _FavoritesState {
       isError,
       isFavoritesLoading,
       isFavorite,
+      const DeepCollectionEquality().hash(_favProducts),
       products,
       favoritesList,
       addToFavorites);
@@ -314,6 +345,7 @@ abstract class _FavoritesState implements FavoritesState {
       final bool isError,
       final bool isFavoritesLoading,
       final bool isFavorite,
+      final List<int>? favProducts,
       final ProductsResponse? products,
       final FavoritesResponse? favoritesList,
       final AddToFavoritesResponse? addToFavorites}) = _$FavoritesStateImpl;
@@ -332,6 +364,8 @@ abstract class _FavoritesState implements FavoritesState {
   bool get isFavoritesLoading;
   @override
   bool get isFavorite;
+  @override //@Default([]) List favProducts,
+  List<int>? get favProducts;
   @override
   ProductsResponse? get products;
   @override

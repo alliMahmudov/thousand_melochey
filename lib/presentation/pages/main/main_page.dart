@@ -1,5 +1,7 @@
 
 import 'package:proste_indexed_stack/proste_indexed_stack.dart';
+import 'package:thousand_melochey/contstants/jwt_token.dart';
+import 'package:thousand_melochey/core/handlers/sp.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
 import 'package:thousand_melochey/presentation/pages/main/packages/custom_navbar.dart';
 import 'package:thousand_melochey/presentation/pages/main/riverpod/provider/main_provider.dart';
@@ -18,9 +20,16 @@ class _MainPageState extends ConsumerState<MainPage> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
 
+  Future<void> jwtInit()async{
+    Token.jwtToken = await SP.readJWT();
+  }
+  @override
+  void initState() {
+    jwtInit();
+    super.initState();
+  }
   final controller = TextEditingController();
   final focusNode = FocusNode();
-
   @override
   void dispose() {
     controller.dispose();

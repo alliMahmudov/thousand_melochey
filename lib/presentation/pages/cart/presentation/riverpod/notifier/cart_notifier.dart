@@ -34,9 +34,7 @@ class CartNotifier extends StateNotifier<CartState> {
         postalCodeController.text.isNotEmpty) {
       if (connectivity) {
         state = state.copyWith(isLoading: true);
-        final jwtToken = await SP.readFromSP("JWT");
         final response = await _cartRepository.fillAddress(
-            jwtToken: "jwt=$jwtToken",
             address: addressController.text,
             address2: "Ulanmagan",
             city: cityController.text,
@@ -75,7 +73,7 @@ class CartNotifier extends StateNotifier<CartState> {
     VoidCallback? success,
   }) async {
     state = state.copyWith(isProductLoading: true);
-    final jwtToken = await SP.readFromSP("JWT");
+    final jwtToken = await SP.readJWT();
     final response =
         await _cartRepository.getCartProducts(jwtToken: "jwt=$jwtToken");
     response.when(success: (data) async {
@@ -99,9 +97,8 @@ class CartNotifier extends StateNotifier<CartState> {
     required BuildContext context,
   }) async {
     state = state.copyWith(isLoading: true);
-    final jwtToken = await SP.readFromSP("JWT");
     final response =
-        await _cartRepository.addToCart(jwtToken: "jwt=$jwtToken", id: id);
+        await _cartRepository.addToCart(id: id);
     response.when(success: (data) async {
       state = state.copyWith(isLoading: false);
       ScaffoldMessenger.of(context)
@@ -124,9 +121,8 @@ class CartNotifier extends StateNotifier<CartState> {
     required BuildContext context,
   }) async {
     state = state.copyWith(isLoading: true);
-    final jwtToken = await SP.readFromSP("JWT");
     final response =
-        await _cartRepository.removeFromCart(jwtToken: "jwt=$jwtToken", id: id);
+        await _cartRepository.removeFromCart(id: id);
     response.when(success: (data) async {
       state = state.copyWith(isLoading: false);
       ScaffoldMessenger.of(context).showSnackBar(
@@ -149,9 +145,8 @@ class CartNotifier extends StateNotifier<CartState> {
     required BuildContext context,
   }) async {
     state = state.copyWith(isLoading: true);
-    final jwtToken = await SP.readFromSP("JWT");
     final response =
-        await _cartRepository.deleteFromCart(jwtToken: "jwt=$jwtToken", id: id);
+        await _cartRepository.deleteFromCart(id: id);
     response.when(success: (data) async {
       state = state.copyWith(isLoading: false);
       ScaffoldMessenger.of(context).showSnackBar(
@@ -173,9 +168,9 @@ class CartNotifier extends StateNotifier<CartState> {
     VoidCallback? success,
   }) async {
     state = state.copyWith(isLoading: true);
-    final jwtToken = await SP.readFromSP("JWT");
+
     final response =
-    await _cartRepository.createOrder(jwtToken: "jwt=$jwtToken");
+    await _cartRepository.createOrder();
     response.when(success: (data) async {
       state = state.copyWith(isLoading: false, orders: data);
       success?.call();
@@ -195,9 +190,9 @@ class CartNotifier extends StateNotifier<CartState> {
     VoidCallback? success,
   }) async {
     state = state.copyWith(isLoading: true);
-    final jwtToken = await SP.readFromSP("JWT");
+
     final response =
-    await _cartRepository.getOrders(jwtToken: "jwt=$jwtToken");
+    await _cartRepository.getOrders();
     response.when(success: (data) async {
       state = state.copyWith(isLoading: false, getOrders: data);
       success?.call();

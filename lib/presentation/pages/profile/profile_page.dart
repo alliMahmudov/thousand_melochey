@@ -90,12 +90,12 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                     : const SizedBox.shrink(),
             12.verticalSpace,
             //   SectionButtonWidget(icon: Icons.person_outline, title: "Profile", onTap: (){}),
-            SectionButtonWidget(
-                icon: Icons.event_note,
-                title: "Orders",
-                onTap: () {
-                  AppNavigator.push(AllOrdersRoute());
-                }),
+            // SectionButtonWidget(
+            //     icon: Icons.event_note,
+            //     title: "Orders",
+            //     onTap: () {
+            //       AppNavigator.push(AllOrdersRoute());
+            //     }),
             SectionButtonWidget(
                 icon: Icons.location_on_outlined,
                 title: "Address",
@@ -204,7 +204,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                                   notifier.logOut(
                                     success: (){
                                       AppNavigator.pushAndPopUntil(
-                                          const WelcomeRoute());
+                                          const SignInRoute());
                                     }
                                   );
 

@@ -66,7 +66,8 @@ class _ProductsListWidgetState extends ConsumerState<ToolsWidget>
                       childCount: state.toolsCategory?.data?.length,
                       (BuildContext context, int index) {
                         final product = state.toolsCategory?.data?[index];
-                        final isLiked = favoriteNotifier.checkFavorite(product?.id ?? 0);
+                        final isLiked =
+                            favoriteNotifier.checkFavorite(product?.id ?? 0);
                         return InkWell(
                             onTap: () {
                               AppNavigator.push(ProductDetailRoute(
@@ -89,15 +90,15 @@ class _ProductsListWidgetState extends ConsumerState<ToolsWidget>
                                     product?.id ?? 0,
                                     context);
                               },
-                              addToCart: (){},
+                              addToCart: () {},
                             ));
                       },
                       // Number of grid items
                     ),
                   )
-                : const SliverToBoxAdapter(
+                : const SliverFillRemaining(
                     child: Center(
-                      child: Text("Something went wrong"),
+                      child: Text("Data is empty"),
                     ),
                   )
       ],

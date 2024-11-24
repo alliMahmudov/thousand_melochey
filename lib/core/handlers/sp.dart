@@ -4,15 +4,15 @@ class SP{
 
 
 // Function to save data to SharedPreferences
-  static Future<void> saveToSP(String key, String value) async {
+  static Future<void> saveJWT(String value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString(key, value);
+    await prefs.setString("JWT", value);
   }
 
 // Function to read data from SharedPreferences
-  static Future<String?> readFromSP(String key) async {
+  static Future<String> readJWT() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString(key);
+    return prefs.getString("JWT") ?? "";
   }
 
 }

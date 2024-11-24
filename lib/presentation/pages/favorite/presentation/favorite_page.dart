@@ -8,7 +8,6 @@ class FavoritePage extends ConsumerStatefulWidget {
 }
 
 class _FavoritePageState extends ConsumerState<FavoritePage> {
-
   @override
   Widget build(BuildContext context) {
     final notifier = ref.read(favoritesProvider.notifier);
@@ -65,8 +64,7 @@ class _FavoritePageState extends ConsumerState<FavoritePage> {
                               crossAxisCount: 2, // Number of columns
                               crossAxisSpacing: 10.0.h, // Space between columns
                               mainAxisSpacing: 10.0.h, // Space between rows
-                              childAspectRatio:
-                                  .95, // Aspect ratio of the cards
+                              childAspectRatio: .9, // Aspect ratio of the cards
                             ),
                             delegate: SliverChildBuilderDelegate(
                               childCount: state.favoritesList?.data?.length,
@@ -85,20 +83,21 @@ class _FavoritePageState extends ConsumerState<FavoritePage> {
                                   isFavorite: true,
                                   isFavProduct: true,
                                   onTap: () {
-                                    notifier.removeFromFavorites(productID: favProduct?.id ?? 0,
-                                        success: (){
+                                    notifier.removeFromFavorites(
+                                        productID: favProduct?.id ?? 0,
+                                        success: () {
                                           notifier.getFavoritesList();
                                         });
                                   },
-                                  addToCart: (){},
+                                  addToCart: () {},
                                 );
                               },
                               // Number of grid items
                             ),
                           )
-                        : const SliverToBoxAdapter(
+                        : const SliverFillRemaining(
                             child: Center(
-                              child: Text("Something went wrong"),
+                              child: Text("Data is empty"),
                             ),
                           )
               ],

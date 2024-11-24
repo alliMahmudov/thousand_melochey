@@ -1,15 +1,14 @@
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/services.dart';
-import 'package:requests_inspector/requests_inspector.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
 
-void main() async{
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Colors.black));
+void main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
   setUpDependencies();
-  runApp(const ProviderScope(child: RequestsInspector(
+  final navigatorKey = GlobalKey<NavigatorState>();
+  runApp(ProviderScope(child: RequestsInspector(
       enabled: true,
-      child: MyApp())));
+      navigatorKey: navigatorKey,
+      child: const MyApp())));
 }
 
 class MyApp extends StatelessWidget {
@@ -29,9 +28,9 @@ class MyApp extends StatelessWidget {
             routerConfig: appRouter.config(),
             title: '1000 melochey',
             theme: ThemeData(
-              colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primaryColor),
-              useMaterial3: false
-            ),
+                colorScheme:
+                    ColorScheme.fromSeed(seedColor: AppColors.primaryColor),
+                useMaterial3: false),
           );
         });
   }

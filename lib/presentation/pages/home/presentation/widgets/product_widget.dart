@@ -62,8 +62,16 @@ class _ProductWidgetState extends ConsumerState<ProductWidget> {
             child: SizedBox(
               height: 100.h,
               width: 100.h,
-              child: Image.network(widget.image ??
-                  "https://t4.ftcdn.net/jpg/03/16/15/47/360_F_316154790_pnHGQkERUumMbzAjkgQuRvDgzjAHkFaQ.jpg"),
+              child: CachedNetworkImage(
+                scale: 2,
+                imageUrl: widget.image ?? "",
+                placeholder: (context, url) => CircularProgressIndicator(
+                  backgroundColor: Colors.black,
+                ),
+                errorWidget: (context, url, error) => Icon(Icons.error),
+                fadeInDuration: Duration(milliseconds: 500),
+                fadeOutDuration: Duration(milliseconds: 500),
+              ),
             ),
           ),
           Padding(

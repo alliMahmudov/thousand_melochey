@@ -67,16 +67,17 @@ class _ProductsListWidgetState extends ConsumerState<GlovesWidget>
                       childCount: state.glovesCategory?.data?.length,
                       (BuildContext context, int index) {
                         final product = state.glovesCategory?.data?[index];
-                        final isLiked = favoriteNotifier.checkFavorite(product?.id ?? 0);
+                        final isLiked =
+                            favoriteNotifier.checkFavorite(product?.id ?? 0);
 
                         return InkWell(
                             onTap: () {
                               AppNavigator.push(ProductDetailRoute(
-                                  id: product?.id,
-                                  name: product?.name,
-                                  price: product?.price,
-                                  description: product?.description,
-                                  image: product?.image,
+                                id: product?.id,
+                                name: product?.name,
+                                price: product?.price,
+                                description: product?.description,
+                                image: product?.image,
                               ));
                             },
                             child: ProductWidget(
@@ -86,17 +87,20 @@ class _ProductsListWidgetState extends ConsumerState<GlovesWidget>
                               price: product?.price,
                               isFavorite: isLiked ?? false,
                               onTap: () {
-                                favoriteNotifier.switchFavorite(isLiked ?? false, product?.id ?? 0, context);
+                                favoriteNotifier.switchFavorite(
+                                    isLiked ?? false,
+                                    product?.id ?? 0,
+                                    context);
                               },
-                              addToCart: (){},
+                              addToCart: () {},
                             ));
                       },
                       // Number of grid items
                     ),
                   )
-                : const SliverToBoxAdapter(
+                : const SliverFillRemaining(
                     child: Center(
-                      child: Text("Something went wrong"),
+                      child: Text("Data is empty"),
                     ),
                   )
       ],

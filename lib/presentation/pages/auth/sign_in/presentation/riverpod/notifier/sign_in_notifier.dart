@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:thousand_melochey/core/handlers/jwt_token.dart';
 import 'package:thousand_melochey/core/handlers/sp.dart';
@@ -19,12 +20,19 @@ class SignInNotifier extends StateNotifier<SignInState> {
     VoidCallback? checkYourNetwork,
     VoidCallback? unAuthorised,
     VoidCallback? success,
+    required BuildContext context
   }) async {
+    
+    try{
+    
+    
     final connectivity = await AppConnectivity.connectivity();
+
     if (emailController.text.isNotEmpty &&
         passwordController.text.isNotEmpty) {
       if (connectivity) {
-        state = state.copyWith(isLoading: true);
+          state = state.copyWith(isLoading: true);
+
         final response = await _loginRepository.login(
           email: emailController.text,
           password: passwordController.text,
@@ -32,7 +40,7 @@ class SignInNotifier extends StateNotifier<SignInState> {
         response.when(
           success: (data) async {
             state = state.copyWith(isLoading: false, signInData: data);
-            SP.saveToSP('JWT', data.jwt ?? "");
+            SP.saveJWT(data.jwt ?? "");
             success?.call();
           },
           failure: (failure, status, data) {
@@ -54,6 +62,17 @@ class SignInNotifier extends StateNotifier<SignInState> {
       if (passwordController.text.isEmpty) {
         state = state.copyWith(errorMessage: "password");
       }
+    }
+  } catch (e){
+      if(context.mounted) {
+        SnackBar(content: Container(
+          child: Text("Login failure: $e"),
+        ));
+      }
+      state = state.copyWith(
+        isLoading: false,
+        isLoginError: true,
+      );
     }
   }
   validator() {

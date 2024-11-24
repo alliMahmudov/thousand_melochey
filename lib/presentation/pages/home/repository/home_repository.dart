@@ -6,12 +6,9 @@ import 'package:thousand_melochey/presentation/pages/home/data/screwdrivers_resp
 import 'package:thousand_melochey/presentation/pages/home/data/tools_response.dart';
 
 abstract class HomeRepository{
-  Future<ApiResult<ProductsResponse>> getProducts({required String? jwtToken});
-
-
+  Future<ApiResult<ProductsResponse>> getProducts();
 /*  Future<ApiResult<ProductsResponse>> getProductsByCategory(
       {required String? category});*/
-
   Future<ApiResult<GlovesCategoryResponse>> getGlovesCategory();
   Future<ApiResult<ScrewdriversResponse>> getScrewdriversCategory();
   Future<ApiResult<ElectronicResponse>> getElectronicsCategory();

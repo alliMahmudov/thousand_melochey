@@ -1,4 +1,4 @@
-
+import 'package:thousand_melochey/contstants/jwt_token.dart';
 import 'package:thousand_melochey/core/handlers/sp.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
 
@@ -13,25 +13,34 @@ class WelcomePage extends StatefulWidget {
 class _WelcomePageState extends State<WelcomePage> {
   @override
   void initState() {
+    jwtToken();
     nextPage();
     super.initState();
   }
 
-  nextPage()async{
-    final jwt = await SP.readFromSP("JWT");
-    await Future.delayed( Duration(milliseconds: await isLogin() ? 500 : 0,seconds: await isLogin() ? 0 : 2));
+  Future<void> jwtToken() async {
+    Token.jwtToken = await SP.readJWT();
+  }
 
-    if(context.mounted){
-      if(jwt!.isEmpty && jwt == ""){
+  nextPage() async {
+    final jwt = await SP.readJWT();
+    await Future.delayed(Duration(
+        milliseconds: await isLogin() ? 500 : 0,
+        seconds: await isLogin() ? 0 : 2));
+
+    if (context.mounted) {
+      if (jwt!.isEmpty && jwt == "") {
         AppNavigator.pushAndPopUntil(SignInRoute());
       } else {
         AppNavigator.pushAndPopUntil(MainRoute());
       }
-    }}
-  Future<bool> isLogin()async{
-
-    return await SP.readFromSP("JWT") != "";
+    }
   }
+
+  Future<bool> isLogin() async {
+    return await SP.readJWT() != "";
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,7 +64,7 @@ class _WelcomePageState extends State<WelcomePage> {
               height: 20.h,
             ),
             InkWell(
-              onTap: (){
+              onTap: () {
                 AppNavigator.push(const SignUpRoute());
               },
               child: Container(

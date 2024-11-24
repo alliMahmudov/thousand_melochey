@@ -76,9 +76,7 @@ class MainNotifier extends StateNotifier<MainState> {
     state = state.copyWith(shopId: LocalStorage.instance.getSelectedShopId());
   }*/
 
-
-
-  /*internetConnection() {
+/*internetConnection() {
     InternetConnection().onStatusChange.listen(
       (status) async {
         state = state.copyWith(
@@ -173,5 +171,3 @@ class MainNotifier extends StateNotifier<MainState> {
 
   }*/
 }
-
-

@@ -1,6 +1,7 @@
 import 'package:thousand_melochey/core/imports/imports.dart';
 import 'package:thousand_melochey/presentation/pages/cart/presentation/cart_page.dart';
 import 'package:thousand_melochey/presentation/pages/profile/widgets/all_orders_widget.dart';
+import 'package:thousand_melochey/presentation/pages/splash_page/splash_page.dart';
 
 part 'routes.gr.dart';
 
@@ -8,8 +9,8 @@ part 'routes.gr.dart';
 class AppRouter extends _$AppRouter {
   @override
   List<AutoRoute> get routes => [
-        CupertinoRoute(
-            page: WelcomeRoute.page, initial: true, path: "/welcome"),
+        CupertinoRoute(page: SplashRoute.page, initial: true, path: "/splash"),
+        CupertinoRoute(page: WelcomeRoute.page, path: "/welcome"),
         CupertinoRoute(page: SignInRoute.page, path: "/sign_in"),
         CupertinoRoute(page: SignUpRoute.page, path: "/sign_up"),
         CupertinoRoute(page: MainRoute.page,  path: "/main"),

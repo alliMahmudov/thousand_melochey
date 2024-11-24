@@ -8,9 +8,9 @@ import 'package:thousand_melochey/presentation/pages/home/data/tools_response.da
 
 class HomeRepositoryImpl extends HomeRepository {
   @override
-  Future<ApiResult<ProductsResponse>> getProducts({required String? jwtToken}) async {
+  Future<ApiResult<ProductsResponse>> getProducts() async {
     try {
-      final client = inject<HttpService>().client(requireAuth: true, jwtToken: jwtToken, isToken: true);
+      final client = inject<HttpService>().client(requireAuth: true, isToken: true);
       final response = await client.get("/api/products/");
 
       return ApiResult.success(

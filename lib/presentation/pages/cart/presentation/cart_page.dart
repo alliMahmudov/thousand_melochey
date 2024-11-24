@@ -99,8 +99,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                             child: Center(
                               child: Text(
                                 "Cart is empty",
-                                style: TextStyle(
-                                    fontSize: 24, fontWeight: FontWeight.w500),
+                                style: TextStyle(fontWeight: FontWeight.w500),
                               ),
                             ),
                           ),

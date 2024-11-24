@@ -18,7 +18,9 @@ class CustomButtonWidget extends StatelessWidget {
     return InkWell(
       borderRadius: BorderRadius.circular(24.0.r),
       onTap: () {
-        onTap.call();
+        if (!isLoading) {
+          !(false) ? onTap.call() : null;
+        }
       },
       child: Container(
         // padding: EdgeInsets.symmetric(vertical: 10.0.h),

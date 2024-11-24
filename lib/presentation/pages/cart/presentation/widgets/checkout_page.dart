@@ -24,6 +24,7 @@ class _CheckOutPageState extends ConsumerState<CheckOutPage> {
           children: [
             18.verticalSpace,
             CustomTextField(
+              keyboardType: TextInputType.phone,
               controller: notifier.phoneController,
               title: "Phone",
               labelText: "Enter your phone number*",

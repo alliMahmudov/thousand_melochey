@@ -30,7 +30,7 @@ class ProfileRepositoryImpl extends ProfileRepository {
     required String jwtToken
 }) async {
     try {
-      final client = inject<HttpService>().client(requireAuth: true, jwtToken: jwtToken, isToken: true);
+      final client = inject<HttpService>().client(requireAuth: true, isToken: true);
       final response = await client.get('/api/user/');
       return ApiResult.success(
         data: UserInfoResponse.fromJson(response.data),

@@ -1,7 +1,4 @@
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:thousand_melochey/core/handlers/sp.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
-import 'package:thousand_melochey/presentation/pages/favorite/presentation/riverpod/provider/favorites_provider.dart';
 
 class ProductsListWidget extends ConsumerStatefulWidget {
   const ProductsListWidget({super.key});
@@ -20,7 +17,7 @@ class _ProductsListWidgetState extends ConsumerState<ProductsListWidget>
       final cartNotifier = ref.read(cartProvider.notifier);
       notifier.getProducts();
       favoriteNotifier.getFavoritesList();
-      cartNotifier.getCartProducts();
+     // cartNotifier.getCartProducts();
     });
     super.initState();
   }
@@ -31,9 +28,8 @@ class _ProductsListWidgetState extends ConsumerState<ProductsListWidget>
     final notifier = ref.read(homeProvider.notifier);
     final state = ref.watch(homeProvider);
     final favoriteNotifier = ref.read(favoritesProvider.notifier);
-    final cartNotifier = ref.read(cartProvider.notifier);
     return RefreshIndicator(
-      onRefresh: () async {
+      onRefresh: ()  {
         return notifier.getProducts();
       },
       child: CustomScrollView(
@@ -57,16 +53,16 @@ class _ProductsListWidgetState extends ConsumerState<ProductsListWidget>
                         childCount: state.products?.data?.length,
                         (BuildContext context, int index) {
                           final product = state.products?.data?[index];
-                          final isLiked = favoriteNotifier.checkFavorite(product?.id ?? 0);
+                          final isLiked =
+                              favoriteNotifier.checkFavorite(product?.id ?? 0);
                           return InkWell(
                               onTap: () {
-                                AppNavigator.push(
-                                    ProductDetailRoute(
-                                      id: product?.id,
-                                    name: product?.name,
-                                    price: product?.price,
-                                    description: product?.description,
-                                    image: product?.image,
+                                AppNavigator.push(ProductDetailRoute(
+                                  id: product?.id,
+                                  name: product?.name,
+                                  price: product?.price,
+                                  description: product?.description,
+                                  image: product?.image,
                                 ));
                               },
                               child: ProductWidget(
@@ -76,26 +72,27 @@ class _ProductsListWidgetState extends ConsumerState<ProductsListWidget>
                                 id: product?.id,
                                 isFavorite: isLiked ?? false,
                                 onTap: () {
-                                  favoriteNotifier.switchFavorite(isLiked ?? false, product?.id ?? 0, context);
+                                  favoriteNotifier.switchFavorite(
+                                    isLiked ?? false,
+                                    product?.id ?? 0,
+                                    context,
+                                    success: () async {
+                                      await notifier.getProducts();
+
+                                    },
+                                  );
                                 },
-                                addToCart: (){},
+                                addToCart: () {},
                               ));
                         },
                         // Number of grid items
                       ),
                     )
-                  : SliverToBoxAdapter(
-                      child: Center(
-                        child: InkWell(
-                            onTap: () {
-                              final state = ref.watch(signInProvider);
-                              final state2 = ref.watch(homeProvider);
-                              print(state2.jwt);
-                              print(state.signInData?.jwt);
-                            },
-                            child: const Text("Something went wrong")),
-                      ),
-                    )
+                  : const SliverFillRemaining(
+            child: Center(
+              child: Text("Data is empty"),
+            ),
+          )
         ],
       ),
     );

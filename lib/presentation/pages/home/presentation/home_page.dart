@@ -1,9 +1,5 @@
 import 'package:thousand_melochey/core/imports/imports.dart';
-import 'package:thousand_melochey/presentation/pages/home/presentation/widgets/categories/all_products_widget.dart';
-import 'package:thousand_melochey/presentation/pages/home/presentation/widgets/categories/electronics_widget.dart';
-import 'package:thousand_melochey/presentation/pages/home/presentation/widgets/categories/gloves_widget.dart';
-import 'package:thousand_melochey/presentation/pages/home/presentation/widgets/categories/screwdrivers_widget.dart';
-import 'package:thousand_melochey/presentation/pages/home/presentation/widgets/categories/tools_widget.dart';
+
 
 @RoutePage()
 class HomePage extends ConsumerStatefulWidget {
