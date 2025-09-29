@@ -21,20 +21,20 @@ mixin _$CartState {
   bool get isOrdersLoading => throw _privateConstructorUsedError;
   bool get isResponseError => throw _privateConstructorUsedError;
   bool get isError => throw _privateConstructorUsedError;
+  int get selectedOrderTab => throw _privateConstructorUsedError;
   String get errorMessage => throw _privateConstructorUsedError;
-  TextEditingController? get phoneController =>
-      throw _privateConstructorUsedError;
-  TextEditingController? get addressController =>
-      throw _privateConstructorUsedError;
-  TextEditingController? get nameController =>
+  String get paymentType => throw _privateConstructorUsedError;
+  String get deliveryType => throw _privateConstructorUsedError;
+  Map<int, bool> get pendingCartOperations =>
       throw _privateConstructorUsedError;
   CartResponse? get cartProduct => throw _privateConstructorUsedError;
   CreateOrderResponse? get orders => throw _privateConstructorUsedError;
-  GetOrderResponse? get getOrders => throw _privateConstructorUsedError;
+  OrdersResponse? get getOrders => throw _privateConstructorUsedError;
+  AllAddressesResponse? get userAllAddresses =>
+      throw _privateConstructorUsedError;
+  Address? get selectedUserAddress => throw _privateConstructorUsedError;
 
-  /// Create a copy of CartState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $CartStateCopyWith<CartState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -50,13 +50,16 @@ abstract class $CartStateCopyWith<$Res> {
       bool isOrdersLoading,
       bool isResponseError,
       bool isError,
+      int selectedOrderTab,
       String errorMessage,
-      TextEditingController? phoneController,
-      TextEditingController? addressController,
-      TextEditingController? nameController,
+      String paymentType,
+      String deliveryType,
+      Map<int, bool> pendingCartOperations,
       CartResponse? cartProduct,
       CreateOrderResponse? orders,
-      GetOrderResponse? getOrders});
+      OrdersResponse? getOrders,
+      AllAddressesResponse? userAllAddresses,
+      Address? selectedUserAddress});
 }
 
 /// @nodoc
@@ -69,8 +72,6 @@ class _$CartStateCopyWithImpl<$Res, $Val extends CartState>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of CartState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -79,13 +80,16 @@ class _$CartStateCopyWithImpl<$Res, $Val extends CartState>
     Object? isOrdersLoading = null,
     Object? isResponseError = null,
     Object? isError = null,
+    Object? selectedOrderTab = null,
     Object? errorMessage = null,
-    Object? phoneController = freezed,
-    Object? addressController = freezed,
-    Object? nameController = freezed,
+    Object? paymentType = null,
+    Object? deliveryType = null,
+    Object? pendingCartOperations = null,
     Object? cartProduct = freezed,
     Object? orders = freezed,
     Object? getOrders = freezed,
+    Object? userAllAddresses = freezed,
+    Object? selectedUserAddress = freezed,
   }) {
     return _then(_value.copyWith(
       isLoading: null == isLoading
@@ -108,22 +112,26 @@ class _$CartStateCopyWithImpl<$Res, $Val extends CartState>
           ? _value.isError
           : isError // ignore: cast_nullable_to_non_nullable
               as bool,
+      selectedOrderTab: null == selectedOrderTab
+          ? _value.selectedOrderTab
+          : selectedOrderTab // ignore: cast_nullable_to_non_nullable
+              as int,
       errorMessage: null == errorMessage
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
               as String,
-      phoneController: freezed == phoneController
-          ? _value.phoneController
-          : phoneController // ignore: cast_nullable_to_non_nullable
-              as TextEditingController?,
-      addressController: freezed == addressController
-          ? _value.addressController
-          : addressController // ignore: cast_nullable_to_non_nullable
-              as TextEditingController?,
-      nameController: freezed == nameController
-          ? _value.nameController
-          : nameController // ignore: cast_nullable_to_non_nullable
-              as TextEditingController?,
+      paymentType: null == paymentType
+          ? _value.paymentType
+          : paymentType // ignore: cast_nullable_to_non_nullable
+              as String,
+      deliveryType: null == deliveryType
+          ? _value.deliveryType
+          : deliveryType // ignore: cast_nullable_to_non_nullable
+              as String,
+      pendingCartOperations: null == pendingCartOperations
+          ? _value.pendingCartOperations
+          : pendingCartOperations // ignore: cast_nullable_to_non_nullable
+              as Map<int, bool>,
       cartProduct: freezed == cartProduct
           ? _value.cartProduct
           : cartProduct // ignore: cast_nullable_to_non_nullable
@@ -135,7 +143,15 @@ class _$CartStateCopyWithImpl<$Res, $Val extends CartState>
       getOrders: freezed == getOrders
           ? _value.getOrders
           : getOrders // ignore: cast_nullable_to_non_nullable
-              as GetOrderResponse?,
+              as OrdersResponse?,
+      userAllAddresses: freezed == userAllAddresses
+          ? _value.userAllAddresses
+          : userAllAddresses // ignore: cast_nullable_to_non_nullable
+              as AllAddressesResponse?,
+      selectedUserAddress: freezed == selectedUserAddress
+          ? _value.selectedUserAddress
+          : selectedUserAddress // ignore: cast_nullable_to_non_nullable
+              as Address?,
     ) as $Val);
   }
 }
@@ -154,13 +170,16 @@ abstract class _$$CartStateImplCopyWith<$Res>
       bool isOrdersLoading,
       bool isResponseError,
       bool isError,
+      int selectedOrderTab,
       String errorMessage,
-      TextEditingController? phoneController,
-      TextEditingController? addressController,
-      TextEditingController? nameController,
+      String paymentType,
+      String deliveryType,
+      Map<int, bool> pendingCartOperations,
       CartResponse? cartProduct,
       CreateOrderResponse? orders,
-      GetOrderResponse? getOrders});
+      OrdersResponse? getOrders,
+      AllAddressesResponse? userAllAddresses,
+      Address? selectedUserAddress});
 }
 
 /// @nodoc
@@ -171,8 +190,6 @@ class __$$CartStateImplCopyWithImpl<$Res>
       _$CartStateImpl _value, $Res Function(_$CartStateImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of CartState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -181,13 +198,16 @@ class __$$CartStateImplCopyWithImpl<$Res>
     Object? isOrdersLoading = null,
     Object? isResponseError = null,
     Object? isError = null,
+    Object? selectedOrderTab = null,
     Object? errorMessage = null,
-    Object? phoneController = freezed,
-    Object? addressController = freezed,
-    Object? nameController = freezed,
+    Object? paymentType = null,
+    Object? deliveryType = null,
+    Object? pendingCartOperations = null,
     Object? cartProduct = freezed,
     Object? orders = freezed,
     Object? getOrders = freezed,
+    Object? userAllAddresses = freezed,
+    Object? selectedUserAddress = freezed,
   }) {
     return _then(_$CartStateImpl(
       isLoading: null == isLoading
@@ -210,22 +230,26 @@ class __$$CartStateImplCopyWithImpl<$Res>
           ? _value.isError
           : isError // ignore: cast_nullable_to_non_nullable
               as bool,
+      selectedOrderTab: null == selectedOrderTab
+          ? _value.selectedOrderTab
+          : selectedOrderTab // ignore: cast_nullable_to_non_nullable
+              as int,
       errorMessage: null == errorMessage
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
               as String,
-      phoneController: freezed == phoneController
-          ? _value.phoneController
-          : phoneController // ignore: cast_nullable_to_non_nullable
-              as TextEditingController?,
-      addressController: freezed == addressController
-          ? _value.addressController
-          : addressController // ignore: cast_nullable_to_non_nullable
-              as TextEditingController?,
-      nameController: freezed == nameController
-          ? _value.nameController
-          : nameController // ignore: cast_nullable_to_non_nullable
-              as TextEditingController?,
+      paymentType: null == paymentType
+          ? _value.paymentType
+          : paymentType // ignore: cast_nullable_to_non_nullable
+              as String,
+      deliveryType: null == deliveryType
+          ? _value.deliveryType
+          : deliveryType // ignore: cast_nullable_to_non_nullable
+              as String,
+      pendingCartOperations: null == pendingCartOperations
+          ? _value._pendingCartOperations
+          : pendingCartOperations // ignore: cast_nullable_to_non_nullable
+              as Map<int, bool>,
       cartProduct: freezed == cartProduct
           ? _value.cartProduct
           : cartProduct // ignore: cast_nullable_to_non_nullable
@@ -237,7 +261,15 @@ class __$$CartStateImplCopyWithImpl<$Res>
       getOrders: freezed == getOrders
           ? _value.getOrders
           : getOrders // ignore: cast_nullable_to_non_nullable
-              as GetOrderResponse?,
+              as OrdersResponse?,
+      userAllAddresses: freezed == userAllAddresses
+          ? _value.userAllAddresses
+          : userAllAddresses // ignore: cast_nullable_to_non_nullable
+              as AllAddressesResponse?,
+      selectedUserAddress: freezed == selectedUserAddress
+          ? _value.selectedUserAddress
+          : selectedUserAddress // ignore: cast_nullable_to_non_nullable
+              as Address?,
     ));
   }
 }
@@ -251,13 +283,17 @@ class _$CartStateImpl implements _CartState {
       this.isOrdersLoading = false,
       this.isResponseError = false,
       this.isError = false,
+      this.selectedOrderTab = 0,
       this.errorMessage = '',
-      this.phoneController,
-      this.addressController,
-      this.nameController,
+      this.paymentType = '',
+      this.deliveryType = '',
+      final Map<int, bool> pendingCartOperations = const {},
       this.cartProduct,
       this.orders,
-      this.getOrders});
+      this.getOrders,
+      this.userAllAddresses,
+      this.selectedUserAddress})
+      : _pendingCartOperations = pendingCartOperations;
 
   @override
   @JsonKey()
@@ -276,23 +312,40 @@ class _$CartStateImpl implements _CartState {
   final bool isError;
   @override
   @JsonKey()
+  final int selectedOrderTab;
+  @override
+  @JsonKey()
   final String errorMessage;
   @override
-  final TextEditingController? phoneController;
+  @JsonKey()
+  final String paymentType;
   @override
-  final TextEditingController? addressController;
+  @JsonKey()
+  final String deliveryType;
+  final Map<int, bool> _pendingCartOperations;
   @override
-  final TextEditingController? nameController;
+  @JsonKey()
+  Map<int, bool> get pendingCartOperations {
+    if (_pendingCartOperations is EqualUnmodifiableMapView)
+      return _pendingCartOperations;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_pendingCartOperations);
+  }
+
   @override
   final CartResponse? cartProduct;
   @override
   final CreateOrderResponse? orders;
   @override
-  final GetOrderResponse? getOrders;
+  final OrdersResponse? getOrders;
+  @override
+  final AllAddressesResponse? userAllAddresses;
+  @override
+  final Address? selectedUserAddress;
 
   @override
   String toString() {
-    return 'CartState(isLoading: $isLoading, isProductLoading: $isProductLoading, isOrdersLoading: $isOrdersLoading, isResponseError: $isResponseError, isError: $isError, errorMessage: $errorMessage, phoneController: $phoneController, addressController: $addressController, nameController: $nameController, cartProduct: $cartProduct, orders: $orders, getOrders: $getOrders)';
+    return 'CartState(isLoading: $isLoading, isProductLoading: $isProductLoading, isOrdersLoading: $isOrdersLoading, isResponseError: $isResponseError, isError: $isError, selectedOrderTab: $selectedOrderTab, errorMessage: $errorMessage, paymentType: $paymentType, deliveryType: $deliveryType, pendingCartOperations: $pendingCartOperations, cartProduct: $cartProduct, orders: $orders, getOrders: $getOrders, userAllAddresses: $userAllAddresses, selectedUserAddress: $selectedUserAddress)';
   }
 
   @override
@@ -309,19 +362,25 @@ class _$CartStateImpl implements _CartState {
             (identical(other.isResponseError, isResponseError) ||
                 other.isResponseError == isResponseError) &&
             (identical(other.isError, isError) || other.isError == isError) &&
+            (identical(other.selectedOrderTab, selectedOrderTab) ||
+                other.selectedOrderTab == selectedOrderTab) &&
             (identical(other.errorMessage, errorMessage) ||
                 other.errorMessage == errorMessage) &&
-            (identical(other.phoneController, phoneController) ||
-                other.phoneController == phoneController) &&
-            (identical(other.addressController, addressController) ||
-                other.addressController == addressController) &&
-            (identical(other.nameController, nameController) ||
-                other.nameController == nameController) &&
+            (identical(other.paymentType, paymentType) ||
+                other.paymentType == paymentType) &&
+            (identical(other.deliveryType, deliveryType) ||
+                other.deliveryType == deliveryType) &&
+            const DeepCollectionEquality()
+                .equals(other._pendingCartOperations, _pendingCartOperations) &&
             (identical(other.cartProduct, cartProduct) ||
                 other.cartProduct == cartProduct) &&
             (identical(other.orders, orders) || other.orders == orders) &&
             (identical(other.getOrders, getOrders) ||
-                other.getOrders == getOrders));
+                other.getOrders == getOrders) &&
+            (identical(other.userAllAddresses, userAllAddresses) ||
+                other.userAllAddresses == userAllAddresses) &&
+            (identical(other.selectedUserAddress, selectedUserAddress) ||
+                other.selectedUserAddress == selectedUserAddress));
   }
 
   @override
@@ -332,17 +391,18 @@ class _$CartStateImpl implements _CartState {
       isOrdersLoading,
       isResponseError,
       isError,
+      selectedOrderTab,
       errorMessage,
-      phoneController,
-      addressController,
-      nameController,
+      paymentType,
+      deliveryType,
+      const DeepCollectionEquality().hash(_pendingCartOperations),
       cartProduct,
       orders,
-      getOrders);
+      getOrders,
+      userAllAddresses,
+      selectedUserAddress);
 
-  /// Create a copy of CartState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$CartStateImplCopyWith<_$CartStateImpl> get copyWith =>
@@ -356,13 +416,16 @@ abstract class _CartState implements CartState {
       final bool isOrdersLoading,
       final bool isResponseError,
       final bool isError,
+      final int selectedOrderTab,
       final String errorMessage,
-      final TextEditingController? phoneController,
-      final TextEditingController? addressController,
-      final TextEditingController? nameController,
+      final String paymentType,
+      final String deliveryType,
+      final Map<int, bool> pendingCartOperations,
       final CartResponse? cartProduct,
       final CreateOrderResponse? orders,
-      final GetOrderResponse? getOrders}) = _$CartStateImpl;
+      final OrdersResponse? getOrders,
+      final AllAddressesResponse? userAllAddresses,
+      final Address? selectedUserAddress}) = _$CartStateImpl;
 
   @override
   bool get isLoading;
@@ -375,24 +438,27 @@ abstract class _CartState implements CartState {
   @override
   bool get isError;
   @override
+  int get selectedOrderTab;
+  @override
   String get errorMessage;
   @override
-  TextEditingController? get phoneController;
+  String get paymentType;
   @override
-  TextEditingController? get addressController;
+  String get deliveryType;
   @override
-  TextEditingController? get nameController;
+  Map<int, bool> get pendingCartOperations;
   @override
   CartResponse? get cartProduct;
   @override
   CreateOrderResponse? get orders;
   @override
-  GetOrderResponse? get getOrders;
-
-  /// Create a copy of CartState
-  /// with the given fields replaced by the non-null parameter values.
+  OrdersResponse? get getOrders;
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  AllAddressesResponse? get userAllAddresses;
+  @override
+  Address? get selectedUserAddress;
+  @override
+  @JsonKey(ignore: true)
   _$$CartStateImplCopyWith<_$CartStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

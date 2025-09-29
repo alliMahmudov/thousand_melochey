@@ -23,14 +23,13 @@ mixin _$FavoritesState {
   bool get isError => throw _privateConstructorUsedError;
   bool get isFavoritesLoading => throw _privateConstructorUsedError;
   bool get isFavorite => throw _privateConstructorUsedError;
+  Map<int, bool> get pendingFavorites => throw _privateConstructorUsedError;
   ProductsResponse? get products => throw _privateConstructorUsedError;
   FavoritesResponse? get favoritesList => throw _privateConstructorUsedError;
   AddToFavoritesResponse? get addToFavorites =>
       throw _privateConstructorUsedError;
 
-  /// Create a copy of FavoritesState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $FavoritesStateCopyWith<FavoritesState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -49,6 +48,7 @@ abstract class $FavoritesStateCopyWith<$Res> {
       bool isError,
       bool isFavoritesLoading,
       bool isFavorite,
+      Map<int, bool> pendingFavorites,
       ProductsResponse? products,
       FavoritesResponse? favoritesList,
       AddToFavoritesResponse? addToFavorites});
@@ -64,8 +64,6 @@ class _$FavoritesStateCopyWithImpl<$Res, $Val extends FavoritesState>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of FavoritesState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -76,6 +74,7 @@ class _$FavoritesStateCopyWithImpl<$Res, $Val extends FavoritesState>
     Object? isError = null,
     Object? isFavoritesLoading = null,
     Object? isFavorite = null,
+    Object? pendingFavorites = null,
     Object? products = freezed,
     Object? favoritesList = freezed,
     Object? addToFavorites = freezed,
@@ -109,6 +108,10 @@ class _$FavoritesStateCopyWithImpl<$Res, $Val extends FavoritesState>
           ? _value.isFavorite
           : isFavorite // ignore: cast_nullable_to_non_nullable
               as bool,
+      pendingFavorites: null == pendingFavorites
+          ? _value.pendingFavorites
+          : pendingFavorites // ignore: cast_nullable_to_non_nullable
+              as Map<int, bool>,
       products: freezed == products
           ? _value.products
           : products // ignore: cast_nullable_to_non_nullable
@@ -141,6 +144,7 @@ abstract class _$$FavoritesStateImplCopyWith<$Res>
       bool isError,
       bool isFavoritesLoading,
       bool isFavorite,
+      Map<int, bool> pendingFavorites,
       ProductsResponse? products,
       FavoritesResponse? favoritesList,
       AddToFavoritesResponse? addToFavorites});
@@ -154,8 +158,6 @@ class __$$FavoritesStateImplCopyWithImpl<$Res>
       _$FavoritesStateImpl _value, $Res Function(_$FavoritesStateImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of FavoritesState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -166,6 +168,7 @@ class __$$FavoritesStateImplCopyWithImpl<$Res>
     Object? isError = null,
     Object? isFavoritesLoading = null,
     Object? isFavorite = null,
+    Object? pendingFavorites = null,
     Object? products = freezed,
     Object? favoritesList = freezed,
     Object? addToFavorites = freezed,
@@ -199,6 +202,10 @@ class __$$FavoritesStateImplCopyWithImpl<$Res>
           ? _value.isFavorite
           : isFavorite // ignore: cast_nullable_to_non_nullable
               as bool,
+      pendingFavorites: null == pendingFavorites
+          ? _value._pendingFavorites
+          : pendingFavorites // ignore: cast_nullable_to_non_nullable
+              as Map<int, bool>,
       products: freezed == products
           ? _value.products
           : products // ignore: cast_nullable_to_non_nullable
@@ -226,9 +233,11 @@ class _$FavoritesStateImpl implements _FavoritesState {
       this.isError = false,
       this.isFavoritesLoading = false,
       this.isFavorite = false,
+      final Map<int, bool> pendingFavorites = const {},
       this.products,
       this.favoritesList,
-      this.addToFavorites});
+      this.addToFavorites})
+      : _pendingFavorites = pendingFavorites;
 
   @override
   @JsonKey()
@@ -251,6 +260,15 @@ class _$FavoritesStateImpl implements _FavoritesState {
   @override
   @JsonKey()
   final bool isFavorite;
+  final Map<int, bool> _pendingFavorites;
+  @override
+  @JsonKey()
+  Map<int, bool> get pendingFavorites {
+    if (_pendingFavorites is EqualUnmodifiableMapView) return _pendingFavorites;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_pendingFavorites);
+  }
+
   @override
   final ProductsResponse? products;
   @override
@@ -260,7 +278,7 @@ class _$FavoritesStateImpl implements _FavoritesState {
 
   @override
   String toString() {
-    return 'FavoritesState(isLoading: $isLoading, isResponseError: $isResponseError, isNotEmpty: $isNotEmpty, isCollapse: $isCollapse, isError: $isError, isFavoritesLoading: $isFavoritesLoading, isFavorite: $isFavorite, products: $products, favoritesList: $favoritesList, addToFavorites: $addToFavorites)';
+    return 'FavoritesState(isLoading: $isLoading, isResponseError: $isResponseError, isNotEmpty: $isNotEmpty, isCollapse: $isCollapse, isError: $isError, isFavoritesLoading: $isFavoritesLoading, isFavorite: $isFavorite, pendingFavorites: $pendingFavorites, products: $products, favoritesList: $favoritesList, addToFavorites: $addToFavorites)';
   }
 
   @override
@@ -281,6 +299,8 @@ class _$FavoritesStateImpl implements _FavoritesState {
                 other.isFavoritesLoading == isFavoritesLoading) &&
             (identical(other.isFavorite, isFavorite) ||
                 other.isFavorite == isFavorite) &&
+            const DeepCollectionEquality()
+                .equals(other._pendingFavorites, _pendingFavorites) &&
             (identical(other.products, products) ||
                 other.products == products) &&
             (identical(other.favoritesList, favoritesList) ||
@@ -299,13 +319,12 @@ class _$FavoritesStateImpl implements _FavoritesState {
       isError,
       isFavoritesLoading,
       isFavorite,
+      const DeepCollectionEquality().hash(_pendingFavorites),
       products,
       favoritesList,
       addToFavorites);
 
-  /// Create a copy of FavoritesState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$FavoritesStateImplCopyWith<_$FavoritesStateImpl> get copyWith =>
@@ -322,6 +341,7 @@ abstract class _FavoritesState implements FavoritesState {
       final bool isError,
       final bool isFavoritesLoading,
       final bool isFavorite,
+      final Map<int, bool> pendingFavorites,
       final ProductsResponse? products,
       final FavoritesResponse? favoritesList,
       final AddToFavoritesResponse? addToFavorites}) = _$FavoritesStateImpl;
@@ -341,16 +361,15 @@ abstract class _FavoritesState implements FavoritesState {
   @override
   bool get isFavorite;
   @override
+  Map<int, bool> get pendingFavorites;
+  @override
   ProductsResponse? get products;
   @override
   FavoritesResponse? get favoritesList;
   @override
   AddToFavoritesResponse? get addToFavorites;
-
-  /// Create a copy of FavoritesState
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$FavoritesStateImplCopyWith<_$FavoritesStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

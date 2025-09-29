@@ -27,9 +27,7 @@ mixin _$ResetPasswordState {
   int get resendCodeDuration => throw _privateConstructorUsedError;
   ResetPassResponse? get resetPass => throw _privateConstructorUsedError;
 
-  /// Create a copy of ResetPasswordState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $ResetPasswordStateCopyWith<ResetPasswordState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -63,8 +61,6 @@ class _$ResetPasswordStateCopyWithImpl<$Res, $Val extends ResetPasswordState>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of ResetPasswordState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -153,8 +149,6 @@ class __$$ResetPasswordStateImplCopyWithImpl<$Res>
       $Res Function(_$ResetPasswordStateImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of ResetPasswordState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -300,9 +294,7 @@ class _$ResetPasswordStateImpl implements _ResetPasswordState {
       resendCodeDuration,
       resetPass);
 
-  /// Create a copy of ResetPasswordState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$ResetPasswordStateImplCopyWith<_$ResetPasswordStateImpl> get copyWith =>
@@ -343,11 +335,8 @@ abstract class _ResetPasswordState implements ResetPasswordState {
   int get resendCodeDuration;
   @override
   ResetPassResponse? get resetPass;
-
-  /// Create a copy of ResetPasswordState
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$ResetPasswordStateImplCopyWith<_$ResetPasswordStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

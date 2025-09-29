@@ -1,9 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
 import 'package:thousand_melochey/presentation/pages/home/presentation/widgets/categories/all_products_widget.dart';
-import 'package:thousand_melochey/presentation/pages/home/presentation/widgets/categories/electronics_widget.dart';
-import 'package:thousand_melochey/presentation/pages/home/presentation/widgets/categories/gloves_widget.dart';
-import 'package:thousand_melochey/presentation/pages/home/presentation/widgets/categories/screwdrivers_widget.dart';
-import 'package:thousand_melochey/presentation/pages/home/presentation/widgets/categories/tools_widget.dart';
+import 'package:thousand_melochey/presentation/pages/catogories/presentation/widgets/category_products.dart';
 
 @RoutePage()
 class HomePage extends ConsumerStatefulWidget {
@@ -16,6 +14,7 @@ class HomePage extends ConsumerStatefulWidget {
 class _HomePageState extends ConsumerState<HomePage>
     with SingleTickerProviderStateMixin {
   late TabController tabController;
+
 
   @override
   void didChangeDependencies() {
@@ -30,54 +29,50 @@ class _HomePageState extends ConsumerState<HomePage>
   Widget build(BuildContext context) {
     final notifier = ref.read(homeProvider.notifier);
     final state = ref.watch(homeProvider);
+    final favoriteNotifier = ref.read(favoritesProvider.notifier);
+    final cartNotifier = ref.read(cartProvider.notifier);
     return Scaffold(
+      backgroundColor: AppColors.backgroundColor,
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: const Text(
             "1000 Melochey",
           ),
+          centerTitle: true,
         ),
-        body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              12.verticalSpace,
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 12.h),
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.grey.withOpacity(.2),
-                      borderRadius: BorderRadius.circular(12)),
-                  child: TabBar(
-                    isScrollable: true,
-                    padding: const EdgeInsets.all(4),
-                    controller: tabController,
-                    splashBorderRadius: BorderRadius.circular(12.r),
-                    // indicatorColor: AppColors.red,
-                    labelColor: Colors.black,
-                    unselectedLabelColor: Colors.black26,
-                    indicatorSize: TabBarIndicatorSize.tab,
-                    indicatorWeight: 0.1,
-                    indicator: BoxDecoration(
-                        color: AppColors.white,
-                        borderRadius: BorderRadius.circular(10)),
-                    tabs: notifier.tabs(context),
+        body:
+        RefreshIndicator(
+          onRefresh: (){
+            return notifier.getProducts(isRefresh: true);
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CupertinoSearchTextField(
+                    controller: notifier.searchTextFieldController,
+                    onChanged: (value){
+                      notifier.getProducts(
+                        searchQuery: notifier.searchTextFieldController.text,
+                        isRefresh: true
+                      );
+                    },
                   ),
                 ),
-              ),
-              Expanded(
-                  child: TabBarView(
-                controller: tabController,
-                children: const [
-                  ProductsListWidget(),
-                  GlovesWidget(),
-                  ScrewdriversWidget(),
-                  ElectronicWidget(),
-                  ToolsWidget()
-                ],
-              ))
-            ],
+                const Expanded(
+                  child: CustomScrollView(
+                    slivers: [
+                      ProductsListWidget()
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
-        ));
+        )
+    );
   }
 }

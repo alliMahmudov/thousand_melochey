@@ -1,8 +1,7 @@
 
-import 'package:thousand_melochey/presentation/global_widgets/app_helpers.dart';
 import 'package:thousand_melochey/presentation/pages/auth/otp/presentation/rivepod/state/otp_state.dart';
-import 'package:thousand_melochey/presentation/pages/auth/otp/repository/otp_repository.dart';
 
+import '../../../../../../../core/handlers/local_storage.dart';
 import '../../../../../../../core/imports/imports.dart';
 
 class OTPNotifier extends StateNotifier<OTPState> {
@@ -22,7 +21,7 @@ class OTPNotifier extends StateNotifier<OTPState> {
     final response = await _otpRepository.resendOTP(email: email);
     response.when(
         success: (data) async {
-          state = state.copyWith(isLogin: true, isLoading: false, otpResponse: data);
+          state = state.copyWith(isLogin: true, isLoading: false);
           success?.call();
     }, failure: (failure, status, errorMessage){
       state = state.copyWith(
@@ -55,11 +54,14 @@ class OTPNotifier extends StateNotifier<OTPState> {
     response.when(
       success: (data) async {
         state = state.copyWith(isLogin: true, isLoading: false, otpResponse: data);
+        LocalStorage.instance.setJWT(data.jwt);
+        LocalStorage.instance.setJWT(data.jwt);
         success?.call();
       },
       failure: (failure, status, errorMessage) {
         state = state.copyWith(
             isLoading: false, isLoginError: true, errorMessage: errorMessage);
+        AppHelpers.showErrorToast(errorMessage: errorMessage);
         if (failure == const NetworkExceptions.unauthorisedRequest()) {
           unAuthorised?.call();
         }

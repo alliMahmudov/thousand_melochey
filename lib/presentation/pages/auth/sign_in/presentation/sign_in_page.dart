@@ -1,5 +1,6 @@
 import 'package:thousand_melochey/core/imports/imports.dart';
 import 'package:thousand_melochey/presentation/pages/auth/sign_up/presentation/riverpod/provider/sign_up_provider.dart';
+import 'package:thousand_melochey/service/localizations/localization.dart';
 
 import '../../../home/presentation/home_page.dart';
 import '../../../main/main_page.dart';
@@ -22,7 +23,7 @@ class _SignInPageState extends ConsumerState<SignInPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text("Авторизация"),
+        title: Text("${AppLocalization.getText(context)?.sign_in}"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
@@ -34,8 +35,8 @@ class _SignInPageState extends ConsumerState<SignInPage> {
               120.sp.verticalSpace,
               CustomTextField(
                 controller: notifier.emailController,
-                title: "Email",
-                labelText: "Введите email",
+                title: "${AppLocalization.getText(context)?.email}",
+                labelText: "${AppLocalization.getText(context)?.enter_email}",
                 errorText: AppTextFieldErrorsStatus.status(state.errorMessage, "EMAIL"),
                 onChanged: (value) {
                   notifier.validator();
@@ -48,8 +49,8 @@ class _SignInPageState extends ConsumerState<SignInPage> {
                 children: [
                   CustomTextField(
                     controller: notifier.passwordController,
-                    title: 'Пароль',
-                    labelText: 'Введите пароль',
+                    title: '${AppLocalization.getText(context)?.pass}',
+                    labelText: '${AppLocalization.getText(context)?.enter_pass}',
                     obscureText: true,
                     errorText: AppTextFieldErrorsStatus.status(
                         state.errorMessage, "PASSWORD"),
@@ -64,7 +65,7 @@ class _SignInPageState extends ConsumerState<SignInPage> {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        'Забыли пароль?',
+                        '${AppLocalization.getText(context)?.forgot_password}',
                         style: TextStyle(
                             color: AppColors.primaryColor,
                             fontWeight: FontWeight.w500,
@@ -81,21 +82,14 @@ class _SignInPageState extends ConsumerState<SignInPage> {
                 spacing: 10.sp,
                 children: [
                   CustomButtonWidget(
-                      title: 'Войти',
+                      title: '${AppLocalization.getText(context)?.enter}',
                       isLoading: state.isLoading,
                       isDisabled: !state.isValid,
                       onTap: () {
                     notifier.signIn(
                       context: context,
                         success: () {
-                        const SnackBar(
-                            content: Text('Login Successfully'),
-                            duration: Duration(seconds: 3),
-                            backgroundColor: Colors.red,
-                          );
-                          debugPrint(state.signInData?.jwt);
                           AppNavigator.pushAndPopUntil(const MainRoute());
-
                         },
                         checkYourNetwork: (){
                           AppHelpers.showMaterialBannerError(errorMessage: "Network error!");
@@ -107,10 +101,10 @@ class _SignInPageState extends ConsumerState<SignInPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("У вас нет аккаунта? ", style: TextStyle(fontSize: 13.sp),),
+                      Text("${AppLocalization.getText(context)?.you_dont_have_an_account} ", style: TextStyle(fontSize: 13.sp),),
                       InkWell(
                           onTap: () => AppNavigator.push(SignUpRoute()),
-                          child: Text("Регистрация",
+                          child: Text("${AppLocalization.getText(context)?.sign_up}",
                               style: TextStyle(
                                   color: AppColors.primaryColor,
                                 fontWeight: FontWeight.w500,

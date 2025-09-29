@@ -25,9 +25,7 @@ class CustomButtonWidget extends StatelessWidget {
         }
       },
       child: Container(
-        // padding: EdgeInsets.symmetric(vertical: 10.0.h),
         height: 0.06.sh,
-
         alignment: Alignment.center,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.r),
@@ -43,7 +41,7 @@ class CustomButtonWidget extends StatelessWidget {
             : Text(
           title,
           style: TextStyle(
-            fontSize: 16.0.sp,
+            fontSize: 14.0.sp,
             color: Colors.white,
             fontWeight: FontWeight.w600,
           ),

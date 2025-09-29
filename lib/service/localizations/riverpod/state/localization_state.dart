@@ -11,7 +11,7 @@ class LocalizationState with _$LocalizationState {
     @Default(false) bool isLoading,
     @Default(false) bool isValid,
     @Default(false) bool isError,
-    @Default("uz") String? localLang,
+    @Default("en") String? localLang,
     Locale? currentLang
 
   }) = _LocalizationState;

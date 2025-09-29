@@ -1,7 +1,7 @@
 
 import 'package:thousand_melochey/core/imports/imports.dart';
 import 'package:thousand_melochey/presentation/pages/main/riverpod/provider/main_provider.dart';
-
+import 'package:badges/badges.dart' as badges;
 
 class CustomNavBar extends ConsumerWidget {
   const CustomNavBar({
@@ -12,73 +12,72 @@ class CustomNavBar extends ConsumerWidget {
    final notifier = ref.read(mainProvider(0).notifier);
    final state = ref.watch(mainProvider(0));
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Container(
-          color: AppColors.white,
-          height: 0.105.sh,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.max,
-            children: List.generate(
-              notifier.navItem.length,
-                  (index) =>
-                Expanded(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Material(
-                      color: AppColors.white,
-                      child: Ink(
-                        height: 40.h,
-                        width: 65.w,
-                        decoration: BoxDecoration(
-                            color: state.indexPage == index
-                                ? AppColors.primaryColor
-                                : AppColors.white,
-                            borderRadius: BorderRadius.circular(20)),
-                        child: InkWell(
-                          borderRadius: BorderRadius.circular(20),
-                          child: Padding(
-                            padding: const EdgeInsets.all(3.0),
-                            child: Icon(notifier.icons[index],
-                                color: state.indexPage != index
-                                    ? AppColors.primaryColor
-                                    : AppColors.white,
-                                size: state.indexPage == index
-                                    ? 30
-                                    : 35),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 24.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
+        children: List.generate(
+          notifier.navItem.length,
+              (index) => Expanded(
+            child: InkWell(
+              borderRadius: BorderRadius.circular(12),
+              onTap: (){
+                notifier.incrementPageIndex(index);
+              },
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Stack(
+                    children: [
+                      Column(
+                        children: [
+                          Material(
+                            color: Colors.transparent,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
+                              child: Icon(
+                                  state.indexPage == index ?
+                                  notifier.selectedIcons[index] :
+                                  notifier.icons[index],
+                                  color: AppColors.primaryColor,
+                                  size: 30),
+                            ),
                           ),
-                          onTap: () {
-                            notifier.incrementPageIndex(index);
-                          },
-                        ),
+                          Text(
+                            notifier.labels(context)[index],
+                            style: const TextStyle(
+                              fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.primaryColor),
+                          ),
+                        ],
                       ),
-                    ),
-                    AnimatedCrossFade(
-                      sizeCurve: Curves.easeIn,
-                      duration: const Duration(milliseconds: 150),
-                      firstChild: Text(
-                        notifier.labels(context)[index],
-                        style: const TextStyle(
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.primaryColor),
-                      ),
-                      secondChild: const SizedBox(),
-                      crossFadeState: state.indexPage == index
-                          ? CrossFadeState.showFirst
-                          : CrossFadeState.showSecond,
-                    ),
-                  ],
-                ),
-              )
-
+                      (ref.watch(cartProvider).cartProduct?.data?.isNotEmpty ?? false) && index == 3 ?
+                      Positioned(
+                          left: 30,
+                          bottom: 32,
+                          child: badges.Badge(
+                            badgeStyle: badges.BadgeStyle(
+                              badgeColor: AppColors.primaryColor.withRed(100)
+                            ),
+                            badgeContent: Text("${ref.watch(cartProvider).cartProduct?.data?.length}",
+                              style: const TextStyle(
+                                fontSize: 9,
+                                color: Colors.white
+                              ),
+                            ),
+                          )) : const SizedBox(),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
+                      )
+
         ),
-      ],
+      ),
     );
   }
 }

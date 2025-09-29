@@ -2,6 +2,7 @@ import 'package:thousand_melochey/core/imports/imports.dart';
 import 'package:thousand_melochey/presentation/pages/auth/otp/presentation/rivepod/provider/otp_provider.dart';
 import 'package:slide_countdown/slide_countdown.dart';
 import 'package:pinput/pinput.dart';
+import 'package:thousand_melochey/service/localizations/localization.dart';
 
 @RoutePage()
 class OTPPage extends ConsumerStatefulWidget {
@@ -66,12 +67,12 @@ class _OTPPageState extends ConsumerState<OTPPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             50.h.verticalSpace,
-            const CustomTitleWidget(title: "Введите код"),
+            CustomTitleWidget(title: "${AppLocalization.getText(context)?.enter_code}"),
             12.h.verticalSpace,
 
             Text.rich(TextSpan(
               style: const TextStyle(color: Colors.black),
-              text: "Мы отправили код активации на вашу электронную почту: ",
+              text: "${AppLocalization.getText(context)?.sent_SMS_title} ",
               children: [
                 TextSpan(
                   text: widget.email,
@@ -86,9 +87,6 @@ class _OTPPageState extends ConsumerState<OTPPage> {
               controller: notifier.controller,
               focusNode: notifier.focusNode,
               autofillHints: const [AutofillHints.oneTimeCode],
-              androidSmsAutofillMethod:
-              AndroidSmsAutofillMethod.smsUserConsentApi,
-              listenForMultipleSmsOnAndroid: true,
               toolbarEnabled: false,
               autofocus: true,
               validator: (value) {
@@ -185,8 +183,8 @@ class _OTPPageState extends ConsumerState<OTPPage> {
                             color: AppColors.primaryColor,
                             borderRadius: BorderRadius.circular(5),
                           ),
-                          child: const Text(
-                            'Отправить код снова',
+                          child: Text(
+                            '${AppLocalization.getText(context)?.send_code_again}',
                             style: TextStyle(
                                 color: AppColors.white,
                                 fontWeight: FontWeight.w600),

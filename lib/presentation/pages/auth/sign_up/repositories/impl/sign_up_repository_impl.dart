@@ -20,7 +20,7 @@ class SignUpRepositoryImpl extends SignUpRepository {
     final data = <String, String>{
       "name": name,
       "password": password,
-      "phone_number": phone,
+      "phone_number": "+998$phone",
       "email": email
     };
 

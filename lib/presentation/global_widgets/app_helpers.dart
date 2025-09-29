@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:thousand_melochey/contstants/global_key.dart';
+import 'package:thousand_melochey/service/localizations/localization.dart';
+import 'package:toastification/toastification.dart';
 
 import '../../core/imports/imports.dart';
 
@@ -43,7 +45,8 @@ class AppHelpers {
     required BuildContext context,
     EdgeInsets? padding,
     String? title,
-    String? content,
+    String? actionButtonText,
+    Widget? content,
     required Function? onTap,
     // required bool isDarkMode,
 
@@ -51,18 +54,18 @@ class AppHelpers {
     showAdaptiveDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-          contentPadding: const EdgeInsets.all(20),
+          // contentPadding: const EdgeInsets.all(30),
           //titlePadding: padding,
           content: Column(
             spacing: 20,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
+
+              content ?? Text(
                 title ?? "",
-                style: const TextStyle(
-                    fontWeight: FontWeight.bold
-                ),
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -76,12 +79,16 @@ class AppHelpers {
                       backgroundColor: AppColors.primaryColor,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50.0),
-                      ),),
-                    child: const Text(
-                      "Выйти",
-                      style: TextStyle(
+                      ),
+                    ),
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        "$actionButtonText",
+                        style: const TextStyle(
                           color: AppColors.white,
-                          fontWeight: FontWeight.bold
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
@@ -89,7 +96,7 @@ class AppHelpers {
                   TextButton(
                     onPressed: () {
                       AppNavigator.pop();
-                    },
+                      },
                     style: TextButton.styleFrom(
                         maximumSize: Size(100.sp, 40.sp),
                         minimumSize: Size(100.sp, 40.sp),
@@ -97,14 +104,12 @@ class AppHelpers {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(50.0),
                         )),
-                    child: const Text(
-                      "Остаться",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold
-                      ),
-                    ),
-                  ),
+                      child: Text(
+                        "${AppLocalization.getText(context)?.cancel}",
+                        style: const TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.bold),
+                      )
+                  )
                 ],
               )
             ],
@@ -162,6 +167,35 @@ class AppHelpers {
           ),
         ]));
   }
+
+  static showSuccessToast({
+    required String message,
+  }) {
+    // Закрываем все активные тосты, чтобы новый всегда был поверх
+    toastification.dismissAll();
+    return toastification.show(
+        title: Text(message),
+        autoCloseDuration: const Duration(seconds: 2),
+        style: ToastificationStyle.flatColored,
+        type: ToastificationType.success,
+        alignment: Alignment.topCenter
+    );
+  }
+
+  static showErrorToast({
+    required String errorMessage,
+  }) {
+    // Закрываем все активные тосты перед показом нового
+    toastification.dismissAll();
+    return toastification.show(
+        title: Text(errorMessage),
+        autoCloseDuration: const Duration(seconds: 2),
+        style: ToastificationStyle.flatColored,
+        type: ToastificationType.error,
+        alignment: Alignment.topCenter
+    );
+  }
+
 }
 
 

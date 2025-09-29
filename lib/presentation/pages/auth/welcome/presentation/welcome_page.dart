@@ -1,5 +1,5 @@
-
-import 'package:thousand_melochey/core/handlers/sp.dart';
+import 'package:lottie/lottie.dart';
+import 'package:thousand_melochey/core/handlers/local_storage.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
 
 @RoutePage()
@@ -10,72 +10,54 @@ class WelcomePage extends StatefulWidget {
   State<WelcomePage> createState() => _WelcomePageState();
 }
 
-class _WelcomePageState extends State<WelcomePage> {
+class _WelcomePageState extends State<WelcomePage>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+
   @override
   void initState() {
-    nextPage();
     super.initState();
-  }
-
-  nextPage()async{
-    final jwt = await SP.getJWT("JWT");
-    //await Future.delayed(Duration(milliseconds: await isLogin() ? 500 : 0,seconds: await isLogin() ? 0 : 2));
-      if(jwt == null){
-        AppNavigator.pushAndPopUntil(const SignInRoute());
-      } else {
-        AppNavigator.pushAndPopUntil(const MainRoute());
+    _controller = AnimationController(vsync: this);
+    _controller.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        goPage();
       }
-    }
-  Future<bool> isLogin()async{
-
-    return await SP.getJWT("JWT") != "";
+    });
   }
+
+  bool isLogin() => LocalStorage.instance.getJWT().isNotEmpty;
+
+  void goPage() {
+    if (!mounted) return;
+    if (isLogin()) {
+      AppNavigator.pushAndPopUntil(const MainRoute());
+    } else {
+      AppNavigator.pushAndPopUntil(const SignInRoute());
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            const Spacer(),
-            const CustomTitleWidget(title: 'Welcome!'),
-            SizedBox(
-              height: 40.h,
-            ),
-            CustomButtonWidget(
-              title: 'Log in',
-              onTap: () {
-                AppNavigator.push(const SignInRoute());
-              },
-              isLoading: false,
-            ),
-            SizedBox(
-              height: 20.h,
-            ),
-            InkWell(
-              onTap: (){
-                AppNavigator.push(const SignUpRoute());
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black),
-                    borderRadius: BorderRadius.circular(20.r)),
-                height: 0.06.sh,
-                alignment: Alignment.center,
-                child: Text(
-                  "Create an account",
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w500),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 20.h,
-            ),
-            const Spacer()
-          ],
+      body: Center(
+        child: Lottie.asset(
+          'assets/lottie/thousand_melochey_splash.json',
+          controller: _controller,
+          onLoaded: (composition) {
+            // указываем длительность
+            _controller.duration = composition.duration;
+            // запускаем вручную
+            _controller.forward(from: 0);
+          },
+          width: MediaQuery.sizeOf(context).width,
+          height: MediaQuery.sizeOf(context).height,
+          fit: BoxFit.cover,
         ),
       ),
     );

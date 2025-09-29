@@ -44,7 +44,7 @@ class OTPRepositoryImpl extends OTPRepository{
     };
    try{
      final client = inject<HttpService>().client(requireAuth: false);
-     final response = await client.post('api/resend-otp', data: data);
+     final response = await client.post('api/resend-otp/', data: data);
      return ApiResult.success(data: response.data.toString());
    } on DioException catch(e){
      debugPrint('==> resend OTP failure: $e');

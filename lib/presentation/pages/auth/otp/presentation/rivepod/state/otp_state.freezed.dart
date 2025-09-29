@@ -29,9 +29,7 @@ mixin _$OTPState {
   OtpResponse? get otpResponse => throw _privateConstructorUsedError;
   SignUpResponse? get signUpResponse => throw _privateConstructorUsedError;
 
-  /// Create a copy of OTPState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $OTPStateCopyWith<OTPState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -65,8 +63,6 @@ class _$OTPStateCopyWithImpl<$Res, $Val extends OTPState>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of OTPState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -161,8 +157,6 @@ class __$$OTPStateImplCopyWithImpl<$Res>
       _$OTPStateImpl _value, $Res Function(_$OTPStateImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of OTPState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -322,9 +316,7 @@ class _$OTPStateImpl implements _OTPState {
       otpResponse,
       signUpResponse);
 
-  /// Create a copy of OTPState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$OTPStateImplCopyWith<_$OTPStateImpl> get copyWith =>
@@ -362,16 +354,13 @@ abstract class _OTPState implements OTPState {
   @override
   int get countDown;
   @override
-  int get resendCodeDuration; // @Default(false) bool saveMe,
-  @override
+  int get resendCodeDuration;
+  @override // @Default(false) bool saveMe,
   OtpResponse? get otpResponse;
   @override
   SignUpResponse? get signUpResponse;
-
-  /// Create a copy of OTPState
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$OTPStateImplCopyWith<_$OTPStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

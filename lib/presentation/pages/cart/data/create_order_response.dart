@@ -10,7 +10,7 @@ String createOrderResponseToJson(CreateOrderResponse data) => json.encode(data.t
 
 class CreateOrderResponse {
   final String? name;
-  final Address? address;
+  final OrderAddress? address;
   final List<CartProduct>? cartProducts;
   final DateTime? date;
 
@@ -23,7 +23,7 @@ class CreateOrderResponse {
 
   factory CreateOrderResponse.fromJson(Map<String, dynamic> json) => CreateOrderResponse(
     name: json["name"],
-    address: json["address"] == null ? null : Address.fromJson(json["address"]),
+    address: json["address"] == null ? null : OrderAddress.fromJson(json["address"]),
     cartProducts: json["cart_products"] == null ? [] : List<CartProduct>.from(json["cart_products"]!.map((x) => CartProduct.fromJson(x))),
     date: json["date"] == null ? null : DateTime.parse(json["date"]),
   );
@@ -36,7 +36,7 @@ class CreateOrderResponse {
   };
 }
 
-class Address {
+class OrderAddress {
   final String? addressLine1;
   final dynamic addressLine2;
   final String? city;
@@ -44,7 +44,7 @@ class Address {
   final String? postalCode;
   final String? country;
 
-  Address({
+  OrderAddress({
     this.addressLine1,
     this.addressLine2,
     this.city,
@@ -53,7 +53,7 @@ class Address {
     this.country,
   });
 
-  factory Address.fromJson(Map<String, dynamic> json) => Address(
+  factory OrderAddress.fromJson(Map<String, dynamic> json) => OrderAddress(
     addressLine1: json["address_line1"],
     addressLine2: json["address_line2"],
     city: json["city"],

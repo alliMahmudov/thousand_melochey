@@ -1,4 +1,6 @@
 import 'package:thousand_melochey/core/imports/imports.dart';
+import 'package:thousand_melochey/presentation/pages/catogories/repository/categories_repository.dart';
+import 'package:thousand_melochey/presentation/pages/catogories/repository/impl/categories_repository_impl.dart';
 
 
 T inject<T extends Object>() {
@@ -19,6 +21,7 @@ void setUpDependencies() {
   getIt.registerLazySingleton<FavoritesRepository>(() => FavoritesRepositoryImpl());
   getIt.registerLazySingleton<ResetPassRepository>(() => ResetPassRepositoryImpl());
   getIt.registerLazySingleton<CartRepository>(() => CartRepositoryImpl());
+  getIt.registerLazySingleton<CategoriesRepository>(() => CategoriesRepositoryImpl());
 }
 
 final appRouter = getIt.get<AppRouter>();
@@ -32,3 +35,4 @@ final profileRepository = getIt.get<ProfileRepository>();
 final resetPassRepository = getIt.get<ResetPassRepository>();
 final favoritesRepository = getIt.get<FavoritesRepository>();
 final cartRepository = getIt.get<CartRepository>();
+final categoriesRepository = getIt.get<CategoriesRepository>();

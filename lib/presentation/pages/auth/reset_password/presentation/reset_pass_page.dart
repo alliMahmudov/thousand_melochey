@@ -2,6 +2,7 @@ import 'package:pinput/pinput.dart';
 import 'package:slide_countdown/slide_countdown.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
 import 'package:thousand_melochey/presentation/pages/auth/reset_password/presentation/provider/reset_pass_provider.dart';
+import 'package:thousand_melochey/service/localizations/localization.dart';
 
 @RoutePage()
 class ResetPassPage extends ConsumerStatefulWidget {
@@ -43,19 +44,16 @@ class _ResetPassPageState extends ConsumerState<ResetPassPage> {
         child: Column(
           children: [
             50.h.verticalSpace,
-            const CustomTitleWidget(title: "Enter Code"),
+            CustomTitleWidget(title: "${AppLocalization.getText(context)?.enter_code}"),
             12.h.verticalSpace,
             Text(
-                "We've sent an SMS with an activation code to your email: ${widget.email}"),
+                "${AppLocalization.getText(context)?.sent_SMS_title}: ${widget.email}"),
             35.h.verticalSpace,
             Pinput(
               length: 6,
               controller: notifier.controller,
               focusNode: notifier.focusNode,
               autofillHints: const [AutofillHints.oneTimeCode],
-              androidSmsAutofillMethod:
-                  AndroidSmsAutofillMethod.smsUserConsentApi,
-              listenForMultipleSmsOnAndroid: true,
               toolbarEnabled: false,
               autofocus: true,
               validator: (value) {
@@ -120,11 +118,11 @@ class _ResetPassPageState extends ConsumerState<ResetPassPage> {
             20.h.verticalSpace,
             CustomTextField(
                 controller: notifier.newPassController,
-                title: "New password",
-                labelText: "Enter new password"),
+                title: "${AppLocalization.getText(context)?.new_pass}",
+                labelText: "${AppLocalization.getText(context)?.enter_new_pass}"),
             20.h.verticalSpace,
             CustomButtonWidget(
-                title: "Next",
+                title: "${AppLocalization.getText(context)?.next}",
                 isLoading: state.isLoading,
                 onTap: () {
                   notifier.resetPassword(

@@ -15,6 +15,7 @@ class FavoritesState with _$FavoritesState {
     @Default(false) bool isError,
     @Default(false) bool isFavoritesLoading,
     @Default(false) bool isFavorite,
+    @Default({}) Map<int, bool> pendingFavorites,
 
     ProductsResponse? products,
     FavoritesResponse? favoritesList,

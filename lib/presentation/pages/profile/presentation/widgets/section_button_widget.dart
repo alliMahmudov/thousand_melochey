@@ -14,7 +14,7 @@ class SectionButtonWidget extends StatelessWidget {
         onTap();
       },
       child: Container(
-        height: 50,
+        // height: 50,
         padding: EdgeInsets.symmetric(horizontal: 26.0.w),
         child: ListTile(
           leading: Icon(

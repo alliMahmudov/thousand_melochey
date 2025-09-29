@@ -1,20 +1,14 @@
-import 'package:thousand_melochey/core/handlers/sp.dart';
+import 'package:thousand_melochey/core/handlers/local_storage.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
+import 'package:thousand_melochey/presentation/pages/home/data/products_response.dart';
 
 class HomeNotifier extends StateNotifier<HomeState> {
   final HomeRepository _homeRepository;
 
   HomeNotifier(this._homeRepository) : super(const HomeState());
 
-/*  List categories = ["all", "gloves", "screwdrivers", "electronics", "tools"];
+  TextEditingController searchTextFieldController = TextEditingController();
 
-  String currentCategory = "all";
-  changeCategory(String? category) => currentCategory = category ?? "";
-
-  Future selectCategory(String? value) async {
-    state = state.copyWith(selectedCategory: value ?? "1");
-    await getProductsByCategory(category: value);
-  }*/
   List<Widget> tabs(context) {
     return [
       const Tab(
@@ -34,129 +28,217 @@ class HomeNotifier extends StateNotifier<HomeState> {
       ),
     ];
   }
-/*
-  void setJwtToken(String jwt){
-    state = state.copyWith(jwt: jwt);
-  }*/
+
+  void expandDescription (bool isDescriptionExpanded) => state = state.copyWith(isDescriptionExpanded: isDescriptionExpanded);
+
+
+  Future<void> getSearchedProducts({
+    VoidCallback? checkYourNetwork,
+    VoidCallback? unAuthorised,
+    VoidCallback? success,
+    String? searchQuery,
+    int currentPage = 1,
+    bool hasMore = false,
+    bool isRefresh = false
+  }) async {
+    // state = state.copyWith(isLoadingShopInfoClients: true);
+    // int page = 0;
+    try {
+      if (!(hasMore)) {
+        if (isRefresh) {
+          state = state.copyWith(isLoading: true);
+        } else {
+          state = state.copyWith(isLoadMore: true);
+        }
+
+        final response = await _homeRepository.getSearchedProducts(search: searchQuery);
+
+        response.when(
+          success: (data) async {
+            List<Result> products = List.from(state.products?.results ?? []);
+            List<Result> newProducts = data.results ?? [];
+            isRefresh ? products = newProducts : products.addAll(newProducts);
+
+            state = state.copyWith(
+              isLoading: false,
+              products: ProductsResponse(
+                  results: products,
+                  next: data.next,
+                  previous: data.previous,
+                  count: data.count
+              ),
+            );
+
+            if (isRefresh) {
+            } else {
+              (data.results?.length ?? 0) <= 15
+                  ? state = state.copyWith(isLoadMore: false)
+                  : state = state.copyWith(isLoadMore: true);
+            }
+          },
+          failure: (failure, status, data) {
+            state = state.copyWith(
+              isLoading: false,
+              isLoadMore: false,
+            );
+
+            if (isRefresh) {
+              state = state.copyWith(
+                isLoading: false,
+                isLoadMore: false,
+              );
+              // refreshController?.finishRefresh();
+            } else {
+              (data?.results?.length ?? 0) <= 15
+                  ? state = state.copyWith(
+                isLoadMore: false,
+                isLoading: false,
+              ) : state = state.copyWith(
+                isLoadMore: true,
+                isLoading: false,
+              );
+            }
+            if (failure == const NetworkExceptions.unauthorisedRequest()) {
+              unAuthorised?.call();
+            }
+            debugPrint('==> get searched products response failure: $failure');
+            if (isRefresh) {
+            } else {}
+          },
+        );
+      } else {
+        state = state.copyWith(
+          isLoadMore: false,
+          isLoading: false,
+        );
+      }
+    } catch (e) {
+      state = state.copyWith(
+        isLoadMore: false,
+        isLoading: false,
+      );
+    }
+  }
 
   Future refreshHomePage() async{
-    getProducts();
-
+    getProducts(
+      isRefresh: true
+    );
   }
+
   Future<void> getProducts({
     VoidCallback? checkYourNetwork,
     VoidCallback? unAuthorised,
     VoidCallback? success,
+    String? searchQuery,
+    int currentPage = 1,
+    bool hasMore = false,
+    bool isRefresh = false,
   }) async {
-    state = state.copyWith(isProductLoading: true);
-    final jwtToken = await SP.getJWT("JWT");
-    final response = await _homeRepository.getProducts(jwtToken: "jwt=$jwtToken");
-    response.when(
-      success: (data) async {
-        state = state.copyWith(isProductLoading: false, products: data);
-        success?.call();
-      },
-      failure: (failure, status, data) {
-        state = state.copyWith(
-            isProductLoading: false, isResponseError: true, products: data);
-        if (failure == const NetworkExceptions.unauthorisedRequest()) {
-          unAuthorised?.call();
+    // state = state.copyWith(isLoadingShopInfoClients: true);
+    // int page = 0;
+    try {
+      if (!(hasMore)) {
+        if (isRefresh) {
+          state = state.copyWith(isLoading: true);
+        } else {
+          state = state.copyWith(isLoadMore: true);
+
+          // page = state.shopInfoClients?.paginator?.lastPage ?? (state.shopInfoClients?.paginator?.currentPage ?? 1);
         }
-        debugPrint('==> get products response failure: $failure');
-      },
-    );
-  }
 
-  Future<void> getGlovesCategory({
-    VoidCallback? checkYourNetwork,
-    VoidCallback? unAuthorised,
-    VoidCallback? success,
-  }) async {
-    state = state.copyWith(isProductLoading: true);
+        final response = await _homeRepository.getProducts(
+          currentPage: currentPage,
+          searchQuery: searchQuery
+        );
 
-    final response = await _homeRepository.getGlovesCategory();
-    response.when(success: (data) {
-      state = state.copyWith(isProductLoading: false, glovesCategory: data);
-      success?.call();
+        response.when(
+          success: (data) async {
+            List<Result> products = List.from(state.products?.results ?? []);
+            List<Result> newProducts = data.results ?? [];
+            isRefresh ? products = newProducts : products.addAll(newProducts);
 
-    }, failure: (failure, status, data) {
-      state = state.copyWith(
-          isProductLoading: false, isResponseError: true, glovesCategory: data);
-      if (failure == const NetworkExceptions.unauthorisedRequest()) {
-        unAuthorised?.call();
+            state = state.copyWith(
+              isLoading: false,
+              products: ProductsResponse(
+                results: products,
+                next: data.next,
+                previous: data.previous,
+                count: data.count
+              ),
+            );
+
+            if (isRefresh) {
+            } else {
+              (data.results?.length ?? 0) <= 15
+                  ? state = state.copyWith(isLoadMore: false)
+                  : state = state.copyWith(isLoadMore: true);
+            }
+          },
+          failure: (failure, status, data) {
+            state = state.copyWith(
+              isLoading: false,
+              isLoadMore: false,
+            );
+
+            if (isRefresh) {
+              state = state.copyWith(
+                isLoading: false,
+                isLoadMore: false,
+              );
+              // refreshController?.finishRefresh();
+            } else {
+              (data?.results?.length ?? 0) <= 15
+                  ? state = state.copyWith(
+                isLoadMore: false,
+                isLoading: false,
+              ) : state = state.copyWith(
+                isLoadMore: true,
+                isLoading: false,
+              );
+            }
+            if (failure == const NetworkExceptions.unauthorisedRequest()) {
+              unAuthorised?.call();
+            }
+            debugPrint('==> get products response failure: $failure');
+            if (isRefresh) {
+            } else {}
+          },
+        );
+      } else {
+        state = state.copyWith(
+          isLoadMore: false,
+          isLoading: false,
+        );
       }
-      debugPrint('==> get gloves category response failure: $failure');
-    });
-  }
-
-  Future<void> getScrewdriversCategory({
-    VoidCallback? checkYourNetwork,
-    VoidCallback? unAuthorised,
-    VoidCallback? success,
-  }) async {
-    state = state.copyWith(isProductLoading: true);
-
-    final response = await _homeRepository.getScrewdriversCategory();
-    response.when(success: (data) {
-      state =
-          state.copyWith(isProductLoading: false, screwdriversCategory: data);
-      success?.call();
-
-    }, failure: (failure, status, data) {
+    } catch (e) {
       state = state.copyWith(
-          isProductLoading: false,
-          isResponseError: true,
-          screwdriversCategory: data);
-      if (failure == const NetworkExceptions.unauthorisedRequest()) {
-        unAuthorised?.call();
-      }
-      debugPrint('==> get screwdrivers category response failure: $failure');
-    });
+        isLoadMore: false,
+        isLoading: false,
+      );
+    }
   }
 
-  Future<void> getElectronicCategory({
-    VoidCallback? checkYourNetwork,
-    VoidCallback? unAuthorised,
-    VoidCallback? success,
-  }) async {
-    state = state.copyWith(isProductLoading: true);
-
-    final response = await _homeRepository.getElectronicsCategory();
-    response.when(success: (data) {
-      state = state.copyWith(isProductLoading: false, electronicCategory: data);
-      success?.call();
-
-    }, failure: (failure, status, data) {
-      state = state.copyWith(
-          isProductLoading: false,
-          isResponseError: true,
-          electronicCategory: data);
-      if (failure == const NetworkExceptions.unauthorisedRequest()) {
-        unAuthorised?.call();
-      }
-      debugPrint('==> get electronic category response failure: $failure');
-    });
-  }
-
-  Future<void> getToolsCategory({
-    VoidCallback? checkYourNetwork,
-    VoidCallback? unAuthorised,
-    VoidCallback? success,
-  }) async {
-    state = state.copyWith(isProductLoading: true);
-
-    final response = await _homeRepository.getToolsCategory();
-    response.when(success: (data) {
-      state = state.copyWith(isProductLoading: false, toolsCategory: data);
-      success?.call();
-
-    }, failure: (failure, status, data) {
-      state = state.copyWith(
-          isProductLoading: false, isResponseError: true, toolsCategory: data);
-      if (failure == const NetworkExceptions.unauthorisedRequest()) {
-        unAuthorised?.call();
-      }
-      debugPrint('==> get tools category response failure: $failure');
-    });
-  }
+  // Future<void> getCategories({
+  //   VoidCallback? checkYourNetwork,
+  //   VoidCallback? unAuthorised,
+  //   VoidCallback? success,
+  // }) async {
+  //   state = state.copyWith(isLoading: true);
+  //   final response = await _homeRepository.getCategories();
+  //   response.when(
+  //     success: (data) async {
+  //       state = state.copyWith(isLoading: false, categories: data);
+  //       success?.call();
+  //     },
+  //     failure: (failure, status, data) {
+  //       state = state.copyWith(
+  //           isLoading: false, isResponseError: true, categories: data);
+  //       if (failure == const NetworkExceptions.unauthorisedRequest()) {
+  //         unAuthorised?.call();
+  //       }
+  //       debugPrint('==> get categories response failure: $failure');
+  //     },
+  //   );
+  // }
 }

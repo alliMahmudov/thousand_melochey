@@ -46,6 +46,7 @@ export 'package:thousand_melochey/presentation/pages/home/repository/impl/home_r
 export 'package:thousand_melochey/presentation/pages/profile/repository/impl/profile_repository_impl.dart';
 export 'package:get_it/get_it.dart';
 export 'package:thousand_melochey/presentation/global_widgets/app_helpers.dart';
+export 'package:thousand_melochey/presentation/global_widgets/custom_shimmer_effect.dart';
 export 'package:thousand_melochey/contstants/app_text_field_error_status.dart';
 export 'package:thousand_melochey/presentation/pages/profile/data/user_info_response.dart';
 export 'dart:convert';
@@ -63,7 +64,6 @@ export 'package:thousand_melochey/presentation/pages/cart/presentation/riverpod/
 export 'package:thousand_melochey/presentation/pages/cart/presentation/riverpod/state/cart_state.dart';
 export 'package:thousand_melochey/presentation/pages/cart/presentation/riverpod/provider/cart_provider.dart';
 export 'package:thousand_melochey/presentation/pages/profile/presentation/riverpod/provider/profile_provider.dart';
-export 'package:thousand_melochey/presentation/pages/profile/widgets/section_button_widget.dart';
 export 'package:thousand_melochey/presentation/pages/auth/forgot_password/presentation/forgot_password_page.dart';
 export 'package:thousand_melochey/presentation/pages/auth/otp/presentation/otp_page.dart';
 export 'package:thousand_melochey/presentation/pages/cart/presentation/widgets/checkout_page.dart';
@@ -72,4 +72,5 @@ export 'package:thousand_melochey/presentation/pages/home/presentation/widgets/p
 export 'package:thousand_melochey/presentation/pages/main/main_page.dart';
 export 'package:thousand_melochey/presentation/pages/auth/reset_password/presentation/reset_pass_page.dart';
 export 'package:thousand_melochey/presentation/pages/favorite/presentation/riverpod/provider/favorites_provider.dart';
+export 'package:thousand_melochey/presentation/pages/catogories/presentation/riverpod/provider/categories_provider.dart';
 

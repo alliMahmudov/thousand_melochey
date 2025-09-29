@@ -1,5 +1,6 @@
 import 'package:thousand_melochey/core/imports/imports.dart';
 import 'package:thousand_melochey/presentation/pages/auth/sign_up/presentation/riverpod/provider/sign_up_provider.dart';
+import 'package:thousand_melochey/service/localizations/localization.dart';
 
 @RoutePage()
 class SignUpPage extends ConsumerStatefulWidget {
@@ -17,7 +18,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
     final state = ref.watch(signUpProvider);
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Регистрация"),
+        title: Text("${AppLocalization.getText(context)?.sign_up}"),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -31,8 +32,8 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
               CustomTextField(
                 controller: notifier.nameController,
                 requiredField: true,
-                title: "Name",
-                labelText: "Enter your name",
+                title: "${AppLocalization.getText(context)?.name}",
+                labelText: "${AppLocalization.getText(context)?.enter_name}",
                 errorText:
                     AppTextFieldErrorsStatus.status(state.errorMessage, "NAME"),
                 onChanged: (value) {
@@ -42,8 +43,8 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
               CustomTextField(
                 controller: notifier.emailController,
                 requiredField: true,
-                title: "Email",
-                labelText: "Enter your email",
+                title: "${AppLocalization.getText(context)?.email}",
+                labelText: "${AppLocalization.getText(context)?.enter_email}",
                 errorText:
                     AppTextFieldErrorsStatus.status(state.errorMessage, "EMAIL"),
                 onChanged: (value) {
@@ -53,11 +54,10 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
               CustomTextField(
                 controller: notifier.phoneController,
                 requiredField: true,
-                title: "Phone number",
+                title: "${AppLocalization.getText(context)?.phone_number}",
                 labelText: "",
                 keyboardType: TextInputType.phone,
-                errorText:
-                    AppTextFieldErrorsStatus.status(state.errorMessage, "PHONE"),
+                errorText: AppTextFieldErrorsStatus.status(state.errorMessage, "PHONE"),
                 onChanged: (value) {
                   notifier.validator();
                 },
@@ -65,9 +65,9 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
               CustomTextField(
                 controller: notifier.passwordController,
                 requiredField: true,
-                title: "Password",
+                title: "${AppLocalization.getText(context)?.pass}",
                 obscureText: true,
-                labelText: "Enter your password",
+                labelText: "${AppLocalization.getText(context)?.enter_pass}",
                 errorText: AppTextFieldErrorsStatus.status(
                     state.errorMessage, "PASSWORD"),
                 onChanged: (value) {
@@ -75,7 +75,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                 },
               ),
               CustomButtonWidget(
-                title: "Create",
+                title: "${AppLocalization.getText(context)?.create}",
                 isLoading: state.isLoading,
                 isDisabled: !state.isValid,
                 onTap: () async {
