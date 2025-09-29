@@ -20,7 +20,7 @@ class CartResponse {
   });
 
   factory CartResponse.fromJson(Map<String, dynamic> json) => CartResponse(
-    totalPrice: json["total_price"]?.toDouble(),
+    totalPrice: json["total_price"],
     data: json["data"] == null ? [] : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
     totalProducts: json["total_products"],
   );
@@ -58,6 +58,8 @@ class Product {
   final String? description;
   final String? price;
   final String? image;
+  final List<String>? images;
+  final double? availableQuantity;
 
   Product({
     this.id,
@@ -65,6 +67,8 @@ class Product {
     this.description,
     this.price,
     this.image,
+    this.images,
+    this.availableQuantity,
   });
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
@@ -73,6 +77,8 @@ class Product {
     description: json["description"],
     price: json["price"],
     image: json["image"],
+    images: json["images"] == null ? [] : List<String>.from(json["images"]!.map((x) => x)),
+    availableQuantity: json["available_quantity"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -81,5 +87,7 @@ class Product {
     "description": description,
     "price": price,
     "image": image,
+    "images": images == null ? [] : List<dynamic>.from(images!.map((x) => x)),
+    "available_quantity": availableQuantity,
   };
 }

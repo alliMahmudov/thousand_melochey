@@ -27,6 +27,22 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const CartPage(),
       );
     },
+    CategoriesRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const CategoriesPage(),
+      );
+    },
+    CategoryProductsRoute.name: (routeData) {
+      final args = routeData.argsAs<CategoryProductsRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: CategoryProductsPage(
+          categoryName: args.categoryName,
+          key: args.key,
+        ),
+      );
+    },
     CheckOutRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -72,6 +88,7 @@ abstract class _$AppRouter extends RootStackRouter {
           price: args.price,
           description: args.description,
           image: args.image,
+          images: args.images,
         ),
       );
     },
@@ -95,6 +112,12 @@ abstract class _$AppRouter extends RootStackRouter {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const SignUpPage(),
+      );
+    },
+    UserAddressesRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const UserAddressesPage(),
       );
     },
     WelcomeRoute.name: (routeData) {
@@ -132,6 +155,58 @@ class CartRoute extends PageRouteInfo<void> {
   static const String name = 'CartRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [CategoriesPage]
+class CategoriesRoute extends PageRouteInfo<void> {
+  const CategoriesRoute({List<PageRouteInfo>? children})
+      : super(
+          CategoriesRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'CategoriesRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [CategoryProductsPage]
+class CategoryProductsRoute extends PageRouteInfo<CategoryProductsRouteArgs> {
+  CategoryProductsRoute({
+    required String categoryName,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+          CategoryProductsRoute.name,
+          args: CategoryProductsRouteArgs(
+            categoryName: categoryName,
+            key: key,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'CategoryProductsRoute';
+
+  static const PageInfo<CategoryProductsRouteArgs> page =
+      PageInfo<CategoryProductsRouteArgs>(name);
+}
+
+class CategoryProductsRouteArgs {
+  const CategoryProductsRouteArgs({
+    required this.categoryName,
+    this.key,
+  });
+
+  final String categoryName;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'CategoryProductsRouteArgs{categoryName: $categoryName, key: $key}';
+  }
 }
 
 /// generated route for
@@ -237,6 +312,7 @@ class ProductDetailRoute extends PageRouteInfo<ProductDetailRouteArgs> {
     required String? price,
     required String? description,
     required String? image,
+    List<String>? images,
     List<PageRouteInfo>? children,
   }) : super(
           ProductDetailRoute.name,
@@ -247,6 +323,7 @@ class ProductDetailRoute extends PageRouteInfo<ProductDetailRouteArgs> {
             price: price,
             description: description,
             image: image,
+            images: images,
           ),
           initialChildren: children,
         );
@@ -265,6 +342,7 @@ class ProductDetailRouteArgs {
     required this.price,
     required this.description,
     required this.image,
+    this.images,
   });
 
   final Key? key;
@@ -279,9 +357,11 @@ class ProductDetailRouteArgs {
 
   final String? image;
 
+  final List<String>? images;
+
   @override
   String toString() {
-    return 'ProductDetailRouteArgs{key: $key, id: $id, name: $name, price: $price, description: $description, image: $image}';
+    return 'ProductDetailRouteArgs{key: $key, id: $id, name: $name, price: $price, description: $description, image: $image, images: $images}';
   }
 }
 
@@ -347,6 +427,20 @@ class SignUpRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'SignUpRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [UserAddressesPage]
+class UserAddressesRoute extends PageRouteInfo<void> {
+  const UserAddressesRoute({List<PageRouteInfo>? children})
+      : super(
+          UserAddressesRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'UserAddressesRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

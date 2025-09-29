@@ -37,7 +37,7 @@ class ResetPassNotifier extends StateNotifier<ResetPasswordState> {
         await LocalStorage.instance.setUserName(data?.data?.user?.name);
         await LocalStorage.instance.setToken(data?.data?.token);
         await LocalStorage.instance.setLoginApp(true);*/
-        AppHelpers.showMaterialBannerSuccess(message: "Success");
+        AppHelpers.showSuccessToast(message: data.message);
         success?.call();
       },
       failure: (failure, status, errorMessage) {

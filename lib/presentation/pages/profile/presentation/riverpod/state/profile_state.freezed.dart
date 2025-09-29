@@ -22,7 +22,15 @@ mixin _$ProfileState {
   bool get isCollapse => throw _privateConstructorUsedError;
   bool get isError => throw _privateConstructorUsedError;
   bool get isUserInfoLoading => throw _privateConstructorUsedError;
+  String get defaultLang => throw _privateConstructorUsedError;
+  int get selectedAddress => throw _privateConstructorUsedError;
+  Locale? get localLang => throw _privateConstructorUsedError;
   UserInfoResponse? get userInfo => throw _privateConstructorUsedError;
+  AllAddressesResponse? get userAllAddresses =>
+      throw _privateConstructorUsedError;
+  GetDistrictsResponse? get districts => throw _privateConstructorUsedError;
+  District? get selectedDistrict => throw _privateConstructorUsedError;
+  Address? get selectedUserAddress => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ProfileStateCopyWith<ProfileState> get copyWith =>
@@ -42,7 +50,14 @@ abstract class $ProfileStateCopyWith<$Res> {
       bool isCollapse,
       bool isError,
       bool isUserInfoLoading,
-      UserInfoResponse? userInfo});
+      String defaultLang,
+      int selectedAddress,
+      Locale? localLang,
+      UserInfoResponse? userInfo,
+      AllAddressesResponse? userAllAddresses,
+      GetDistrictsResponse? districts,
+      District? selectedDistrict,
+      Address? selectedUserAddress});
 }
 
 /// @nodoc
@@ -64,7 +79,14 @@ class _$ProfileStateCopyWithImpl<$Res, $Val extends ProfileState>
     Object? isCollapse = null,
     Object? isError = null,
     Object? isUserInfoLoading = null,
+    Object? defaultLang = null,
+    Object? selectedAddress = null,
+    Object? localLang = freezed,
     Object? userInfo = freezed,
+    Object? userAllAddresses = freezed,
+    Object? districts = freezed,
+    Object? selectedDistrict = freezed,
+    Object? selectedUserAddress = freezed,
   }) {
     return _then(_value.copyWith(
       isLoading: null == isLoading
@@ -91,10 +113,38 @@ class _$ProfileStateCopyWithImpl<$Res, $Val extends ProfileState>
           ? _value.isUserInfoLoading
           : isUserInfoLoading // ignore: cast_nullable_to_non_nullable
               as bool,
+      defaultLang: null == defaultLang
+          ? _value.defaultLang
+          : defaultLang // ignore: cast_nullable_to_non_nullable
+              as String,
+      selectedAddress: null == selectedAddress
+          ? _value.selectedAddress
+          : selectedAddress // ignore: cast_nullable_to_non_nullable
+              as int,
+      localLang: freezed == localLang
+          ? _value.localLang
+          : localLang // ignore: cast_nullable_to_non_nullable
+              as Locale?,
       userInfo: freezed == userInfo
           ? _value.userInfo
           : userInfo // ignore: cast_nullable_to_non_nullable
               as UserInfoResponse?,
+      userAllAddresses: freezed == userAllAddresses
+          ? _value.userAllAddresses
+          : userAllAddresses // ignore: cast_nullable_to_non_nullable
+              as AllAddressesResponse?,
+      districts: freezed == districts
+          ? _value.districts
+          : districts // ignore: cast_nullable_to_non_nullable
+              as GetDistrictsResponse?,
+      selectedDistrict: freezed == selectedDistrict
+          ? _value.selectedDistrict
+          : selectedDistrict // ignore: cast_nullable_to_non_nullable
+              as District?,
+      selectedUserAddress: freezed == selectedUserAddress
+          ? _value.selectedUserAddress
+          : selectedUserAddress // ignore: cast_nullable_to_non_nullable
+              as Address?,
     ) as $Val);
   }
 }
@@ -114,7 +164,14 @@ abstract class _$$ProfileStateImplCopyWith<$Res>
       bool isCollapse,
       bool isError,
       bool isUserInfoLoading,
-      UserInfoResponse? userInfo});
+      String defaultLang,
+      int selectedAddress,
+      Locale? localLang,
+      UserInfoResponse? userInfo,
+      AllAddressesResponse? userAllAddresses,
+      GetDistrictsResponse? districts,
+      District? selectedDistrict,
+      Address? selectedUserAddress});
 }
 
 /// @nodoc
@@ -134,7 +191,14 @@ class __$$ProfileStateImplCopyWithImpl<$Res>
     Object? isCollapse = null,
     Object? isError = null,
     Object? isUserInfoLoading = null,
+    Object? defaultLang = null,
+    Object? selectedAddress = null,
+    Object? localLang = freezed,
     Object? userInfo = freezed,
+    Object? userAllAddresses = freezed,
+    Object? districts = freezed,
+    Object? selectedDistrict = freezed,
+    Object? selectedUserAddress = freezed,
   }) {
     return _then(_$ProfileStateImpl(
       isLoading: null == isLoading
@@ -161,10 +225,38 @@ class __$$ProfileStateImplCopyWithImpl<$Res>
           ? _value.isUserInfoLoading
           : isUserInfoLoading // ignore: cast_nullable_to_non_nullable
               as bool,
+      defaultLang: null == defaultLang
+          ? _value.defaultLang
+          : defaultLang // ignore: cast_nullable_to_non_nullable
+              as String,
+      selectedAddress: null == selectedAddress
+          ? _value.selectedAddress
+          : selectedAddress // ignore: cast_nullable_to_non_nullable
+              as int,
+      localLang: freezed == localLang
+          ? _value.localLang
+          : localLang // ignore: cast_nullable_to_non_nullable
+              as Locale?,
       userInfo: freezed == userInfo
           ? _value.userInfo
           : userInfo // ignore: cast_nullable_to_non_nullable
               as UserInfoResponse?,
+      userAllAddresses: freezed == userAllAddresses
+          ? _value.userAllAddresses
+          : userAllAddresses // ignore: cast_nullable_to_non_nullable
+              as AllAddressesResponse?,
+      districts: freezed == districts
+          ? _value.districts
+          : districts // ignore: cast_nullable_to_non_nullable
+              as GetDistrictsResponse?,
+      selectedDistrict: freezed == selectedDistrict
+          ? _value.selectedDistrict
+          : selectedDistrict // ignore: cast_nullable_to_non_nullable
+              as District?,
+      selectedUserAddress: freezed == selectedUserAddress
+          ? _value.selectedUserAddress
+          : selectedUserAddress // ignore: cast_nullable_to_non_nullable
+              as Address?,
     ));
   }
 }
@@ -179,7 +271,14 @@ class _$ProfileStateImpl implements _ProfileState {
       this.isCollapse = false,
       this.isError = false,
       this.isUserInfoLoading = false,
-      this.userInfo});
+      this.defaultLang = 'uz',
+      this.selectedAddress = 0,
+      this.localLang,
+      this.userInfo,
+      this.userAllAddresses,
+      this.districts,
+      this.selectedDistrict,
+      this.selectedUserAddress});
 
   @override
   @JsonKey()
@@ -200,11 +299,27 @@ class _$ProfileStateImpl implements _ProfileState {
   @JsonKey()
   final bool isUserInfoLoading;
   @override
+  @JsonKey()
+  final String defaultLang;
+  @override
+  @JsonKey()
+  final int selectedAddress;
+  @override
+  final Locale? localLang;
+  @override
   final UserInfoResponse? userInfo;
+  @override
+  final AllAddressesResponse? userAllAddresses;
+  @override
+  final GetDistrictsResponse? districts;
+  @override
+  final District? selectedDistrict;
+  @override
+  final Address? selectedUserAddress;
 
   @override
   String toString() {
-    return 'ProfileState(isLoading: $isLoading, isResponseError: $isResponseError, isNotEmpty: $isNotEmpty, isCollapse: $isCollapse, isError: $isError, isUserInfoLoading: $isUserInfoLoading, userInfo: $userInfo)';
+    return 'ProfileState(isLoading: $isLoading, isResponseError: $isResponseError, isNotEmpty: $isNotEmpty, isCollapse: $isCollapse, isError: $isError, isUserInfoLoading: $isUserInfoLoading, defaultLang: $defaultLang, selectedAddress: $selectedAddress, localLang: $localLang, userInfo: $userInfo, userAllAddresses: $userAllAddresses, districts: $districts, selectedDistrict: $selectedDistrict, selectedUserAddress: $selectedUserAddress)';
   }
 
   @override
@@ -223,13 +338,41 @@ class _$ProfileStateImpl implements _ProfileState {
             (identical(other.isError, isError) || other.isError == isError) &&
             (identical(other.isUserInfoLoading, isUserInfoLoading) ||
                 other.isUserInfoLoading == isUserInfoLoading) &&
+            (identical(other.defaultLang, defaultLang) ||
+                other.defaultLang == defaultLang) &&
+            (identical(other.selectedAddress, selectedAddress) ||
+                other.selectedAddress == selectedAddress) &&
+            (identical(other.localLang, localLang) ||
+                other.localLang == localLang) &&
             (identical(other.userInfo, userInfo) ||
-                other.userInfo == userInfo));
+                other.userInfo == userInfo) &&
+            (identical(other.userAllAddresses, userAllAddresses) ||
+                other.userAllAddresses == userAllAddresses) &&
+            (identical(other.districts, districts) ||
+                other.districts == districts) &&
+            (identical(other.selectedDistrict, selectedDistrict) ||
+                other.selectedDistrict == selectedDistrict) &&
+            (identical(other.selectedUserAddress, selectedUserAddress) ||
+                other.selectedUserAddress == selectedUserAddress));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isLoading, isResponseError,
-      isNotEmpty, isCollapse, isError, isUserInfoLoading, userInfo);
+  int get hashCode => Object.hash(
+      runtimeType,
+      isLoading,
+      isResponseError,
+      isNotEmpty,
+      isCollapse,
+      isError,
+      isUserInfoLoading,
+      defaultLang,
+      selectedAddress,
+      localLang,
+      userInfo,
+      userAllAddresses,
+      districts,
+      selectedDistrict,
+      selectedUserAddress);
 
   @JsonKey(ignore: true)
   @override
@@ -246,7 +389,14 @@ abstract class _ProfileState implements ProfileState {
       final bool isCollapse,
       final bool isError,
       final bool isUserInfoLoading,
-      final UserInfoResponse? userInfo}) = _$ProfileStateImpl;
+      final String defaultLang,
+      final int selectedAddress,
+      final Locale? localLang,
+      final UserInfoResponse? userInfo,
+      final AllAddressesResponse? userAllAddresses,
+      final GetDistrictsResponse? districts,
+      final District? selectedDistrict,
+      final Address? selectedUserAddress}) = _$ProfileStateImpl;
 
   @override
   bool get isLoading;
@@ -261,7 +411,21 @@ abstract class _ProfileState implements ProfileState {
   @override
   bool get isUserInfoLoading;
   @override
+  String get defaultLang;
+  @override
+  int get selectedAddress;
+  @override
+  Locale? get localLang;
+  @override
   UserInfoResponse? get userInfo;
+  @override
+  AllAddressesResponse? get userAllAddresses;
+  @override
+  GetDistrictsResponse? get districts;
+  @override
+  District? get selectedDistrict;
+  @override
+  Address? get selectedUserAddress;
   @override
   @JsonKey(ignore: true)
   _$$ProfileStateImplCopyWith<_$ProfileStateImpl> get copyWith =>

@@ -1,4 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
+import 'package:thousand_melochey/presentation/global_widgets/money_formatter.dart';
+import 'package:thousand_melochey/presentation/pages/cart/presentation/widgets/selection_field_widget.dart';
+import 'package:thousand_melochey/presentation/pages/cart/presentation/widgets/user_addresses_modal.dart';
+import 'package:thousand_melochey/presentation/pages/main/riverpod/provider/main_provider.dart';
+import 'package:thousand_melochey/presentation/pages/profile/data/all_adresses_response.dart';
+import 'package:thousand_melochey/service/localizations/localization.dart';
 
 @RoutePage()
 class CheckOutPage extends ConsumerStatefulWidget {
@@ -9,50 +16,197 @@ class CheckOutPage extends ConsumerStatefulWidget {
 }
 
 class _CheckOutPageState extends ConsumerState<CheckOutPage> {
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      final notifier = ref.read(cartProvider.notifier);
+      final state = ref.watch(cartProvider);
+      final profileNotifier = ref.read(profileProvider.notifier);
+      final profileState = ref.watch(profileProvider);
+      state.userAllAddresses ?? notifier.getAllAddresses();
+      profileState.userAllAddresses ?? profileNotifier.getAllAddresses();
+      profileState.userInfo ?? profileNotifier.getUserInfo();
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+
     final notifier = ref.read(cartProvider.notifier);
     final state = ref.watch(cartProvider);
+
     return Scaffold(
+      backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
-        title: const Text("Checkout"),
+        title: Text("${AppLocalization.getText(context)?.checkout}"),
       ),
       body: Container(
-        color: AppColors.white,
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        padding: EdgeInsets.all(16.0.sp),
         child: Column(
+          spacing: 12,
           children: [
-            18.verticalSpace,
-            CustomTextField(
-              controller: notifier.phoneController,
-              title: "Phone",
-              labelText: "Enter your phone number*",
-              errorText:
-                  AppTextFieldErrorsStatus.status(state.errorMessage, "phone"),
+            SelectionFieldWidget(
+              onTap: () {
+                AppHelpers.showCustomModalBottomSheetWithoutIosIcon(
+                    context: context,
+                    modal: const UserAddressesModal());
+              },
+              title: "${AppLocalization.getText(context)?.address}",
+              value: "${state.selectedUserAddress?.districtName ?? ""} ${state.selectedUserAddress?.addressLine1 ?? ""}",
+              errorMessage: state.errorMessage,
             ),
-            12.verticalSpace,
-            CustomTextField(
-              controller: notifier.addressController,
-              title: "Address",
-              labelText: "Enter your address*",
-              errorText: AppTextFieldErrorsStatus.status(
-                  state.errorMessage, "address"),
+
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "${AppLocalization.getText(context)?.payment_type}",
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.primaryColor,
+                ),
+              ),
             ),
-            12.verticalSpace,
-            CustomTextField(
-              controller: notifier.cityController,
-              title: "City",
-              labelText: "Enter your city*",
-              errorText:
-                  AppTextFieldErrorsStatus.status(state.errorMessage, "City"),
+            Row(
+              spacing: 12,
+              children: [
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () => notifier.togglePaymentType('cash'),
+                    child: Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color: state.paymentType == 'cash' ? AppColors.primaryColor : Colors.grey.shade300,
+                          width: 2,
+                        ),
+                        boxShadow: const [
+                          BoxShadow(blurRadius: 6, color: Colors.black12),
+                        ],
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.attach_money, size: 28.sp, color: state.paymentType == 'cash' ? AppColors.primaryColor : Colors.black87),
+                          8.verticalSpace,
+                          Text("${AppLocalization.getText(context)?.cash}")
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () => notifier.togglePaymentType('card'),
+                    child: Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color: state.paymentType == 'card' ? AppColors.primaryColor : Colors.grey.shade300,
+                          width: 2,
+                        ),
+                        boxShadow: const [
+                          BoxShadow(blurRadius: 6, color: Colors.black12),
+                        ],
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.credit_card, size: 28.sp, color: state.paymentType == 'card' ? AppColors.primaryColor : Colors.black87),
+                          8.verticalSpace,
+                          Text("${AppLocalization.getText(context)?.card}")
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-            12.verticalSpace,
+
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "${AppLocalization.getText(context)?.delivery_type}",
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.primaryColor,
+                ),
+              ),
+            ),
+            Row(
+              spacing: 12,
+              children: [
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () => notifier.toggleDeliveryType('pick_up'),
+                    child: Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color: state.deliveryType == 'pick_up' ? AppColors.primaryColor : Colors.grey.shade300,
+                          width: 2,
+                        ),
+                        boxShadow: const [
+                          BoxShadow(blurRadius: 6, color: Colors.black12),
+                        ],
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.store_mall_directory, size: 28.sp, color: state.deliveryType == 'pick_up' ? AppColors.primaryColor : Colors.black87),
+                          8.verticalSpace,
+                          Text("${AppLocalization.getText(context)?.pick_up}")
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () => notifier.toggleDeliveryType('courier'),
+                    child: Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color: state.deliveryType == 'courier' ? AppColors.primaryColor : Colors.grey.shade300,
+                          width: 2,
+                        ),
+                        boxShadow: const [
+                          BoxShadow(blurRadius: 6, color: Colors.black12),
+                        ],
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.local_shipping, size: 28.sp, color: state.deliveryType == 'courier' ? AppColors.primaryColor : Colors.black87),
+                          8.verticalSpace,
+                          Text("${AppLocalization.getText(context)?.courier}")
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+
+
+
             CustomTextField(
-              controller: notifier.postalCodeController,
-              title: "Postal code",
-              labelText: "Enter your postal code*",
-              errorText: AppTextFieldErrorsStatus.status(
-                  state.errorMessage, "Postal code"),
+              controller: notifier.orderCommentController,
+              title: "${AppLocalization.getText(context)?.comment}",
+              labelText: "${AppLocalization.getText(context)?.comment_to_seller}",
+              errorText: AppTextFieldErrorsStatus.status(state.errorMessage, "comment"),
             ),
           ],
         ),
@@ -62,18 +216,18 @@ class _CheckOutPageState extends ConsumerState<CheckOutPage> {
         height: 120.h,
         decoration: const BoxDecoration(
             color: Colors.white,
-            boxShadow: [BoxShadow(blurRadius: 1, color: Colors.black12)]),
+            boxShadow: [BoxShadow(blurRadius: 4, color: Colors.black12)]),
         child: Column(
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  "Total:",
-                  style: TextStyle(fontSize: 16),
+                Text(
+                  "${AppLocalization.getText(context)?.total}:",
+                  style: const TextStyle(fontSize: 16),
                 ),
                 Text(
-                  "\$${state.cartProduct?.totalPrice}",
+                  "${AppMoneyFormatter.longFormatString(state.cartProduct?.totalPrice.toString())} UZS",
                   style: const TextStyle(
                       fontSize: 18, fontWeight: FontWeight.bold),
                 ),
@@ -81,79 +235,29 @@ class _CheckOutPageState extends ConsumerState<CheckOutPage> {
             ),
             12.verticalSpace,
             CustomButtonWidget(
-                title: "Create an order",
+                title: "${AppLocalization.getText(context)?.create_an_order}",
                 isLoading: state.isLoading,
                 onTap: () {
-                 print("12");
-                 notifier.fillAddress(
-                     context: context,
-                     success: () {
-                       notifier.createOrder(success: () {
-                         showDialog(
-                             context: context,
-                             builder: (context) {
-                               return Padding(
-                                 padding: const EdgeInsets.all(8.0),
-                                 child: AlertDialog.adaptive(
-                                   title: const Text(
-                                     "Order successfully created",
-                                     style: TextStyle(fontSize: 18),
-                                   ),
-                                   content: const Padding(
-                                     padding: EdgeInsets.all(8.0),
-                                     child: Text("Our staff will contact you soon"),
-                                   ),
-                                   actions: [
-                                     Material(
-                                       child: InkWell(
-                                         onTap: () => AppNavigator.pushAndPopUntil(const MainRoute()),
-                                         child: Container(
-                                           padding: const EdgeInsets.all(12),
-                                           color: AppColors.primaryColor,
-                                           height: 50,
-                                           alignment: Alignment.center,
-                                           child: const Text(
-                                             "Back to shopping",
-                                             style: TextStyle(
-                                                 color: AppColors.white,
-                                                 fontWeight: FontWeight.bold),
-                                           ),
-                                         ),
-                                       ),
-                                     )
-                                   ],
-                                   actionsPadding: const EdgeInsets.all(20),
-                                 ),
-                               );
-                             });
-                       });
-                     });
-                  /*AppHelpers.showCustomAlertDialog(
-                context: context,
-                title:
-                "Order Created Successfully",
-                content:
-                "Order Created Successfully",
-                actions: [
-                  SizedBox(
-                    height: 35.h,
-                    child: OutlinedButton(
-                      onPressed: () {
-                        AppNavigator.pop();
-
-                        AppNavigator.pushAndPopUntil(
-                          const MainRoute(),
-                        );
-                      },
-                      child: const Text(
-                        "back to shopping",
-                        style: TextStyle(
-                            color:AppColors.primaryColor),
-                      ),
-                    ),
-                  ),
-                ],
-              );*/
+                  if((state.paymentType.isEmpty) || (state.deliveryType.isEmpty)){
+                    AppHelpers.showErrorToast(errorMessage: "${AppLocalization.getText(context)?.fill_all_fields}");
+                    return;
+                  }
+                  if(state.selectedUserAddress?.id != null && state.selectedUserAddress?.id != 0) {
+                    notifier.createOrder(
+                        context: context,
+                        addressID: state.selectedUserAddress?.id ?? 0,
+                        success: (){
+                          AppHelpers.showSuccessToast(message: "${AppLocalization.getText(context)?.order_successfully_created}");
+                          notifier.selectUserAddress(Address());
+                          notifier.togglePaymentType("");
+                          notifier.toggleDeliveryType("");
+                          AppNavigator.pushAndPopUntil(const MainRoute());
+                          ref.read(mainProvider(0).notifier).incrementPageIndex(0);
+                        }
+                    );
+                  } else {
+                    AppHelpers.showErrorToast(errorMessage: "${AppLocalization.getText(context)?.select_an_address_before_saving}");
+                  }
                 })
           ],
         ),

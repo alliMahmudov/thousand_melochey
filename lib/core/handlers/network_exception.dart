@@ -1,5 +1,7 @@
 import 'package:thousand_melochey/core/imports/imports.dart';
 
+import 'local_storage.dart';
+
 part 'network_exception.freezed.dart';
 
 @freezed
@@ -58,13 +60,15 @@ class NetworkExceptions with _$NetworkExceptions {
 
                   break;
                 case 401:
-                  /*    LocalStorage.instance.logout();
-                  AppNavigator.pushAndPopUntil(const SignInRoute());*/
+                  LocalStorage.instance.logout();
+                  AppNavigator.pushAndPopUntil(const SignInRoute());
                   networkExceptions =
                       const NetworkExceptions.unauthorisedRequest();
 
                   break;
                 case 403:
+                  // LocalStorage.instance.logout();
+                  // AppNavigator.pushAndPopUntil(const SignInRoute());
                   networkExceptions =
                       const NetworkExceptions.unauthorisedRequest();
 

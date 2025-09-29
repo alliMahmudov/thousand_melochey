@@ -8,7 +8,7 @@ class FavoritesRepositoryImpl extends FavoritesRepository {
   Future<ApiResult> getFavoritesList({required String jwtToken}) async {
     try {
       final client = inject<HttpService>()
-          .client(requireAuth: true, isToken: true, jwtToken: jwtToken);
+          .client(requireAuth: true);
       final response = await client.get("/api/user/favorites/");
 
       return ApiResult.success(
@@ -33,7 +33,7 @@ class FavoritesRepositoryImpl extends FavoritesRepository {
   Future<ApiResult> addToFavorites(
       {required int productID, required String jwtToken}) async {
     try {
-      final client = inject<HttpService>().client(isToken: true, jwtToken: jwtToken);
+      final client = inject<HttpService>().client(requireAuth: true);
       final response = await client.post("api/products/favorites/$productID/");
       return ApiResult.success(
           data: AddToFavoritesResponse.fromJson(response.data));
@@ -56,7 +56,7 @@ class FavoritesRepositoryImpl extends FavoritesRepository {
   Future<ApiResult> removeFromFavorites(
       {required int productID, required String jwtToken}) async {
     try {
-      final client = inject<HttpService>().client(isToken: true, jwtToken: jwtToken);
+      final client = inject<HttpService>().client(requireAuth: true);
       final response = await client.delete('api/products/favorites/$productID/');
       return const ApiResult.success(data: "Removed from favorites");
     } on DioException catch (e) {

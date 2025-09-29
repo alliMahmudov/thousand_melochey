@@ -10,8 +10,10 @@ class CustomNetworkImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return CachedNetworkImage(
       imageUrl: imagePath ?? "",
-      placeholder: (context, url) => CircularProgressIndicator(),
-      errorWidget: (context, url, error) => Icon(Icons.error),
+      placeholder: (context, url) => Transform.scale(
+          scale: 0.7,
+          child: const CircularProgressIndicator()),
+      errorWidget: (context, url, error) => const Icon(Icons.error),
     );
   }
 }

@@ -9,46 +9,60 @@ ProductsResponse productsResponseFromJson(String str) => ProductsResponse.fromJs
 String productsResponseToJson(ProductsResponse data) => json.encode(data.toJson());
 
 class ProductsResponse {
-  final String? jwt;
-  final List<Datum>? data;
+  final int? count;
+  final dynamic next;
+  final dynamic previous;
+  final List<Result>? results;
 
   ProductsResponse({
-    this.jwt,
-    this.data,
+    this.count,
+    this.next,
+    this.previous,
+    this.results,
   });
 
   factory ProductsResponse.fromJson(Map<String, dynamic> json) => ProductsResponse(
-    jwt: json["jwt"],
-    data: json["data"] == null ? [] : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
+    count: json["count"],
+    next: json["next"],
+    previous: json["previous"],
+    results: json["results"] == null ? [] : List<Result>.from(json["results"]!.map((x) => Result.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
-    "jwt": jwt,
-    "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
+    "count": count,
+    "next": next,
+    "previous": previous,
+    "results": results == null ? [] : List<dynamic>.from(results!.map((x) => x.toJson())),
   };
 }
 
-class Datum {
+class Result {
   final int? id;
   final String? name;
   final String? description;
   final String? price;
   final String? image;
+  final List<String>? images;
+  final double? availableQuantity;
 
-  Datum({
+  Result({
     this.id,
     this.name,
     this.description,
     this.price,
     this.image,
+    this.images,
+    this.availableQuantity,
   });
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory Result.fromJson(Map<String, dynamic> json) => Result(
     id: json["id"],
     name: json["name"],
     description: json["description"],
     price: json["price"],
     image: json["image"],
+    images: json["images"] == null ? [] : List<String>.from(json["images"]!.map((x) => x)),
+    availableQuantity: json["available_quantity"]?.toDouble(),
   );
 
   Map<String, dynamic> toJson() => {
@@ -57,5 +71,7 @@ class Datum {
     "description": description,
     "price": price,
     "image": image,
+    "images": images == null ? [] : List<dynamic>.from(images!.map((x) => x)),
+    "available_quantity": availableQuantity,
   };
 }

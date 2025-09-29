@@ -9,21 +9,21 @@ OtpResponse otpResponseFromJson(String str) => OtpResponse.fromJson(json.decode(
 String otpResponseToJson(OtpResponse data) => json.encode(data.toJson());
 
 class OtpResponse {
-  final String? email;
-  final String? otp;
+  final String? message;
+  final String? jwt;
 
   OtpResponse({
-    this.email,
-    this.otp,
+    this.message,
+    this.jwt,
   });
 
   factory OtpResponse.fromJson(Map<String, dynamic> json) => OtpResponse(
-    email: json["email"],
-    otp: json["otp"],
+    message: json["message"],
+    jwt: json["jwt"],
   );
 
   Map<String, dynamic> toJson() => {
-    "email": email,
-    "otp": otp,
+    "message": message,
+    "jwt": jwt,
   };
 }

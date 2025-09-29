@@ -230,7 +230,7 @@ class _$SignInStateImpl implements _SignInState {
       {this.isLoading = false,
       this.isLogin = false,
       this.isLoginError = false,
-      this.isValid = true,
+      this.isValid = false,
       this.email = "",
       this.password = "",
       this.errorMessage = "",

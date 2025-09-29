@@ -9,14 +9,14 @@ FavoritesResponse favoritesResponseFromJson(String str) => FavoritesResponse.fro
 String favoritesResponseToJson(FavoritesResponse data) => json.encode(data.toJson());
 
 class FavoritesResponse {
-  final List<Datum>? data;
+  final List<FavoritesDatum>? data;
 
   FavoritesResponse({
     this.data,
   });
 
   factory FavoritesResponse.fromJson(Map<String, dynamic> json) => FavoritesResponse(
-    data: json["data"] == null ? [] : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
+    data: json["data"] == null ? [] : List<FavoritesDatum>.from(json["data"]!.map((x) => FavoritesDatum.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -24,27 +24,33 @@ class FavoritesResponse {
   };
 }
 
-class Datum {
+class FavoritesDatum {
   final int? id;
   final String? name;
   final String? description;
   final String? price;
   final String? image;
+  final List<String>? images;
+  final double? availableQuantity;
 
-  Datum({
+  FavoritesDatum({
     this.id,
     this.name,
     this.description,
     this.price,
     this.image,
+    this.images,
+    this.availableQuantity,
   });
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory FavoritesDatum.fromJson(Map<String, dynamic> json) => FavoritesDatum(
     id: json["id"],
     name: json["name"],
     description: json["description"],
     price: json["price"],
     image: json["image"],
+    images: json["images"] == null ? [] : List<String>.from(json["images"]!.map((x) => x)),
+    availableQuantity: json["available_quantity"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -53,5 +59,7 @@ class Datum {
     "description": description,
     "price": price,
     "image": image,
+    "images": images == null ? [] : List<dynamic>.from(images!.map((x) => x)),
+    "available_quantity": availableQuantity,
   };
 }

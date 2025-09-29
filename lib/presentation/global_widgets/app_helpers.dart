@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:thousand_melochey/contstants/global_key.dart';
+import 'package:thousand_melochey/service/localizations/localization.dart';
+import 'package:toastification/toastification.dart';
 
 import '../../core/imports/imports.dart';
 
@@ -43,20 +45,75 @@ class AppHelpers {
     required BuildContext context,
     EdgeInsets? padding,
     String? title,
-    Widget? contentWidget,
-    String? content,
-    required List<Widget> actions,
+    String? actionButtonText,
+    Widget? content,
+    required Function? onTap,
     // required bool isDarkMode,
 
   }) {
     showAdaptiveDialog(
         context: context,
-        builder: (BuildContext context) => AlertDialog.adaptive(
-          contentPadding: padding ,
-          titlePadding: padding,
-          title: title != null ? Text(title) : null,
-          content: contentWidget ?? Text(content ?? ""),
-          actions: actions,
+        builder: (BuildContext context) => AlertDialog(
+          // contentPadding: const EdgeInsets.all(30),
+          //titlePadding: padding,
+          content: Column(
+            spacing: 20,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+
+              content ?? Text(
+                title ?? "",
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      onTap?.call();
+                    },
+                    style: TextButton.styleFrom(
+                      maximumSize: Size(100.sp, 40.sp),
+                      minimumSize: Size(100.sp, 40.sp),
+                      backgroundColor: AppColors.primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50.0),
+                      ),
+                    ),
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        "$actionButtonText",
+                        style: const TextStyle(
+                          color: AppColors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const Spacer(),
+                  TextButton(
+                    onPressed: () {
+                      AppNavigator.pop();
+                      },
+                    style: TextButton.styleFrom(
+                        maximumSize: Size(100.sp, 40.sp),
+                        minimumSize: Size(100.sp, 40.sp),
+                        backgroundColor: Colors.black12,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50.0),
+                        )),
+                      child: Text(
+                        "${AppLocalization.getText(context)?.cancel}",
+                        style: const TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.bold),
+                      )
+                  )
+                ],
+              )
+            ],
+          ),
         ));
   }
 
@@ -110,6 +167,35 @@ class AppHelpers {
           ),
         ]));
   }
+
+  static showSuccessToast({
+    required String message,
+  }) {
+    // Закрываем все активные тосты, чтобы новый всегда был поверх
+    toastification.dismissAll();
+    return toastification.show(
+        title: Text(message),
+        autoCloseDuration: const Duration(seconds: 2),
+        style: ToastificationStyle.flatColored,
+        type: ToastificationType.success,
+        alignment: Alignment.topCenter
+    );
+  }
+
+  static showErrorToast({
+    required String errorMessage,
+  }) {
+    // Закрываем все активные тосты перед показом нового
+    toastification.dismissAll();
+    return toastification.show(
+        title: Text(errorMessage),
+        autoCloseDuration: const Duration(seconds: 2),
+        style: ToastificationStyle.flatColored,
+        type: ToastificationType.error,
+        alignment: Alignment.topCenter
+    );
+  }
+
 }
 
 

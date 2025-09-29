@@ -29,9 +29,7 @@ class _MainPageState extends ConsumerState<MainPage> {
   }
 
   @override
-  Widget build(
-      BuildContext context,
-      ) {
+  Widget build(BuildContext context) {
     final notifier = ref.read(mainProvider(0).notifier);
     final state = ref.watch(mainProvider(0));
     return Scaffold(
@@ -39,23 +37,19 @@ class _MainPageState extends ConsumerState<MainPage> {
       key: scaffoldKey,
       body: Stack(
         children: [
-          Padding(
-            padding: EdgeInsets.only(bottom: 0.140.sh),
-            child: ProsteIndexedStack(
-              children: notifier.list,
-              index: state.indexPage,
-            ),
+          ProsteIndexedStack(
+            children: notifier.list,
+            index: state.indexPage,
           ),
         ],
       ),
-      floatingActionButtonLocation:
-      FloatingActionButtonLocation.miniCenterDocked,
-      floatingActionButton: const Stack(
-        children: [
-          //CustomFloatingActionButton(),
-          CustomNavBar(),
-        ],
-      ),
+      bottomNavigationBar: const CustomNavBar(),
+      // floatingActionButton: const Stack(
+      //   children: [
+      //     //CustomFloatingActionButton(),
+      //     CustomNavBar(),
+      //   ],
+      // ),
     );
   }
 }

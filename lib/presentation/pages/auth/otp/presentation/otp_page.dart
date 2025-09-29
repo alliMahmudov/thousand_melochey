@@ -2,6 +2,7 @@ import 'package:thousand_melochey/core/imports/imports.dart';
 import 'package:thousand_melochey/presentation/pages/auth/otp/presentation/rivepod/provider/otp_provider.dart';
 import 'package:slide_countdown/slide_countdown.dart';
 import 'package:pinput/pinput.dart';
+import 'package:thousand_melochey/service/localizations/localization.dart';
 
 @RoutePage()
 class OTPPage extends ConsumerStatefulWidget {
@@ -14,6 +15,26 @@ class OTPPage extends ConsumerStatefulWidget {
 }
 
 class _OTPPageState extends ConsumerState<OTPPage> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+
+      ref.read(otpProvider.notifier).resentCodeDuration();
+      timer(context, success: () {
+        ref.read(otpProvider.notifier).resentCodeDuration();
+
+      });
+    });
+  }
+
+  timer(BuildContext context, {required Function() success}) async {
+    if(context.mounted) {
+      await Future.delayed(
+          Duration(minutes: ref.watch(otpProvider).resendCodeDuration));
+    }
+    success.call();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,9 +67,19 @@ class _OTPPageState extends ConsumerState<OTPPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             50.h.verticalSpace,
-            CustomTitleWidget(title: "Enter Code"),
+            CustomTitleWidget(title: "${AppLocalization.getText(context)?.enter_code}"),
             12.h.verticalSpace,
-            Text("We've sent an SMS with an activation code to your email: ${widget.email}"),
+
+            Text.rich(TextSpan(
+              style: const TextStyle(color: Colors.black),
+              text: "${AppLocalization.getText(context)?.sent_SMS_title} ",
+              children: [
+                TextSpan(
+                  text: widget.email,
+                  style: const TextStyle(fontWeight: FontWeight.w600, color: AppColors.primaryColor),
+                ),
+              ],
+            ),),
 
             35.h.verticalSpace,
             Pinput(
@@ -56,9 +87,6 @@ class _OTPPageState extends ConsumerState<OTPPage> {
               controller: notifier.controller,
               focusNode: notifier.focusNode,
               autofillHints: const [AutofillHints.oneTimeCode],
-              androidSmsAutofillMethod:
-              AndroidSmsAutofillMethod.smsUserConsentApi,
-              listenForMultipleSmsOnAndroid: true,
               toolbarEnabled: false,
               autofocus: true,
               validator: (value) {
@@ -103,8 +131,70 @@ class _OTPPageState extends ConsumerState<OTPPage> {
                 ),
               ),
             ),
+            20.verticalSpace,
+            state.resendCodeActive
+                ? Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryColor,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: SlideCountdownSeparated(
+                    key: GlobalKey(),
+                    duration: Duration(minutes: state.resendCodeDuration),
+                    decoration: const BoxDecoration(
+                      color: AppColors.transparent,
+                    ),
+                    //style: const TextStyle(fontSize: 18),
+                    showZeroValue: true,
+                    shouldShowDays: (value) => false,
+                    shouldShowHours: (value) => false,
+                  ),
 
-            20.h.verticalSpace,
+                )
+                // 20.horizontalSpace,
+              ],
+            )
+                : const SizedBox(),
+            10.verticalSpace,
+            !state.resendCodeActive
+                ? Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                      InkWell(
+                        borderRadius: BorderRadius.circular(5),
+                        onTap: () {
+                          notifier.resendOTP(
+                              email: widget.email,
+                              success: () {
+                                notifier.resentCodeDuration();
+                                timer(context, success: () {
+                                  notifier.resentCodeDuration();
+                                });
+                              });
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: AppColors.primaryColor,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Text(
+                            '${AppLocalization.getText(context)?.send_code_again}',
+                            style: TextStyle(
+                                color: AppColors.white,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                      )
+                    ],
+            )
+                : const SizedBox(),
+            /*20.h.verticalSpace,
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -120,7 +210,7 @@ class _OTPPageState extends ConsumerState<OTPPage> {
                 )
                 // 20.horizontalSpace,
               ],
-            )
+            )*/
           ],
         ),
       ),

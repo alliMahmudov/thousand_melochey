@@ -22,16 +22,14 @@ mixin _$HomeState {
   bool get isCollapse => throw _privateConstructorUsedError;
   bool get isError => throw _privateConstructorUsedError;
   bool get isProductLoading => throw _privateConstructorUsedError;
+  bool get isLoadMore => throw _privateConstructorUsedError;
+  bool get isDescriptionExpanded => throw _privateConstructorUsedError;
   String get selectedCategory => throw _privateConstructorUsedError;
   String get jwt => throw _privateConstructorUsedError;
   ProductsResponse? get products => throw _privateConstructorUsedError;
-  GlovesCategoryResponse? get glovesCategory =>
+  CategoriesResponse? get categories => throw _privateConstructorUsedError;
+  CategoryProductsResponse? get categoryProducts =>
       throw _privateConstructorUsedError;
-  ScrewdriversResponse? get screwdriversCategory =>
-      throw _privateConstructorUsedError;
-  ElectronicResponse? get electronicCategory =>
-      throw _privateConstructorUsedError;
-  ToolsResponse? get toolsCategory => throw _privateConstructorUsedError;
   String? get errorMessage => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -51,13 +49,13 @@ abstract class $HomeStateCopyWith<$Res> {
       bool isCollapse,
       bool isError,
       bool isProductLoading,
+      bool isLoadMore,
+      bool isDescriptionExpanded,
       String selectedCategory,
       String jwt,
       ProductsResponse? products,
-      GlovesCategoryResponse? glovesCategory,
-      ScrewdriversResponse? screwdriversCategory,
-      ElectronicResponse? electronicCategory,
-      ToolsResponse? toolsCategory,
+      CategoriesResponse? categories,
+      CategoryProductsResponse? categoryProducts,
       String? errorMessage});
 }
 
@@ -80,13 +78,13 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
     Object? isCollapse = null,
     Object? isError = null,
     Object? isProductLoading = null,
+    Object? isLoadMore = null,
+    Object? isDescriptionExpanded = null,
     Object? selectedCategory = null,
     Object? jwt = null,
     Object? products = freezed,
-    Object? glovesCategory = freezed,
-    Object? screwdriversCategory = freezed,
-    Object? electronicCategory = freezed,
-    Object? toolsCategory = freezed,
+    Object? categories = freezed,
+    Object? categoryProducts = freezed,
     Object? errorMessage = freezed,
   }) {
     return _then(_value.copyWith(
@@ -114,6 +112,14 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
           ? _value.isProductLoading
           : isProductLoading // ignore: cast_nullable_to_non_nullable
               as bool,
+      isLoadMore: null == isLoadMore
+          ? _value.isLoadMore
+          : isLoadMore // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isDescriptionExpanded: null == isDescriptionExpanded
+          ? _value.isDescriptionExpanded
+          : isDescriptionExpanded // ignore: cast_nullable_to_non_nullable
+              as bool,
       selectedCategory: null == selectedCategory
           ? _value.selectedCategory
           : selectedCategory // ignore: cast_nullable_to_non_nullable
@@ -126,22 +132,14 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
           ? _value.products
           : products // ignore: cast_nullable_to_non_nullable
               as ProductsResponse?,
-      glovesCategory: freezed == glovesCategory
-          ? _value.glovesCategory
-          : glovesCategory // ignore: cast_nullable_to_non_nullable
-              as GlovesCategoryResponse?,
-      screwdriversCategory: freezed == screwdriversCategory
-          ? _value.screwdriversCategory
-          : screwdriversCategory // ignore: cast_nullable_to_non_nullable
-              as ScrewdriversResponse?,
-      electronicCategory: freezed == electronicCategory
-          ? _value.electronicCategory
-          : electronicCategory // ignore: cast_nullable_to_non_nullable
-              as ElectronicResponse?,
-      toolsCategory: freezed == toolsCategory
-          ? _value.toolsCategory
-          : toolsCategory // ignore: cast_nullable_to_non_nullable
-              as ToolsResponse?,
+      categories: freezed == categories
+          ? _value.categories
+          : categories // ignore: cast_nullable_to_non_nullable
+              as CategoriesResponse?,
+      categoryProducts: freezed == categoryProducts
+          ? _value.categoryProducts
+          : categoryProducts // ignore: cast_nullable_to_non_nullable
+              as CategoryProductsResponse?,
       errorMessage: freezed == errorMessage
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
@@ -165,13 +163,13 @@ abstract class _$$HomeStateImplCopyWith<$Res>
       bool isCollapse,
       bool isError,
       bool isProductLoading,
+      bool isLoadMore,
+      bool isDescriptionExpanded,
       String selectedCategory,
       String jwt,
       ProductsResponse? products,
-      GlovesCategoryResponse? glovesCategory,
-      ScrewdriversResponse? screwdriversCategory,
-      ElectronicResponse? electronicCategory,
-      ToolsResponse? toolsCategory,
+      CategoriesResponse? categories,
+      CategoryProductsResponse? categoryProducts,
       String? errorMessage});
 }
 
@@ -192,13 +190,13 @@ class __$$HomeStateImplCopyWithImpl<$Res>
     Object? isCollapse = null,
     Object? isError = null,
     Object? isProductLoading = null,
+    Object? isLoadMore = null,
+    Object? isDescriptionExpanded = null,
     Object? selectedCategory = null,
     Object? jwt = null,
     Object? products = freezed,
-    Object? glovesCategory = freezed,
-    Object? screwdriversCategory = freezed,
-    Object? electronicCategory = freezed,
-    Object? toolsCategory = freezed,
+    Object? categories = freezed,
+    Object? categoryProducts = freezed,
     Object? errorMessage = freezed,
   }) {
     return _then(_$HomeStateImpl(
@@ -226,6 +224,14 @@ class __$$HomeStateImplCopyWithImpl<$Res>
           ? _value.isProductLoading
           : isProductLoading // ignore: cast_nullable_to_non_nullable
               as bool,
+      isLoadMore: null == isLoadMore
+          ? _value.isLoadMore
+          : isLoadMore // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isDescriptionExpanded: null == isDescriptionExpanded
+          ? _value.isDescriptionExpanded
+          : isDescriptionExpanded // ignore: cast_nullable_to_non_nullable
+              as bool,
       selectedCategory: null == selectedCategory
           ? _value.selectedCategory
           : selectedCategory // ignore: cast_nullable_to_non_nullable
@@ -238,22 +244,14 @@ class __$$HomeStateImplCopyWithImpl<$Res>
           ? _value.products
           : products // ignore: cast_nullable_to_non_nullable
               as ProductsResponse?,
-      glovesCategory: freezed == glovesCategory
-          ? _value.glovesCategory
-          : glovesCategory // ignore: cast_nullable_to_non_nullable
-              as GlovesCategoryResponse?,
-      screwdriversCategory: freezed == screwdriversCategory
-          ? _value.screwdriversCategory
-          : screwdriversCategory // ignore: cast_nullable_to_non_nullable
-              as ScrewdriversResponse?,
-      electronicCategory: freezed == electronicCategory
-          ? _value.electronicCategory
-          : electronicCategory // ignore: cast_nullable_to_non_nullable
-              as ElectronicResponse?,
-      toolsCategory: freezed == toolsCategory
-          ? _value.toolsCategory
-          : toolsCategory // ignore: cast_nullable_to_non_nullable
-              as ToolsResponse?,
+      categories: freezed == categories
+          ? _value.categories
+          : categories // ignore: cast_nullable_to_non_nullable
+              as CategoriesResponse?,
+      categoryProducts: freezed == categoryProducts
+          ? _value.categoryProducts
+          : categoryProducts // ignore: cast_nullable_to_non_nullable
+              as CategoryProductsResponse?,
       errorMessage: freezed == errorMessage
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
@@ -272,13 +270,13 @@ class _$HomeStateImpl implements _HomeState {
       this.isCollapse = false,
       this.isError = false,
       this.isProductLoading = false,
+      this.isLoadMore = false,
+      this.isDescriptionExpanded = false,
       this.selectedCategory = "",
       this.jwt = "",
       this.products,
-      this.glovesCategory,
-      this.screwdriversCategory,
-      this.electronicCategory,
-      this.toolsCategory,
+      this.categories,
+      this.categoryProducts,
       this.errorMessage});
 
   @override
@@ -301,6 +299,12 @@ class _$HomeStateImpl implements _HomeState {
   final bool isProductLoading;
   @override
   @JsonKey()
+  final bool isLoadMore;
+  @override
+  @JsonKey()
+  final bool isDescriptionExpanded;
+  @override
+  @JsonKey()
   final String selectedCategory;
   @override
   @JsonKey()
@@ -308,19 +312,15 @@ class _$HomeStateImpl implements _HomeState {
   @override
   final ProductsResponse? products;
   @override
-  final GlovesCategoryResponse? glovesCategory;
+  final CategoriesResponse? categories;
   @override
-  final ScrewdriversResponse? screwdriversCategory;
-  @override
-  final ElectronicResponse? electronicCategory;
-  @override
-  final ToolsResponse? toolsCategory;
+  final CategoryProductsResponse? categoryProducts;
   @override
   final String? errorMessage;
 
   @override
   String toString() {
-    return 'HomeState(isLoading: $isLoading, isResponseError: $isResponseError, isNotEmpty: $isNotEmpty, isCollapse: $isCollapse, isError: $isError, isProductLoading: $isProductLoading, selectedCategory: $selectedCategory, jwt: $jwt, products: $products, glovesCategory: $glovesCategory, screwdriversCategory: $screwdriversCategory, electronicCategory: $electronicCategory, toolsCategory: $toolsCategory, errorMessage: $errorMessage)';
+    return 'HomeState(isLoading: $isLoading, isResponseError: $isResponseError, isNotEmpty: $isNotEmpty, isCollapse: $isCollapse, isError: $isError, isProductLoading: $isProductLoading, isLoadMore: $isLoadMore, isDescriptionExpanded: $isDescriptionExpanded, selectedCategory: $selectedCategory, jwt: $jwt, products: $products, categories: $categories, categoryProducts: $categoryProducts, errorMessage: $errorMessage)';
   }
 
   @override
@@ -339,19 +339,19 @@ class _$HomeStateImpl implements _HomeState {
             (identical(other.isError, isError) || other.isError == isError) &&
             (identical(other.isProductLoading, isProductLoading) ||
                 other.isProductLoading == isProductLoading) &&
+            (identical(other.isLoadMore, isLoadMore) ||
+                other.isLoadMore == isLoadMore) &&
+            (identical(other.isDescriptionExpanded, isDescriptionExpanded) ||
+                other.isDescriptionExpanded == isDescriptionExpanded) &&
             (identical(other.selectedCategory, selectedCategory) ||
                 other.selectedCategory == selectedCategory) &&
             (identical(other.jwt, jwt) || other.jwt == jwt) &&
             (identical(other.products, products) ||
                 other.products == products) &&
-            (identical(other.glovesCategory, glovesCategory) ||
-                other.glovesCategory == glovesCategory) &&
-            (identical(other.screwdriversCategory, screwdriversCategory) ||
-                other.screwdriversCategory == screwdriversCategory) &&
-            (identical(other.electronicCategory, electronicCategory) ||
-                other.electronicCategory == electronicCategory) &&
-            (identical(other.toolsCategory, toolsCategory) ||
-                other.toolsCategory == toolsCategory) &&
+            (identical(other.categories, categories) ||
+                other.categories == categories) &&
+            (identical(other.categoryProducts, categoryProducts) ||
+                other.categoryProducts == categoryProducts) &&
             (identical(other.errorMessage, errorMessage) ||
                 other.errorMessage == errorMessage));
   }
@@ -365,13 +365,13 @@ class _$HomeStateImpl implements _HomeState {
       isCollapse,
       isError,
       isProductLoading,
+      isLoadMore,
+      isDescriptionExpanded,
       selectedCategory,
       jwt,
       products,
-      glovesCategory,
-      screwdriversCategory,
-      electronicCategory,
-      toolsCategory,
+      categories,
+      categoryProducts,
       errorMessage);
 
   @JsonKey(ignore: true)
@@ -389,13 +389,13 @@ abstract class _HomeState implements HomeState {
       final bool isCollapse,
       final bool isError,
       final bool isProductLoading,
+      final bool isLoadMore,
+      final bool isDescriptionExpanded,
       final String selectedCategory,
       final String jwt,
       final ProductsResponse? products,
-      final GlovesCategoryResponse? glovesCategory,
-      final ScrewdriversResponse? screwdriversCategory,
-      final ElectronicResponse? electronicCategory,
-      final ToolsResponse? toolsCategory,
+      final CategoriesResponse? categories,
+      final CategoryProductsResponse? categoryProducts,
       final String? errorMessage}) = _$HomeStateImpl;
 
   @override
@@ -411,19 +411,19 @@ abstract class _HomeState implements HomeState {
   @override
   bool get isProductLoading;
   @override
+  bool get isLoadMore;
+  @override
+  bool get isDescriptionExpanded;
+  @override
   String get selectedCategory;
   @override
   String get jwt;
   @override
   ProductsResponse? get products;
   @override
-  GlovesCategoryResponse? get glovesCategory;
+  CategoriesResponse? get categories;
   @override
-  ScrewdriversResponse? get screwdriversCategory;
-  @override
-  ElectronicResponse? get electronicCategory;
-  @override
-  ToolsResponse? get toolsCategory;
+  CategoryProductsResponse? get categoryProducts;
   @override
   String? get errorMessage;
   @override

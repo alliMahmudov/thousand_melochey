@@ -1,95 +1,75 @@
 // To parse this JSON data, do
 //
-//     final getOrderResponse = getOrderResponseFromJson(jsonString);
+//     final ordersResponse = ordersResponseFromJson(jsonString);
 
 import 'dart:convert';
 
-GetOrderResponse getOrderResponseFromJson(String str) => GetOrderResponse.fromJson(json.decode(str));
+OrdersResponse ordersResponseFromJson(String str) => OrdersResponse.fromJson(json.decode(str));
 
-String getOrderResponseToJson(GetOrderResponse data) => json.encode(data.toJson());
+String ordersResponseToJson(OrdersResponse data) => json.encode(data.toJson());
 
-class GetOrderResponse {
-  final String? name;
-  final dynamic phoneNumber;
-  final Address? address;
-  final List<CartProduct>? cartProducts;
-  final double? totalPrice;
+class OrdersResponse {
+  final List<Order>? activeOrders;
+  final List<Order>? finishedOrders;
+
+  OrdersResponse({
+    this.activeOrders,
+    this.finishedOrders,
+  });
+
+  factory OrdersResponse.fromJson(Map<String, dynamic> json) => OrdersResponse(
+    activeOrders: json["active_orders"] == null ? [] : List<Order>.from(json["active_orders"]!.map((x) => Order.fromJson(x))),
+    finishedOrders: json["finished_orders"] == null ? [] : List<Order>.from(json["finished_orders"]!.map((x) => Order.fromJson(x))),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "active_orders": activeOrders == null ? [] : List<dynamic>.from(activeOrders!.map((x) => x.toJson())),
+    "finished_orders": finishedOrders == null ? [] : List<dynamic>.from(finishedOrders!.map((x) => x.toJson())),
+  };
+}
+
+class Order {
+  final int? id;
+  final String? orderStatus;
+  final String? totalPrice;
   final DateTime? date;
+  final List<Item>? items;
 
-  GetOrderResponse({
-    this.name,
-    this.phoneNumber,
-    this.address,
-    this.cartProducts,
+  Order({
+    this.id,
+    this.orderStatus,
     this.totalPrice,
     this.date,
+    this.items,
   });
 
-  factory GetOrderResponse.fromJson(Map<String, dynamic> json) => GetOrderResponse(
-    name: json["name"],
-    phoneNumber: json["phone_number"],
-    address: json["address"] == null ? null : Address.fromJson(json["address"]),
-    cartProducts: json["cart_products"] == null ? [] : List<CartProduct>.from(json["cart_products"]!.map((x) => CartProduct.fromJson(x))),
-    totalPrice: json["total_price"]?.toDouble(),
+  factory Order.fromJson(Map<String, dynamic> json) => Order(
+    id: json["id"],
+    orderStatus: json["order_status"],
+    totalPrice: json["total_price"],
     date: json["date"] == null ? null : DateTime.parse(json["date"]),
+    items: json["items"] == null ? [] : List<Item>.from(json["items"]!.map((x) => Item.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
-    "name": name,
-    "phone_number": phoneNumber,
-    "address": address?.toJson(),
-    "cart_products": cartProducts == null ? [] : List<dynamic>.from(cartProducts!.map((x) => x.toJson())),
+    "id": id,
+    "order_status": orderStatus,
     "total_price": totalPrice,
     "date": date?.toIso8601String(),
+    "items": items == null ? [] : List<dynamic>.from(items!.map((x) => x.toJson())),
   };
 }
 
-class Address {
-  final String? addressLine1;
-  final dynamic addressLine2;
-  final String? city;
-  final String? state;
-  final String? postalCode;
-  final String? country;
-
-  Address({
-    this.addressLine1,
-    this.addressLine2,
-    this.city,
-    this.state,
-    this.postalCode,
-    this.country,
-  });
-
-  factory Address.fromJson(Map<String, dynamic> json) => Address(
-    addressLine1: json["address_line1"],
-    addressLine2: json["address_line2"],
-    city: json["city"],
-    state: json["state"],
-    postalCode: json["postal_code"],
-    country: json["country"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "address_line1": addressLine1,
-    "address_line2": addressLine2,
-    "city": city,
-    "state": state,
-    "postal_code": postalCode,
-    "country": country,
-  };
-}
-
-class CartProduct {
+class Item {
   final Product? product;
   final int? quantity;
 
-  CartProduct({
+  Item({
     this.product,
     this.quantity,
   });
 
-  factory CartProduct.fromJson(Map<String, dynamic> json) => CartProduct(
+  factory Item.fromJson(Map<String, dynamic> json) => Item(
     product: json["product"] == null ? null : Product.fromJson(json["product"]),
     quantity: json["quantity"],
   );

@@ -4,6 +4,7 @@ class CustomButtonWidget extends StatelessWidget {
   final String title;
 
   final bool isLoading;
+  final bool? isDisabled;
 
   final Function() onTap;
 
@@ -11,6 +12,7 @@ class CustomButtonWidget extends StatelessWidget {
       {super.key,
         required this.title,
         required this.isLoading,
+        this.isDisabled,
         required this.onTap});
 
   @override
@@ -18,28 +20,28 @@ class CustomButtonWidget extends StatelessWidget {
     return InkWell(
       borderRadius: BorderRadius.circular(24.0.r),
       onTap: () {
-        onTap.call();
+        if (!isLoading) {
+          !(isDisabled ?? false) ? onTap.call() : null;
+        }
       },
       child: Container(
-        // padding: EdgeInsets.symmetric(vertical: 10.0.h),
         height: 0.06.sh,
-
         alignment: Alignment.center,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.r),
-          color: AppColors.primaryColor,
+          color: !(isDisabled ?? false) ?  AppColors.primaryColor : Colors.grey.shade400,
         ),
         child: isLoading
             ? Container(
           height: 0.06.sh,
           width: 0.06.sh,
           padding: const EdgeInsets.all(8),
-          child:  CircularProgressIndicator(backgroundColor: AppColors.primaryColor.withOpacity(0.3)),
+          child: const CircularProgressIndicator(backgroundColor: AppColors.white),
         )
             : Text(
           title,
           style: TextStyle(
-            fontSize: 16.0.sp,
+            fontSize: 14.0.sp,
             color: Colors.white,
             fontWeight: FontWeight.w600,
           ),

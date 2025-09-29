@@ -11,7 +11,7 @@ class SignInState with _$SignInState {
     @Default(false) bool isLoading,
     @Default(false) bool isLogin,
     @Default(false) bool isLoginError,
-    @Default(true) bool isValid,
+    @Default(false) bool isValid,
     @Default("") String email,
     @Default("") String password,
     @Default("") String errorMessage,
