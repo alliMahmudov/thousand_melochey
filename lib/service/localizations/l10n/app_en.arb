@@ -90,7 +90,8 @@
   "cash": "Cash",
   "card": "Card",
   "pick_up": "Self",
-  "courier": "Delivery"
+  "courier": "Delivery",
+  "deliver_within_24_hours": "We will deliver within 24 hours"
 
 
 

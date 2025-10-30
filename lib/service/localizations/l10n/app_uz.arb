@@ -89,7 +89,9 @@
   "cash": "Naqd",
   "card": "Karta",
   "pick_up": "Borib olish",
-  "courier": "Yetkazib berish"
+  "courier": "Yetkazib berish",
+  "deliver_within_24_hours": "24 soat ichida yetkazib beramiz"
+
 
 
 
