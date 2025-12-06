@@ -55,8 +55,8 @@ class HomeNotifier extends StateNotifier<HomeState> {
 
         response.when(
           success: (data) async {
-            List<Result> products = List.from(state.products?.results ?? []);
-            List<Result> newProducts = data.results ?? [];
+            List<Product> products = List.from(state.products?.results ?? []);
+            List<Product> newProducts = data.results ?? [];
             isRefresh ? products = newProducts : products.addAll(newProducts);
 
             state = state.copyWith(
@@ -154,8 +154,8 @@ class HomeNotifier extends StateNotifier<HomeState> {
 
         response.when(
           success: (data) async {
-            List<Result> products = List.from(state.products?.results ?? []);
-            List<Result> newProducts = data.results ?? [];
+            List<Product> products = List.from(state.products?.results ?? []);
+            List<Product> newProducts = data.results ?? [];
             isRefresh ? products = newProducts : products.addAll(newProducts);
 
             state = state.copyWith(

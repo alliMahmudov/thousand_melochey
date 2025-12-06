@@ -1,11 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:thousand_melochey/core/handlers/local_storage.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
 import 'package:thousand_melochey/presentation/pages/cart/data/add_to_cart_response.dart';
 import 'package:thousand_melochey/presentation/pages/cart/data/get_districts_response.dart';
+import 'package:thousand_melochey/presentation/pages/cart/data/local_cart_item_model.dart';
 import 'package:thousand_melochey/service/connectivity_plus/app_connective.dart';
 import 'package:thousand_melochey/service/localizations/localization.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../profile/data/all_adresses_response.dart';
 
@@ -16,6 +20,8 @@ class CartNotifier extends StateNotifier<CartState> {
   ScrollController scrollController = ScrollController();
 
   TextEditingController orderCommentController = TextEditingController();
+
+  final isAuth = LocalStorage.instance.isAuthenticated();
 
   bool? checkForExistence(int id) {
     return state.cartProduct?.data
@@ -91,6 +97,14 @@ class CartNotifier extends StateNotifier<CartState> {
     VoidCallback? unAuthorised,
     VoidCallback? success,
   }) async {
+    // // Проверяем авторизацию
+    // if (!LocalStorage.instance.isAuthenticated()) {
+    //   // Если не авторизован, загружаем из локального хранилища
+    //   // await loadLocalCart();
+    //   success?.call();
+    //   return;
+    // }
+
     state = state.copyWith(isLoading: true);
     final response = await _cartRepository.getCartProducts();
     response.when(success: (data) async {
@@ -106,7 +120,7 @@ class CartNotifier extends StateNotifier<CartState> {
     });
   }
 
-  Future<void> addToCart({
+  Future<void> addToGlobalCart({
     VoidCallback? checkYourNetwork,
     VoidCallback? unAuthorised,
     VoidCallback? success,
@@ -143,27 +157,35 @@ class CartNotifier extends StateNotifier<CartState> {
     });
   }
 
-  Future<void> removeFromCart({
+  Future<void> removeFromGlobalCart({
     VoidCallback? checkYourNetwork,
     VoidCallback? unAuthorised,
     VoidCallback? success,
     required int id,
     required BuildContext context,
   }) async {
+    // // Проверяем авторизацию
+    // if (!LocalStorage.instance.isAuthenticated()) {
+    //   await removeFromLocalCart(id);
+    //   success?.call();
+    //   return;
+    // }
+
     // Добавляем в pending операции
     final newPendingOperations = Map<int, bool>.from(state.pendingCartOperations);
     newPendingOperations[id] = true;
     state = state.copyWith(pendingCartOperations: newPendingOperations);
 
-    final response =
-        await _cartRepository.removeFromCart(id: id);
-    response.when(success: (data) async {
+    final response = await _cartRepository.removeFromCart(id: id);
+    response.when(
+        success: (data) async {
       // Убираем из pending операций
       final updatedPendingOperations = Map<int, bool>.from(state.pendingCartOperations);
       updatedPendingOperations.remove(id);
       state = state.copyWith(pendingCartOperations: updatedPendingOperations, isLoading: false);
       success?.call();
-    }, failure: (failure, status, data) {
+    },
+        failure: (failure, status, data) {
       // Убираем из pending операций при ошибке
       final updatedPendingOperations = Map<int, bool>.from(state.pendingCartOperations);
       updatedPendingOperations.remove(id);
@@ -180,13 +202,20 @@ class CartNotifier extends StateNotifier<CartState> {
     });
   }
 
-  Future<void> deleteFromCart({
+  Future<void> deleteFromGlobalCart({
     VoidCallback? checkYourNetwork,
     VoidCallback? unAuthorised,
     VoidCallback? success,
     required int id,
     required BuildContext context,
   }) async {
+    // // Проверяем авторизацию
+    // if (!LocalStorage.instance.isAuthenticated()) {
+    //   await deleteFromLocalCart(id);
+    //   success?.call();
+    //   return;
+    // }
+
     // Добавляем в pending операции
     final newPendingOperations = Map<int, bool>.from(state.pendingCartOperations);
     newPendingOperations[id] = true;
@@ -222,7 +251,7 @@ class CartNotifier extends StateNotifier<CartState> {
     VoidCallback? unAuthorised,
     VoidCallback? success,
     required BuildContext context,
-    required int addressID
+    int? addressID
   }) async {
     state = state.copyWith(isLoading: true);
     final response = await _cartRepository.createOrder(
@@ -285,7 +314,7 @@ class CartNotifier extends StateNotifier<CartState> {
     });
   }
 
-  Future<void> clearCart({
+  Future<void> clearGlobalCart({
     VoidCallback? checkYourNetwork,
     VoidCallback? unAuthorised,
     VoidCallback? success,
@@ -306,6 +335,165 @@ class CartNotifier extends StateNotifier<CartState> {
     });
   }
 
+  // Методы для работы с локальной корзиной (для неавторизованных)
+  Future<void> initLocalCartState() async {
+    state = state.copyWith(localCartItems: LocalStorage.instance.getLocalCart());
+  }
+
+  Future<void> addToLocalCart(LocalCartProduct product) async {
+    await LocalStorage.instance.addToLocalCart(product);
+    state = state.copyWith(localCartItems: LocalStorage.instance.getLocalCart());
+  }
+
+  getLocalCart() {
+    final localCartItems = LocalStorage.instance.getLocalCart();
+    state = state.copyWith(localCartItems: localCartItems);
+  }
+  Future<void> removeFromLocalCart(int productId) async {
+    await LocalStorage.instance.removeLocalCartItem(productId);
+    state = state.copyWith(localCartItems: LocalStorage.instance.getLocalCart());
+  }
+
+  Future<void> deleteFromLocalCart(int productId) async {
+    await LocalStorage.instance.deleteLocalCartItem(productId);
+    state = state.copyWith(localCartItems: LocalStorage.instance.getLocalCart());
+  }
+
+  Future<void> clearLocalCart() async {
+    await LocalStorage.instance.clearLocalCart();
+    state = state.copyWith(localCartItems: []);
+  }
+
+  addToCart(BuildContext context, LocalCartProduct cartProduct) {
+    if (LocalStorage.instance.isAuthenticated()) {
+      addToGlobalCart(
+          id: cartProduct.id ?? 0,
+          context: context,
+          success: () {
+            getCartProducts();
+         }
+      );
+    } else {
+      addToLocalCart(cartProduct);
+    }
+  }
+
+  removeFromCart(BuildContext context, int productId) {
+    if (LocalStorage.instance.isAuthenticated()) {
+      removeFromGlobalCart(
+        id: productId,
+        context: context,
+        success: () {
+          getCartProducts();
+        },
+      );
+    } else {
+      removeFromLocalCart(productId);
+    }
+  }
+
+  deleteFromCart(BuildContext context, int productId) {
+    if (LocalStorage.instance.isAuthenticated()) {
+      deleteFromGlobalCart(
+        id: productId,
+        context: context,
+        success: () {
+          getCartProducts();
+        },
+      );
+    } else {
+      deleteFromLocalCart(productId);
+    }
+  }
+
+  clearCart() {
+    if (LocalStorage.instance.isAuthenticated()) {
+      clearGlobalCart(
+        success: () {
+          getCartProducts();
+        }
+      );
+    } else {
+      clearLocalCart();
+    }
+  }
+
+  getCartItems() {
+    if(LocalStorage.instance.isAuthenticated()) {
+      getCartProducts();
+    } else {
+      getLocalCart();
+    }
+  }
 
 
+  // Future<void> openMap(double lat, double lng, String label) async {
+  //   final uri = Uri.parse('geo:$lat,$lng?q=$lat,$lng($label)');
+  //
+  //   if (await canLaunchUrl(uri)) {
+  //     await launchUrl(uri);
+  //   } else {
+  //     // fallback если geo: не поддерживается (например iOS)
+  //     final googleUri = Uri.parse(
+  //       'https://www.google.com/maps/search/?api=1&query=$lat,$lng',
+  //     );
+  //     await launchUrl(googleUri, mode: LaunchMode.externalApplication);
+  //   }
+  // }
+
+  Future<void> openMap(double lat, double lng, String label) async {
+    if (Platform.isAndroid) {
+      // Android покажет список приложений (chooser)
+      final uri = Uri.parse('geo:$lat,$lng?q=$lat,$lng($label)');
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } else {
+      // iOS откроет Apple Maps (или другую, если пользователь сменил по умолчанию)
+      final uri = Uri.parse('http://maps.apple.com/?ll=$lat,$lng&q=$label');
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
+  }
+
+
+
+
+  Future<void> syncLocalCartToBackend() async {
+    if (!isAuth) return;
+    // Получаем локальные товары гостя
+    final List<LocalCartProduct> localItems = LocalStorage.instance.getLocalCart();
+    if (localItems.isEmpty) return;
+
+    // Загружаем текущую корзину пользователя на сервере
+    final serverResp = await _cartRepository.getCartProducts();
+    List<int> serverProductIds = [];
+    serverResp.when(
+      success: (data) {
+        serverProductIds = (data.data ?? [])
+            .map((e) => e.product?.id)
+            .whereType<int>()
+            .toList();
+      },
+      failure: (f, s, d) {
+        // Если не удалось получить корзину — всё равно попробуем синкнуть вслепую
+        serverProductIds = [];
+      },
+    );
+
+    // Добавляем на сервер то, чего там нет
+    for (final item in localItems) {
+      final productId = item.id;
+      if (productId == null) continue;
+      if (serverProductIds.contains(productId)) {
+        // Уже есть на сервере — пропускаем
+        continue;
+      }
+      final qty = (item.quantity ?? 1);
+      for (int i = 0; i < qty; i++) {
+        await _cartRepository.addToCart(id: productId);
+      }
+    }
+
+    // Чистим локальную корзину и обновляем серверные данные
+    await LocalStorage.instance.clearLocalCart();
+    await getCartProducts();
+  }
 }

@@ -128,13 +128,13 @@ class CartRepositoryImpl extends CartRepository {
 
   @override
   Future<ApiResult<dynamic>> createOrder({
-    required int addressID,
+    int? addressID,
     required String paymentType,
     required String deliveryType,
     String? orderComment
 }) async {
     final data = <String, dynamic>{
-      "address_id": "$addressID",
+      if(addressID != null)"address_id": "$addressID",
       "payment_type": paymentType,
       "delivery_type": deliveryType,
       if(orderComment != null) "comment": orderComment

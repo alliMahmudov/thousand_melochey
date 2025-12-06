@@ -1,4 +1,5 @@
 
+import 'package:thousand_melochey/core/handlers/local_storage.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
 import 'package:thousand_melochey/presentation/pages/main/riverpod/provider/main_provider.dart';
 import 'package:badges/badges.dart' as badges;
@@ -11,6 +12,14 @@ class CustomNavBar extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
    final notifier = ref.read(mainProvider(0).notifier);
    final state = ref.watch(mainProvider(0));
+   final cartState = ref.watch(cartProvider);
+   final storage = LocalStorage.instance;
+   final badgeCount = storage.isAuthenticated()
+       ? cartState.cartProduct?.data?.length
+       : cartState.localCartItems.length;
+   final isCartEmpty = storage.isAuthenticated()
+       ? (cartState.cartProduct?.data?.isNotEmpty ?? false)
+       : storage.getLocalCart().isNotEmpty;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 24.0),
@@ -54,7 +63,7 @@ class CustomNavBar extends ConsumerWidget {
                           ),
                         ],
                       ),
-                      (ref.watch(cartProvider).cartProduct?.data?.isNotEmpty ?? false) && index == 3 ?
+                      isCartEmpty && index == 3 ?
                       Positioned(
                           left: 30,
                           bottom: 32,
@@ -62,7 +71,7 @@ class CustomNavBar extends ConsumerWidget {
                             badgeStyle: badges.BadgeStyle(
                               badgeColor: AppColors.primaryColor.withRed(100)
                             ),
-                            badgeContent: Text("${ref.watch(cartProvider).cartProduct?.data?.length}",
+                            badgeContent: Text("$badgeCount",
                               style: const TextStyle(
                                 fontSize: 9,
                                 color: Colors.white

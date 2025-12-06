@@ -24,7 +24,8 @@ mixin _$FavoritesState {
   bool get isFavoritesLoading => throw _privateConstructorUsedError;
   bool get isFavorite => throw _privateConstructorUsedError;
   Map<int, bool> get pendingFavorites => throw _privateConstructorUsedError;
-  ProductsResponse? get products => throw _privateConstructorUsedError;
+  List<Product> get localFavoritesForGuest =>
+      throw _privateConstructorUsedError;
   FavoritesResponse? get favoritesList => throw _privateConstructorUsedError;
   AddToFavoritesResponse? get addToFavorites =>
       throw _privateConstructorUsedError;
@@ -49,7 +50,7 @@ abstract class $FavoritesStateCopyWith<$Res> {
       bool isFavoritesLoading,
       bool isFavorite,
       Map<int, bool> pendingFavorites,
-      ProductsResponse? products,
+      List<Product> localFavoritesForGuest,
       FavoritesResponse? favoritesList,
       AddToFavoritesResponse? addToFavorites});
 }
@@ -75,7 +76,7 @@ class _$FavoritesStateCopyWithImpl<$Res, $Val extends FavoritesState>
     Object? isFavoritesLoading = null,
     Object? isFavorite = null,
     Object? pendingFavorites = null,
-    Object? products = freezed,
+    Object? localFavoritesForGuest = null,
     Object? favoritesList = freezed,
     Object? addToFavorites = freezed,
   }) {
@@ -112,10 +113,10 @@ class _$FavoritesStateCopyWithImpl<$Res, $Val extends FavoritesState>
           ? _value.pendingFavorites
           : pendingFavorites // ignore: cast_nullable_to_non_nullable
               as Map<int, bool>,
-      products: freezed == products
-          ? _value.products
-          : products // ignore: cast_nullable_to_non_nullable
-              as ProductsResponse?,
+      localFavoritesForGuest: null == localFavoritesForGuest
+          ? _value.localFavoritesForGuest
+          : localFavoritesForGuest // ignore: cast_nullable_to_non_nullable
+              as List<Product>,
       favoritesList: freezed == favoritesList
           ? _value.favoritesList
           : favoritesList // ignore: cast_nullable_to_non_nullable
@@ -145,7 +146,7 @@ abstract class _$$FavoritesStateImplCopyWith<$Res>
       bool isFavoritesLoading,
       bool isFavorite,
       Map<int, bool> pendingFavorites,
-      ProductsResponse? products,
+      List<Product> localFavoritesForGuest,
       FavoritesResponse? favoritesList,
       AddToFavoritesResponse? addToFavorites});
 }
@@ -169,7 +170,7 @@ class __$$FavoritesStateImplCopyWithImpl<$Res>
     Object? isFavoritesLoading = null,
     Object? isFavorite = null,
     Object? pendingFavorites = null,
-    Object? products = freezed,
+    Object? localFavoritesForGuest = null,
     Object? favoritesList = freezed,
     Object? addToFavorites = freezed,
   }) {
@@ -206,10 +207,10 @@ class __$$FavoritesStateImplCopyWithImpl<$Res>
           ? _value._pendingFavorites
           : pendingFavorites // ignore: cast_nullable_to_non_nullable
               as Map<int, bool>,
-      products: freezed == products
-          ? _value.products
-          : products // ignore: cast_nullable_to_non_nullable
-              as ProductsResponse?,
+      localFavoritesForGuest: null == localFavoritesForGuest
+          ? _value._localFavoritesForGuest
+          : localFavoritesForGuest // ignore: cast_nullable_to_non_nullable
+              as List<Product>,
       favoritesList: freezed == favoritesList
           ? _value.favoritesList
           : favoritesList // ignore: cast_nullable_to_non_nullable
@@ -234,10 +235,11 @@ class _$FavoritesStateImpl implements _FavoritesState {
       this.isFavoritesLoading = false,
       this.isFavorite = false,
       final Map<int, bool> pendingFavorites = const {},
-      this.products,
+      final List<Product> localFavoritesForGuest = const [],
       this.favoritesList,
       this.addToFavorites})
-      : _pendingFavorites = pendingFavorites;
+      : _pendingFavorites = pendingFavorites,
+        _localFavoritesForGuest = localFavoritesForGuest;
 
   @override
   @JsonKey()
@@ -269,8 +271,16 @@ class _$FavoritesStateImpl implements _FavoritesState {
     return EqualUnmodifiableMapView(_pendingFavorites);
   }
 
+  final List<Product> _localFavoritesForGuest;
   @override
-  final ProductsResponse? products;
+  @JsonKey()
+  List<Product> get localFavoritesForGuest {
+    if (_localFavoritesForGuest is EqualUnmodifiableListView)
+      return _localFavoritesForGuest;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_localFavoritesForGuest);
+  }
+
   @override
   final FavoritesResponse? favoritesList;
   @override
@@ -278,7 +288,7 @@ class _$FavoritesStateImpl implements _FavoritesState {
 
   @override
   String toString() {
-    return 'FavoritesState(isLoading: $isLoading, isResponseError: $isResponseError, isNotEmpty: $isNotEmpty, isCollapse: $isCollapse, isError: $isError, isFavoritesLoading: $isFavoritesLoading, isFavorite: $isFavorite, pendingFavorites: $pendingFavorites, products: $products, favoritesList: $favoritesList, addToFavorites: $addToFavorites)';
+    return 'FavoritesState(isLoading: $isLoading, isResponseError: $isResponseError, isNotEmpty: $isNotEmpty, isCollapse: $isCollapse, isError: $isError, isFavoritesLoading: $isFavoritesLoading, isFavorite: $isFavorite, pendingFavorites: $pendingFavorites, localFavoritesForGuest: $localFavoritesForGuest, favoritesList: $favoritesList, addToFavorites: $addToFavorites)';
   }
 
   @override
@@ -301,8 +311,8 @@ class _$FavoritesStateImpl implements _FavoritesState {
                 other.isFavorite == isFavorite) &&
             const DeepCollectionEquality()
                 .equals(other._pendingFavorites, _pendingFavorites) &&
-            (identical(other.products, products) ||
-                other.products == products) &&
+            const DeepCollectionEquality().equals(
+                other._localFavoritesForGuest, _localFavoritesForGuest) &&
             (identical(other.favoritesList, favoritesList) ||
                 other.favoritesList == favoritesList) &&
             (identical(other.addToFavorites, addToFavorites) ||
@@ -320,7 +330,7 @@ class _$FavoritesStateImpl implements _FavoritesState {
       isFavoritesLoading,
       isFavorite,
       const DeepCollectionEquality().hash(_pendingFavorites),
-      products,
+      const DeepCollectionEquality().hash(_localFavoritesForGuest),
       favoritesList,
       addToFavorites);
 
@@ -342,7 +352,7 @@ abstract class _FavoritesState implements FavoritesState {
       final bool isFavoritesLoading,
       final bool isFavorite,
       final Map<int, bool> pendingFavorites,
-      final ProductsResponse? products,
+      final List<Product> localFavoritesForGuest,
       final FavoritesResponse? favoritesList,
       final AddToFavoritesResponse? addToFavorites}) = _$FavoritesStateImpl;
 
@@ -363,7 +373,7 @@ abstract class _FavoritesState implements FavoritesState {
   @override
   Map<int, bool> get pendingFavorites;
   @override
-  ProductsResponse? get products;
+  List<Product> get localFavoritesForGuest;
   @override
   FavoritesResponse? get favoritesList;
   @override

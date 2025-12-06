@@ -1,7 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
+
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:thousand_melochey/core/handlers/local_storage.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
 import 'package:thousand_melochey/presentation/global_widgets/restart_widget.dart';
@@ -10,15 +12,18 @@ import 'package:thousand_melochey/service/localizations/riverpod/provider/locali
 import 'package:toastification/toastification.dart';
 
 void main() async {
-  SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(statusBarColor: Colors.black));
-  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: Colors.black));
+
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
   await LocalStorage.init();
   setUpDependencies();
-  runApp(const ProviderScope(
-      child: MyApp()));
+
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends ConsumerWidget {
@@ -38,11 +43,11 @@ class MyApp extends ConsumerWidget {
             child: MaterialApp.router(
               debugShowCheckedModeBanner: false,
               routerConfig: appRouter.config(),
-              title: '1000 melochey',
+              title: '1000 МЕЛОЧЕЙ',
               theme: ThemeData(
                 //colorSchemeSeed: AppColors.primaryColor,
                 primaryColor: AppColors.primaryColor,
-                fontFamily: "Comfortaa",
+                textTheme:  GoogleFonts.interTextTheme(),
                 appBarTheme: AppBarTheme(
                   color: AppColors.primaryColor,
                   centerTitle: true,
@@ -50,7 +55,6 @@ class MyApp extends ConsumerWidget {
                   titleTextStyle: TextStyle(
                     fontSize: 18.sp,
                     fontWeight: FontWeight.bold,
-                    fontFamily: "Comfortaa-Bold",
                   ),
                 ),
                 inputDecorationTheme: const InputDecorationTheme(
@@ -68,7 +72,7 @@ class MyApp extends ConsumerWidget {
               ],
               locale: langState.currentLang,
               supportedLocales: const [
-                Locale('en'),
+                // Locale('en'),
                 Locale('ru'),
                 Locale('uz'),
               ],

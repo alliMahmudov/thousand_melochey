@@ -12,7 +12,7 @@ class ProductsResponse {
   final int? count;
   final dynamic next;
   final dynamic previous;
-  final List<Result>? results;
+  final List<Product>? results;
 
   ProductsResponse({
     this.count,
@@ -25,7 +25,7 @@ class ProductsResponse {
     count: json["count"],
     next: json["next"],
     previous: json["previous"],
-    results: json["results"] == null ? [] : List<Result>.from(json["results"]!.map((x) => Result.fromJson(x))),
+    results: json["results"] == null ? [] : List<Product>.from(json["results"]!.map((x) => Product.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -36,7 +36,7 @@ class ProductsResponse {
   };
 }
 
-class Result {
+class Product {
   final int? id;
   final String? name;
   final String? description;
@@ -45,7 +45,7 @@ class Result {
   final List<String>? images;
   final double? availableQuantity;
 
-  Result({
+  Product({
     this.id,
     this.name,
     this.description,
@@ -55,7 +55,7 @@ class Result {
     this.availableQuantity,
   });
 
-  factory Result.fromJson(Map<String, dynamic> json) => Result(
+  factory Product.fromJson(Map<String, dynamic> json) => Product(
     id: json["id"],
     name: json["name"],
     description: json["description"],

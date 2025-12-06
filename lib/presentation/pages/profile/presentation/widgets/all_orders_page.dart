@@ -128,7 +128,7 @@ class _AllOrdersPageState extends ConsumerState<AllOrdersPage> with TickerProvid
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text("${AppLocalization.getText(context)?.order_id}: ${state.getOrders?.activeOrders?[index].id}"),
-                                        Text(AppMoneyFormatter.longFormatString("${state.getOrders?.activeOrders?[index].totalPrice} UZS")),
+                                        Text("${AppMoneyFormatter.longFormatString("${state.getOrders?.activeOrders?[index].totalPrice}")} UZS"),
                                       ],
                                     ),
                                   ),
@@ -187,7 +187,7 @@ class _AllOrdersPageState extends ConsumerState<AllOrdersPage> with TickerProvid
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text("${AppLocalization.getText(context)?.order_id}: ${state.getOrders?.finishedOrders?[index].id}"),
-                                        Text("\$${state.getOrders?.finishedOrders?[index].totalPrice}"),
+                                        Text("${AppMoneyFormatter.longFormatString("${state.getOrders?.finishedOrders?[index].totalPrice}")} UZS"),
                                       ],
                                     ),
                                   ),

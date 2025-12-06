@@ -3,6 +3,7 @@ import 'package:thousand_melochey/presentation/pages/cart/data/cart_response.dar
 import 'package:thousand_melochey/presentation/pages/cart/data/create_order_response.dart';
 import 'package:thousand_melochey/presentation/pages/cart/data/get_districts_response.dart';
 import 'package:thousand_melochey/presentation/pages/cart/data/get_order_response.dart';
+import 'package:thousand_melochey/presentation/pages/cart/data/local_cart_item_model.dart';
 import 'package:thousand_melochey/presentation/pages/profile/data/all_adresses_response.dart';
 
 part 'cart_state.freezed.dart';
@@ -20,6 +21,8 @@ class CartState with _$CartState {
     @Default('') String paymentType,
     @Default('') String deliveryType,
     @Default({}) Map<int, bool> pendingCartOperations,
+    @Default([]) List<LocalCartProduct> localCartItems,
+
     CartResponse? cartProduct,
     CreateOrderResponse? orders,
     OrdersResponse? getOrders,

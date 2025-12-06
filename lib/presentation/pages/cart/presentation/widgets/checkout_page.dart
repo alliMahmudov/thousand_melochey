@@ -1,11 +1,19 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
 import 'package:thousand_melochey/presentation/global_widgets/money_formatter.dart';
+import 'package:thousand_melochey/presentation/pages/cart/presentation/widgets/address_animated_textfield.dart';
+import 'package:thousand_melochey/presentation/pages/cart/presentation/widgets/address_map_widget.dart';
 import 'package:thousand_melochey/presentation/pages/cart/presentation/widgets/selection_field_widget.dart';
 import 'package:thousand_melochey/presentation/pages/cart/presentation/widgets/user_addresses_modal.dart';
 import 'package:thousand_melochey/presentation/pages/main/riverpod/provider/main_provider.dart';
 import 'package:thousand_melochey/presentation/pages/profile/data/all_adresses_response.dart';
 import 'package:thousand_melochey/service/localizations/localization.dart';
+
+import '../../../../../contstants/app_constants.dart';
 
 @RoutePage()
 class CheckOutPage extends ConsumerStatefulWidget {
@@ -37,26 +45,25 @@ class _CheckOutPageState extends ConsumerState<CheckOutPage> {
     final notifier = ref.read(cartProvider.notifier);
     final state = ref.watch(cartProvider);
 
+    final pickupType = state.deliveryType == "pickup";
+
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: Text("${AppLocalization.getText(context)?.checkout}"),
       ),
-      body: Container(
+      body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0.sp),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           spacing: 12,
           children: [
-            SelectionFieldWidget(
-              onTap: () {
-                AppHelpers.showCustomModalBottomSheetWithoutIosIcon(
-                    context: context,
-                    modal: const UserAddressesModal());
-              },
-              title: "${AppLocalization.getText(context)?.address}",
-              value: "${state.selectedUserAddress?.districtName ?? ""} ${state.selectedUserAddress?.addressLine1 ?? ""}",
-              errorMessage: state.errorMessage,
-            ),
+            AddressAnimatedField(
+                pickupType: pickupType,
+                districtName: state.selectedUserAddress?.districtName ?? "",
+                address: state.selectedUserAddress?.addressLine1 ?? "",
+                errorMessage: state.errorMessage),
 
             Align(
               alignment: Alignment.centerLeft,
@@ -145,14 +152,14 @@ class _CheckOutPageState extends ConsumerState<CheckOutPage> {
               children: [
                 Expanded(
                   child: GestureDetector(
-                    onTap: () => notifier.toggleDeliveryType('pick_up'),
+                    onTap: () => notifier.toggleDeliveryType('pickup'),
                     child: Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(
-                          color: state.deliveryType == 'pick_up' ? AppColors.primaryColor : Colors.grey.shade300,
+                          color: state.deliveryType == 'pickup' ? AppColors.primaryColor : Colors.grey.shade300,
                           width: 2,
                         ),
                         boxShadow: const [
@@ -162,7 +169,7 @@ class _CheckOutPageState extends ConsumerState<CheckOutPage> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.store_mall_directory, size: 28.sp, color: state.deliveryType == 'pick_up' ? AppColors.primaryColor : Colors.black87),
+                          Icon(Icons.store_mall_directory, size: 28.sp, color: state.deliveryType == 'pickup' ? AppColors.primaryColor : Colors.black87),
                           8.verticalSpace,
                           Text("${AppLocalization.getText(context)?.pick_up}")
                         ],
@@ -200,25 +207,46 @@ class _CheckOutPageState extends ConsumerState<CheckOutPage> {
               ],
             ),
 
-
-
             CustomTextField(
               controller: notifier.orderCommentController,
               title: "${AppLocalization.getText(context)?.comment}",
               labelText: "${AppLocalization.getText(context)?.comment_to_seller}",
               errorText: AppTextFieldErrorsStatus.status(state.errorMessage, "comment"),
             ),
+
+
+
+            AddressMapWidget(
+              show: pickupType
+            ),
+
+            SizedBox(height: 20.h),
           ],
         ),
       ),
       bottomNavigationBar: Container(
         padding: const EdgeInsets.all(8),
-        height: 120.h,
+        height: 140.h,
         decoration: const BoxDecoration(
             color: Colors.white,
             boxShadow: [BoxShadow(blurRadius: 4, color: Colors.black12)]),
         child: Column(
           children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "${AppLocalization.getText(context)?.courier}:",
+                  style: const TextStyle(fontSize: 16),
+                ),
+                const Text(
+                  "0 UZS",
+                  style: TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            8.verticalSpace,
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -238,26 +266,98 @@ class _CheckOutPageState extends ConsumerState<CheckOutPage> {
                 title: "${AppLocalization.getText(context)?.create_an_order}",
                 isLoading: state.isLoading,
                 onTap: () {
-                  if((state.paymentType.isEmpty) || (state.deliveryType.isEmpty)){
-                    AppHelpers.showErrorToast(errorMessage: "${AppLocalization.getText(context)?.fill_all_fields}");
+
+                  if((state.paymentType.isEmpty)){
+                    AppHelpers.showErrorToast(errorMessage: "${AppLocalization.getText(context)?.select_payment_type}");
                     return;
                   }
-                  if(state.selectedUserAddress?.id != null && state.selectedUserAddress?.id != 0) {
+                  if((state.deliveryType.isEmpty)){
+                    AppHelpers.showErrorToast(errorMessage: "${AppLocalization.getText(context)?.select_delivery_type}");
+                    return;
+                  }
+
+                  // if(state.selectedUserAddress?.id != null && state.selectedUserAddress?.id != 0) {
+                  if(state.deliveryType.isNotEmpty && state.paymentType.isNotEmpty) {
                     notifier.createOrder(
                         context: context,
-                        addressID: state.selectedUserAddress?.id ?? 0,
-                        success: (){
+                        addressID: state.selectedUserAddress?.id,
+                        success: () {
                           AppHelpers.showSuccessToast(message: "${AppLocalization.getText(context)?.order_successfully_created}");
                           notifier.selectUserAddress(Address());
                           notifier.togglePaymentType("");
                           notifier.toggleDeliveryType("");
-                          AppNavigator.pushAndPopUntil(const MainRoute());
-                          ref.read(mainProvider(0).notifier).incrementPageIndex(0);
+                          showAdaptiveDialog(
+                              context: context,
+                              builder: (BuildContext context) =>
+                                  AlertDialog(
+                                    content: Column(
+                                      spacing: 20,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          "${AppLocalization.getText(context)?.deliver_within_24_hours}",
+                                          style: TextStyle(
+                                              fontSize: 18.sp,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            gradient: const LinearGradient(
+                                              colors: [
+                                                AppColors.primaryColor,
+                                                AppColors.primaryShadeColor
+                                              ],
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(25),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: AppColors.primaryColor.withAlpha(70),
+                                                blurRadius: 15,
+                                                offset: const Offset(0, 5),
+                                              ),
+                                            ],
+                                          ),
+                                          child: ElevatedButton(
+                                            onPressed: () {
+                                              AppNavigator.pushAndPopUntil(const MainRoute());
+                                              ref.read(mainProvider(0).notifier).incrementPageIndex(0);
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: Colors.transparent,
+                                              shadowColor: Colors.transparent,
+                                              padding: const EdgeInsets.symmetric(
+                                                  horizontal: 40,
+                                                  vertical: 16),
+                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25),),
+                                            ),
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              spacing: 8,
+                                              children: [
+                                                const Icon(Icons.shopping_bag, color: AppColors.white, size: 20),
+                                                Text(
+                                                  '${AppLocalization.getText(context)?.start_shopping}',
+                                                  style: const TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: AppColors.white,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ));
                         }
                     );
-                  } else {
-                    AppHelpers.showErrorToast(errorMessage: "${AppLocalization.getText(context)?.select_an_address_before_saving}");
                   }
+                  // }
+                  // else {
+                  //   AppHelpers.showErrorToast(errorMessage: "${AppLocalization.getText(context)?.select_an_address_before_saving}");
+                  // }
                 })
           ],
         ),

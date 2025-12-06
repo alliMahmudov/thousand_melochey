@@ -25,6 +25,7 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController streetNameController = TextEditingController();
   final TextEditingController editStreetNameController = TextEditingController();
+  final TextEditingController currentPasswordController = TextEditingController();
 
   selectDistrict(District district) => state = state.copyWith(selectedDistrict: district);
 
@@ -48,9 +49,9 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
         state = state.copyWith(isUserInfoLoading: false, userInfo: data);
         success?.call();
       },
-      failure: (failure, status, data) {
+      failure: (failure, status, errorMessage) {
         state = state.copyWith(
-            isResponseError: true, isUserInfoLoading: false, userInfo: data);
+            isResponseError: true, isUserInfoLoading: false);
 
         if (failure == const NetworkExceptions.unauthorisedRequest()) {
           unAuthorised?.call();
@@ -74,7 +75,7 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
         state = state.copyWith(isLoading: false);
         success?.call();
       },
-      failure: (failure, status, data) {
+      failure: (failure, status, errorMessage) {
         state = state.copyWith(isResponseError: true, isLoading: false);
 
         if (failure == const NetworkExceptions.unauthorisedRequest()) {
@@ -101,7 +102,7 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
         state = state.copyWith(isLoading: false);
         success?.call();
       },
-      failure: (failure, status, data) {
+      failure: (failure, status, errorMessage) {
         state = state.copyWith(isResponseError: true, isLoading: false);
 
         if (failure == const NetworkExceptions.unauthorisedRequest()) {
@@ -133,7 +134,7 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
         state = state.copyWith(isLoading: false);
         success?.call();
       },
-      failure: (failure, status, data) {
+      failure: (failure, status, errorMessage) {
         state = state.copyWith(isResponseError: true, isLoading: false);
 
         if (failure == const NetworkExceptions.unauthorisedRequest()) {
@@ -184,7 +185,7 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
         state = state.copyWith(isLoading: false, userAllAddresses: data);
         success?.call();
       },
-      failure: (failure, status, data) {
+      failure: (failure, status, errorMessage) {
         state = state.copyWith(isResponseError: true, isLoading: false);
 
         if (failure == const NetworkExceptions.unauthorisedRequest()) {
@@ -207,13 +208,41 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
 
       state = state.copyWith(isLoading: false, districts: data);
       success?.call();
-    }, failure: (failure, status, data) {
+    }, failure: (failure, status, errorMessage) {
 
       state = state.copyWith(isLoading: false, isResponseError: true);
       if (failure == const NetworkExceptions.unauthorisedRequest()) {
         unAuthorised?.call();
       }
       debugPrint('==> get districts response failure: $failure');
+    });
+  }
+
+  Future<void> deleteAccount({
+    VoidCallback? checkYourNetwork,
+    VoidCallback? unAuthorised,
+    VoidCallback? success,
+  }) async {
+
+    state = state.copyWith(isLoading: true);
+
+    final response = await _profileRepository.deleteAccount(currentPassword: currentPasswordController.text);
+
+    response.when(success: (data) async {
+
+      state = state.copyWith(isLoading: false);
+
+      success?.call();
+
+    }, failure: (failure, status, errorMessage) {
+      state = state.copyWith(isLoading: false, isResponseError: true);
+
+      AppHelpers.showErrorToast(errorMessage: errorMessage.toString());
+
+      if (failure == const NetworkExceptions.unauthorisedRequest()) {
+        unAuthorised?.call();
+      }
+      debugPrint('==> delete account response failure: $failure');
     });
   }
 

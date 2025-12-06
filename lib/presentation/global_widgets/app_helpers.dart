@@ -66,51 +66,54 @@ class AppHelpers {
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      onTap?.call();
-                    },
-                    style: TextButton.styleFrom(
-                      maximumSize: Size(100.sp, 40.sp),
-                      minimumSize: Size(100.sp, 40.sp),
-                      backgroundColor: AppColors.primaryColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50.0),
+              SizedBox(
+                width: 300.w,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        onTap?.call();
+                      },
+                      style: TextButton.styleFrom(
+                        maximumSize: Size(120.sp, 40.sp),
+                        minimumSize: Size(120.sp, 40.sp),
+                        backgroundColor: AppColors.primaryColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50.0),
+                        ),
                       ),
-                    ),
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Text(
-                        "$actionButtonText",
-                        style: const TextStyle(
-                          color: AppColors.white,
-                          fontWeight: FontWeight.bold,
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          "$actionButtonText",
+                          style: const TextStyle(
+                            color: AppColors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  const Spacer(),
-                  TextButton(
-                    onPressed: () {
-                      AppNavigator.pop();
-                      },
-                    style: TextButton.styleFrom(
-                        maximumSize: Size(100.sp, 40.sp),
-                        minimumSize: Size(100.sp, 40.sp),
-                        backgroundColor: Colors.black12,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50.0),
-                        )),
-                      child: Text(
-                        "${AppLocalization.getText(context)?.cancel}",
-                        style: const TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.bold),
-                      )
-                  )
-                ],
+                    const Spacer(),
+                    TextButton(
+                      onPressed: () {
+                        AppNavigator.pop();
+                        },
+                      style: TextButton.styleFrom(
+                          maximumSize: Size(120.sp, 40.sp),
+                          minimumSize: Size(120.sp, 40.sp),
+                          backgroundColor: Colors.black12,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50.0),
+                          )),
+                        child: Text(
+                          "${AppLocalization.getText(context)?.cancel}",
+                          style: const TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.bold),
+                        )
+                    )
+                  ],
+                ),
               )
             ],
           ),

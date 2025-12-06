@@ -22,7 +22,7 @@ abstract class CartRepository {
   Future<ApiResult<dynamic>> getOrders();
 
   Future<ApiResult<dynamic>> createOrder({
-    required int addressID,
+    int? addressID,
     required String paymentType,
     required String deliveryType,
     String? orderComment
