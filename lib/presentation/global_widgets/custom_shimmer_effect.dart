@@ -17,8 +17,8 @@ class CustomShimmerEffect extends StatelessWidget {
   Widget build(BuildContext context) {
     return Skeletonizer(
       effect: const ShimmerEffect(
-        baseColor: Color(0xffBCC1C2),
-        highlightColor: Color(0xffF9FAFB),
+        baseColor: Color(0xffBCC1C6),
+        highlightColor: Color(0xffF9FAFE),
       ),
       enabled: isLoading ?? false,
       child: leaf ?? true ? Skeleton.leaf(child: child) : child,

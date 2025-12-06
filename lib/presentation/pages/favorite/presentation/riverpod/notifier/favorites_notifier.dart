@@ -1,12 +1,8 @@
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:thousand_melochey/core/handlers/local_storage.dart';
 import 'package:thousand_melochey/presentation/pages/favorite/data/favorites_response.dart';
 import 'package:thousand_melochey/presentation/pages/favorite/presentation/riverpod/state/favorites_state.dart';
-import 'package:thousand_melochey/presentation/pages/favorite/repository/favorites_repository.dart';
-
 import '../../../../../../core/imports/imports.dart';
 import '../../../../home/data/products_response.dart';
-import '../../../../favorite/data/favorites_response.dart';
 
 class FavoritesNotifier extends StateNotifier<FavoritesState> {
   final FavoritesRepository _favoritesRepository;
@@ -15,8 +11,7 @@ class FavoritesNotifier extends StateNotifier<FavoritesState> {
 
   List<FavoritesDatum> localFavorites = [];
 
-  switchFavorite(bool isLiked, int id, context,
-      {VoidCallback? success}) {
+  switchGlobalFavorite(bool isLiked, int id, context, {VoidCallback? success}) {
     // Оптимистичное обновление UI
     final newPendingFavorites = Map<int, bool>.from(state.pendingFavorites);
     newPendingFavorites[id] = !isLiked;
@@ -92,14 +87,49 @@ class FavoritesNotifier extends StateNotifier<FavoritesState> {
     }
   }
 
+  addLocalFavorite(Product product) {
+    // ... любое действие с локальным хранилищем ...
+    final updated = [...state.localFavoritesForGuest, product];
+    state = state.copyWith(localFavoritesForGuest: updated);
+    LocalStorage.instance.saveLocalFavorite(product);
+  }
 
-  bool? checkFavorite(int id){
-    // Сначала проверяем pending состояния
-    if (state.pendingFavorites.containsKey(id)) {
-      return state.pendingFavorites[id];
+  removeLocalFavorite(int id) {
+    final updated = state.localFavoritesForGuest.where((p) => p.id != id).toList();
+    state = state.copyWith(localFavoritesForGuest: updated);
+    LocalStorage.instance.removeLocalFavorite(id);
+  }
+
+  switchLocalFavorite(bool isLiked, Product product) {
+    if (isLiked == true) {
+      removeLocalFavorite(product.id ?? 0);
+    } else {
+      addLocalFavorite(product);
     }
-    // Затем проверяем реальное состояние
-    return state.favoritesList?.data?.any((likedProduct) => likedProduct.id == id) ?? false;
+  }
+
+  switchFavorite(BuildContext context, bool isLiked, int id, Product product) {
+    if (LocalStorage.instance.isAuthenticated()) {
+      switchGlobalFavorite(isLiked, id, context);
+    }
+    else {
+     switchLocalFavorite(isLiked, product);
+    }
+  }
+
+  bool? checkFavorite(int id) {
+
+    if (LocalStorage.instance.isAuthenticated()) {
+      // Сначала проверяем pending состояния
+      if (state.pendingFavorites.containsKey(id)) {
+        return state.pendingFavorites[id];
+      }
+      // Затем проверяем реальное состояние
+      return state.favoritesList?.data?.any((likedProduct) => likedProduct.id == id) ?? false;
+    } else {
+      final favorites = LocalStorage.instance.getLocalFavorites();
+      return favorites.any((item) => item.id == id);
+    }
   }
 
   Future<void> getFavoritesList({
@@ -109,9 +139,7 @@ class FavoritesNotifier extends StateNotifier<FavoritesState> {
     //required String jwtToken
   }) async {
     state = state.copyWith(isFavoritesLoading: true);
-    final jwtToken = LocalStorage.instance.getJWT();
-    final response =
-        await _favoritesRepository.getFavoritesList(jwtToken: "jwt=$jwtToken");
+    final response = await _favoritesRepository.getFavoritesList();
     response.when(
       success: (data) async {
         state = state.copyWith(isFavoritesLoading: false, favoritesList: data);
@@ -140,21 +168,21 @@ class FavoritesNotifier extends StateNotifier<FavoritesState> {
     //required String jwtToken
   }) async {
     state = state.copyWith(isLoading: true);
-    final jwtToken = await LocalStorage.instance.getJWT();
-    final response = await _favoritesRepository.addToFavorites(
-        productID: productID, jwtToken: "jwt=$jwtToken");
-    response.when(success: (data) {
+    final response = await _favoritesRepository.addToFavorites(productID: productID);
+    response.when(
+      success: (data) {
       state = state.copyWith(isLoading: false, addToFavorites: data);
       success?.call();
-    }, failure: (fail, status, data) {
-      state = state.copyWith(
-          isLoading: false, isResponseError: true, addToFavorites: data);
+    },
+      failure: (fail, status, data) {
+          state = state.copyWith(isLoading: false, isResponseError: true, addToFavorites: data);
       if (fail == const NetworkExceptions.unauthorisedRequest()) {
         unAuthorised?.call();
       }
       debugPrint('==> add to favorites response failure: $fail');
       failure?.call();
-    });
+    },
+    );
   }
 
   Future<void> removeFromFavorites({
@@ -165,20 +193,50 @@ class FavoritesNotifier extends StateNotifier<FavoritesState> {
     required int productID,
   }) async {
     state = state.copyWith(isLoading: true);
-
-    final jwtToken = LocalStorage.instance.getJWT();
-    final response = await _favoritesRepository.removeFromFavorites(
-        productID: productID, jwtToken: "jwt=$jwtToken");
-    response.when(success: (data) {
+    final response = await _favoritesRepository.removeFromFavorites(productID: productID);
+    response.when(
+      success: (data) {
       state = state.copyWith(isLoading: false, isFavorite: true);
       success?.call();
-    }, failure: (fail, status, data) {
+    },
+      failure: (fail, status, data) {
       state = state.copyWith(isLoading: false, isResponseError: true);
       if (fail == const NetworkExceptions.unauthorisedRequest()) {
         unAuthorised?.call();
       }
       debugPrint('==>remove from favorite response failure: $fail');
       failure?.call();
-    });
+    },
+    );
+  }
+
+  Future<void> syncLocalFavoritesToBackend() async {
+    if (!LocalStorage.instance.isAuthenticated()) return;
+    // Локальные избранные (как объекты CartProduct совместимой структуры)
+    final local = LocalStorage.instance.getLocalFavorites();
+    if (local.isEmpty) return;
+
+    // Текущие избранные на сервере
+    final resp = await _favoritesRepository.getFavoritesList();
+    final serverIds = <int>[];
+    resp.when(
+      success: (data) {
+        final ids = (data.data ?? []).map((e) => e.id).whereType<int>();
+        serverIds.addAll(ids);
+      },
+      failure: (f, s, d) {
+        // если не удалось — попробуем синк без списка
+      },
+    );
+
+    for (final item in local) {
+      final id = item.id;
+      if (id == null) continue;
+      if (serverIds.contains(id)) continue;
+      await _favoritesRepository.addToFavorites(productID: id);
+    }
+
+    await LocalStorage.instance.clearLocalFavorites();
+    await getFavoritesList();
   }
 }

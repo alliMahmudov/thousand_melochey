@@ -61,7 +61,7 @@ class NetworkExceptions with _$NetworkExceptions {
                   break;
                 case 401:
                   LocalStorage.instance.logout();
-                  AppNavigator.pushAndPopUntil(const SignInRoute());
+                  AppNavigator.pushAndPopUntil(SignInRoute());
                   networkExceptions =
                       const NetworkExceptions.unauthorisedRequest();
 

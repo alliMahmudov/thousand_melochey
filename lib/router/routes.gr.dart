@@ -103,9 +103,14 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     SignInRoute.name: (routeData) {
+      final args = routeData.argsAs<SignInRouteArgs>(
+          orElse: () => const SignInRouteArgs());
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const SignInPage(),
+        child: SignInPage(
+          redirectFromCart: args.redirectFromCart,
+          key: args.key,
+        ),
       );
     },
     SignUpRoute.name: (routeData) {
@@ -405,16 +410,39 @@ class ResetPassRouteArgs {
 
 /// generated route for
 /// [SignInPage]
-class SignInRoute extends PageRouteInfo<void> {
-  const SignInRoute({List<PageRouteInfo>? children})
-      : super(
+class SignInRoute extends PageRouteInfo<SignInRouteArgs> {
+  SignInRoute({
+    bool? redirectFromCart,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
           SignInRoute.name,
+          args: SignInRouteArgs(
+            redirectFromCart: redirectFromCart,
+            key: key,
+          ),
           initialChildren: children,
         );
 
   static const String name = 'SignInRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static const PageInfo<SignInRouteArgs> page = PageInfo<SignInRouteArgs>(name);
+}
+
+class SignInRouteArgs {
+  const SignInRouteArgs({
+    this.redirectFromCart,
+    this.key,
+  });
+
+  final bool? redirectFromCart;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'SignInRouteArgs{redirectFromCart: $redirectFromCart, key: $key}';
+  }
 }
 
 /// generated route for

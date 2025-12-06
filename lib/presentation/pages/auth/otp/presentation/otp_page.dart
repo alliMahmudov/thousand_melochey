@@ -1,5 +1,7 @@
 import 'package:thousand_melochey/core/imports/imports.dart';
 import 'package:thousand_melochey/presentation/pages/auth/otp/presentation/rivepod/provider/otp_provider.dart';
+import 'package:thousand_melochey/presentation/pages/cart/presentation/riverpod/provider/cart_provider.dart';
+import 'package:thousand_melochey/presentation/pages/favorite/presentation/riverpod/provider/favorites_provider.dart';
 import 'package:slide_countdown/slide_countdown.dart';
 import 'package:pinput/pinput.dart';
 import 'package:thousand_melochey/service/localizations/localization.dart';
@@ -103,7 +105,13 @@ class _OTPPageState extends ConsumerState<OTPPage> {
                       notifier.otpPost(
                       email: widget.email,
                       otpCode: verificationCode,
-                      success: () {
+                      success: () async {
+                        // Синхронизируем локальные данные гостя с сервером
+                        final cartNotifier = ref.read(cartProvider.notifier);
+                        final favoritesNotifier = ref.read(favoritesProvider.notifier);
+                        await cartNotifier.syncLocalCartToBackend();
+                        await favoritesNotifier.syncLocalFavoritesToBackend();
+                        
                         AppNavigator.pushAndPopUntil(
                           const MainRoute(),
                         );
@@ -115,7 +123,13 @@ class _OTPPageState extends ConsumerState<OTPPage> {
                 notifier.otpPost(
                     email: widget.email,
                     otpCode: verificationCode,
-                    success: () {
+                    success: () async {
+                      // Синхронизируем локальные данные гостя с сервером
+                      final cartNotifier = ref.read(cartProvider.notifier);
+                      final favoritesNotifier = ref.read(favoritesProvider.notifier);
+                      await cartNotifier.syncLocalCartToBackend();
+                      await favoritesNotifier.syncLocalFavoritesToBackend();
+                      
                       AppNavigator.pushAndPopUntil(
                         const MainRoute(),
                       );

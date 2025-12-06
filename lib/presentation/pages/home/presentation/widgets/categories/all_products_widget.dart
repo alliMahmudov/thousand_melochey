@@ -1,8 +1,7 @@
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:thousand_melochey/core/handlers/local_storage.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
-import 'package:thousand_melochey/presentation/global_widgets/custom_shimmer_effect.dart';
-import 'package:thousand_melochey/presentation/pages/favorite/presentation/riverpod/provider/favorites_provider.dart';
+import 'package:thousand_melochey/presentation/pages/cart/data/cart_response.dart';
+import 'package:thousand_melochey/presentation/pages/cart/data/local_cart_item_model.dart';
 import 'package:thousand_melochey/service/localizations/localization.dart';
 
 class ProductsListWidget extends ConsumerStatefulWidget {
@@ -21,8 +20,7 @@ class _ProductsListWidgetState extends ConsumerState<ProductsListWidget>
       final favoriteNotifier = ref.read(favoritesProvider.notifier);
       final cartNotifier = ref.read(cartProvider.notifier);
       notifier.getProducts(isRefresh: true);
-      favoriteNotifier.getFavoritesList();
-      cartNotifier.getCartProducts();
+      cartNotifier.getCartItems();
     });
     super.initState();
   }
@@ -30,8 +28,8 @@ class _ProductsListWidgetState extends ConsumerState<ProductsListWidget>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final notifier = ref.read(homeProvider.notifier);
     final state = ref.watch(homeProvider);
+    final cartState = ref.watch(cartProvider);
     final favoriteNotifier = ref.read(favoritesProvider.notifier);
     final favoritesState = ref.watch(favoritesProvider);
     final cartNotifier = ref.read(cartProvider.notifier);
@@ -42,7 +40,8 @@ class _ProductsListWidgetState extends ConsumerState<ProductsListWidget>
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             mainAxisSpacing: 10.0.h,
-            childAspectRatio: .95,
+            crossAxisSpacing: 10.0.h,
+            childAspectRatio: .585,
           ),
           delegate: SliverChildBuilderDelegate(
             childCount: 10,
@@ -90,15 +89,15 @@ class _ProductsListWidgetState extends ConsumerState<ProductsListWidget>
     return SliverGrid(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2, // Number of columns
-        mainAxisSpacing: 10.0.h, // Space between rows
-        childAspectRatio: .95, // Aspect ratio of the cards
+        mainAxisSpacing: 10.h, // Space between rows
+        crossAxisSpacing: 10.h,
+        childAspectRatio: .585, // Aspect ratio of the cards
       ),
       delegate: SliverChildBuilderDelegate(
         childCount: state.products?.results?.length,
         (BuildContext context, int index) {
           final product = state.products?.results?[index];
           final isLiked = favoriteNotifier.checkFavorite(product?.id ?? 0);
-          final isPending = favoritesState.pendingFavorites[product?.id ?? 0] ?? false;
           return InkWell(
             onTap: () {
               AppNavigator.push(
@@ -119,11 +118,26 @@ class _ProductsListWidgetState extends ConsumerState<ProductsListWidget>
               id: product?.id,
               isFavorite: isLiked ?? false,
               onTap: () {
-                favoriteNotifier.switchFavorite(isLiked ?? false, product?.id ?? 0, context, success: (){
-                  // notifier.getProducts(isRefresh: true);
-                });
+                if (product != null) {
+                  favoriteNotifier.switchFavorite(
+                      context,
+                      isLiked ?? false,
+                      product.id ?? 0,
+                      product,
+                  );
+                }
               },
-              addToCart: (){},
+              addToCart: () {
+                cartNotifier.addToCart(context, LocalCartProduct(
+                  quantity: 1,
+                  id: product?.id,
+                  name: product?.name,
+                  price: product?.price,
+                  image: product?.image,
+                  images: product?.images,
+                  description: product?.description,
+                ));
+              },
             )
           );
         },

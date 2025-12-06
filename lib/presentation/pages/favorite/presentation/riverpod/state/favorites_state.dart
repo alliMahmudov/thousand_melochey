@@ -1,7 +1,7 @@
 import 'package:thousand_melochey/core/imports/imports.dart';
 import 'package:thousand_melochey/presentation/pages/favorite/data/add_to_favorites_response.dart';
 import 'package:thousand_melochey/presentation/pages/favorite/data/favorites_response.dart';
-import 'package:thousand_melochey/presentation/pages/home/data/products_response.dart';
+import '../../../../home/data/products_response.dart';
 
 part 'favorites_state.freezed.dart';
 
@@ -16,8 +16,8 @@ class FavoritesState with _$FavoritesState {
     @Default(false) bool isFavoritesLoading,
     @Default(false) bool isFavorite,
     @Default({}) Map<int, bool> pendingFavorites,
+    @Default([]) List<Product> localFavoritesForGuest,
 
-    ProductsResponse? products,
     FavoritesResponse? favoritesList,
     AddToFavoritesResponse? addToFavorites
   }) = _FavoritesState;

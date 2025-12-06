@@ -1,20 +1,25 @@
-import 'package:thousand_melochey/presentation/pages/favorite/data/favorites_response.dart';
-import 'package:thousand_melochey/presentation/pages/favorite/presentation/riverpod/notifier/favorites_notifier.dart';
-
 import '../../../../../core/imports/imports.dart';
 import '../../../../../service/localizations/localization.dart';
 import '../../../../global_widgets/cached_network_image.dart';
 
 class FavoriteProductsWidget extends StatelessWidget {
-  final FavoritesDatum product;
-  final FavoritesNotifier notifier;
-  final CartNotifier cartNotifier;
+  final int id;
+  final String name;
+  final String price;
+  final String image;
+  final String description;
+  final Function addToFavorite;
+  final Function addToCart;
   final int productIndex;
 
   const FavoriteProductsWidget({
-    required this.product,
-    required this.notifier,
-    required this.cartNotifier,
+    required this.id,
+    required this.name,
+    required this.price,
+    required this.image,
+    required this.description,
+    required this.addToFavorite,
+    required this.addToCart,
     required this.productIndex,
     super.key});
 
@@ -53,7 +58,7 @@ class FavoriteProductsWidget extends StatelessWidget {
                   topLeft: Radius.circular(16.r),
                   bottomLeft: Radius.circular(16.r),
                 ),
-                child: CustomNetworkImage(imagePath: product.image),
+                child: CustomNetworkImage(imagePath: image),
               ),
             ),
 
@@ -66,7 +71,7 @@ class FavoriteProductsWidget extends StatelessWidget {
                   children: [
                     // Product name
                     Text(
-                      product.name ?? '',
+                      name ?? '',
                       style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w600,
@@ -74,10 +79,10 @@ class FavoriteProductsWidget extends StatelessWidget {
                     ),
 
                     // Product description
-                    if (product.description?.isNotEmpty == true)...[
+                    if (description.isNotEmpty == true)...[
                       4.verticalSpace,
                       Text(
-                        product.description!,
+                        description,
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
@@ -106,7 +111,7 @@ class FavoriteProductsWidget extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                '${product.price ?? '0'} UZS',
+                                '${price ?? '0'} UZS',
                                 style: TextStyle(
                                   fontSize: 14.sp,
                                   fontWeight: FontWeight.bold,
@@ -132,8 +137,7 @@ class FavoriteProductsWidget extends StatelessWidget {
                                   size: 20.sp,
                                 ),
                                 onPressed: () {
-                                  notifier.localFavorites.removeAt(productIndex);
-                                  notifier.removeFromFavorites(productID: product.id ?? 0);
+                                  addToFavorite.call();
                                 },
                               ),
                             ),
@@ -150,12 +154,7 @@ class FavoriteProductsWidget extends StatelessWidget {
                                   size: 20.sp,
                                 ),
                                 onPressed: () {
-                                  cartNotifier.addToCart(id: product.id ?? 0, context: context,
-                                      success: (){
-                                        cartNotifier.getCartProducts();
-                                      }
-                                  );
-                                  // AppHelpers.showErrorToast(errorMessage: "Added to cart");
+                                  addToCart.call();
                                 },
                               ),
                             ),

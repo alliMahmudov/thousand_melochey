@@ -158,7 +158,7 @@ class ProfileRepositoryImpl extends ProfileRepository {
   }
 
   @override
-  Future<ApiResult> getDistricts() async{
+  Future<ApiResult> getDistricts() async {
     try {
       final client = inject<HttpService>().client(requireAuth: true);
       final response = await client.get('api/districts/');
@@ -172,6 +172,32 @@ class ProfileRepositoryImpl extends ProfileRepository {
       );
     } catch (e) {
       debugPrint('==> Get districts failure: $e');
+      return ApiResult.failure(
+          error: NetworkExceptions.getDioException(e),
+          statusCode: NetworkExceptions.getDioStatus(e));
+    }
+  }
+
+  @override
+  Future<ApiResult> deleteAccount({required String currentPassword}) async {
+    try {
+
+      final data = <String, dynamic> {
+        "current_password": currentPassword
+      };
+
+      final client = inject<HttpService>().client(requireAuth: true);
+      final response = await client.delete('api/account/delete/', data: data);
+      return const ApiResult.success(data: "Account deleted");
+    } on DioException catch (e) {
+      debugPrint('==> Delete account failure: ${e.response?.data}');
+      return ApiResult.failure(
+          error: NetworkExceptions.getDioException(e),
+          statusCode: NetworkExceptions.getDioStatus(e),
+          data: AppApiErrorHelper.message(e.response?.data)
+      );
+    } catch (e) {
+      debugPrint('==> Delete account failure: $e');
       return ApiResult.failure(
           error: NetworkExceptions.getDioException(e),
           statusCode: NetworkExceptions.getDioStatus(e));

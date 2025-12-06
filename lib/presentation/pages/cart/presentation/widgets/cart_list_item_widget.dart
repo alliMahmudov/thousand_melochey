@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:thousand_melochey/contstants/app_assets.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
 import 'package:thousand_melochey/presentation/global_widgets/money_formatter.dart';
+import 'package:thousand_melochey/service/localizations/localization.dart';
 
 class CartListItemWidget extends StatelessWidget {
   final String? image;
@@ -60,7 +61,7 @@ class CartListItemWidget extends StatelessWidget {
                     child: FadeInImage.assetNetwork(
                       placeholder: AppAssets.emptyImagePlaceHolder,
                       image: image ?? AppAssets.emptyImagePlaceHolder,
-                      fit: BoxFit.cover,
+                      fit: BoxFit.fill,
                       imageErrorBuilder: (context, error, stackTrace) => Container(
                         decoration: BoxDecoration(
                           color: Colors.grey[200],
@@ -114,7 +115,7 @@ class CartListItemWidget extends StatelessWidget {
                       Row(
                         children: [
                           Text(
-                            'Quantity:',
+                            '${AppLocalization.getText(context)?.order_qty}:',
                             style: TextStyle(
                               fontSize: 14.sp,
                               color: Colors.grey[600],

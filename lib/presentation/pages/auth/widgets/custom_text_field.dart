@@ -86,8 +86,7 @@ class CustomTextField extends ConsumerWidget {
                   ]
                 : keyboardType == TextInputType.emailAddress
                     ? [
-                        FilteringTextInputFormatter.allow(RegExp(
-                            r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')),
+                        FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9@._+-]')),
                       ]
                     : [],
             obscureText: (obscureText ?? false) ? state.onSecureText : false,

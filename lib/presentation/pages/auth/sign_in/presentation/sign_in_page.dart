@@ -1,14 +1,13 @@
 import 'package:thousand_melochey/core/imports/imports.dart';
-import 'package:thousand_melochey/presentation/pages/auth/sign_up/presentation/riverpod/provider/sign_up_provider.dart';
 import 'package:thousand_melochey/service/localizations/localization.dart';
-
-import '../../../home/presentation/home_page.dart';
-import '../../../main/main_page.dart';
 
 
 @RoutePage()
 class SignInPage extends ConsumerStatefulWidget {
-  const SignInPage({super.key});
+  final bool? redirectFromCart;
+  const SignInPage({
+    this.redirectFromCart,
+    super.key});
 
   @override
   ConsumerState<SignInPage> createState() => _SignInPageState();
@@ -33,6 +32,8 @@ class _SignInPageState extends ConsumerState<SignInPage> {
             spacing: 24.sp,
             children: [
               120.sp.verticalSpace,
+              if(widget.redirectFromCart == true) Text("${AppLocalization.getText(context)?.register_first}", style: TextStyle(fontSize: 14.sp),),
+
               CustomTextField(
                 controller: notifier.emailController,
                 title: "${AppLocalization.getText(context)?.email}",
@@ -88,7 +89,11 @@ class _SignInPageState extends ConsumerState<SignInPage> {
                       onTap: () {
                     notifier.signIn(
                       context: context,
-                        success: () {
+                        success: () async {
+                          final cartNotifier = ref.read(cartProvider.notifier);
+                          final favoritesNotifier = ref.read(favoritesProvider.notifier);
+                          await cartNotifier.syncLocalCartToBackend();
+                          await favoritesNotifier.syncLocalFavoritesToBackend();
                           AppNavigator.pushAndPopUntil(const MainRoute());
                         },
                         checkYourNetwork: (){

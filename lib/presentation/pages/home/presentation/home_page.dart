@@ -1,7 +1,11 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
+import 'package:pinput/pinput.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
 import 'package:thousand_melochey/presentation/pages/home/presentation/widgets/categories/all_products_widget.dart';
 import 'package:thousand_melochey/presentation/pages/catogories/presentation/widgets/category_products.dart';
+import 'package:vibration/vibration.dart';
+import 'package:vibration/vibration_presets.dart';
 
 @RoutePage()
 class HomePage extends ConsumerStatefulWidget {
@@ -28,20 +32,16 @@ class _HomePageState extends ConsumerState<HomePage>
   @override
   Widget build(BuildContext context) {
     final notifier = ref.read(homeProvider.notifier);
-    final state = ref.watch(homeProvider);
-    final favoriteNotifier = ref.read(favoritesProvider.notifier);
-    final cartNotifier = ref.read(cartProvider.notifier);
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: const Text(
-            "1000 Melochey",
+            "1000 МЕЛОЧЕЙ",
           ),
           centerTitle: true,
         ),
-        body:
-        RefreshIndicator(
+        body: RefreshIndicator(
           onRefresh: (){
             return notifier.getProducts(isRefresh: true);
           },

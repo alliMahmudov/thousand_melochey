@@ -33,7 +33,7 @@ class CartResponse {
 }
 
 class Datum {
-  final Product? product;
+  final CartProduct? product;
   final int? quantity;
 
   Datum({
@@ -42,7 +42,7 @@ class Datum {
   });
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
-    product: json["product"] == null ? null : Product.fromJson(json["product"]),
+    product: json["product"] == null ? null : CartProduct.fromJson(json["product"]),
     quantity: json["quantity"],
   );
 
@@ -52,7 +52,7 @@ class Datum {
   };
 }
 
-class Product {
+class CartProduct {
   final int? id;
   final String? name;
   final String? description;
@@ -61,7 +61,7 @@ class Product {
   final List<String>? images;
   final double? availableQuantity;
 
-  Product({
+  CartProduct({
     this.id,
     this.name,
     this.description,
@@ -71,7 +71,7 @@ class Product {
     this.availableQuantity,
   });
 
-  factory Product.fromJson(Map<String, dynamic> json) => Product(
+  factory CartProduct.fromJson(Map<String, dynamic> json) => CartProduct(
     id: json["id"],
     name: json["name"],
     description: json["description"],

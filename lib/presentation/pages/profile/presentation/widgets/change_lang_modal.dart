@@ -117,41 +117,41 @@ class _ChangeLangModalState extends ConsumerState<ChangeLangModal> {
               ),
             ),
           ),
-          GestureDetector(
-            onTap: () {
-              langNotifier.changeLang('en');
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).canvasColor,
-                borderRadius: BorderRadius.circular(12.r),
-              ),
-              child: Column(
-                children: [
-                  ListTile(
-                    minTileHeight: 55.h,
-                    title: const Text(
-                      "English",
-                    ),
-                    trailing: CupertinoRadio(
-                        inactiveColor: Theme.of(context).canvasColor,
-                        activeColor: AppColors.primaryColor,
-                        value: "en",
-                        groupValue: langState.localLang,
-                        onChanged: (value) {
-                          langNotifier.changeLang('en');
-                        }),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          // GestureDetector(
+          //   onTap: () {
+          //     langNotifier.changeLang('en');
+          //   },
+          //   child: Container(
+          //     decoration: BoxDecoration(
+          //       color: Theme.of(context).canvasColor,
+          //       borderRadius: BorderRadius.circular(12.r),
+          //     ),
+          //     child: Column(
+          //       children: [
+          //         ListTile(
+          //           minTileHeight: 55.h,
+          //           title: const Text(
+          //             "English",
+          //           ),
+          //           trailing: CupertinoRadio(
+          //               inactiveColor: Theme.of(context).canvasColor,
+          //               activeColor: AppColors.primaryColor,
+          //               value: "en",
+          //               groupValue: langState.localLang,
+          //               onChanged: (value) {
+          //                 langNotifier.changeLang('en');
+          //               }),
+          //         ),
+          //       ],
+          //     ),
+          //   ),
+          // ),
           const Divider(thickness: .6, color: Colors.grey),
           CustomButtonWidget(
               title: '${AppLocalization.getText(context)?.save}',
               isLoading: false,
               onTap: () {
-                langNotifier.setLang(langState.localLang ?? "en", context);
+                langNotifier.setLang(langState.localLang ?? "ru", context);
                 AppNavigator.pop();
               }
           ),

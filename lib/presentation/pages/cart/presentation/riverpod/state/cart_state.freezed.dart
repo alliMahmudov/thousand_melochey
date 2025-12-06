@@ -27,6 +27,8 @@ mixin _$CartState {
   String get deliveryType => throw _privateConstructorUsedError;
   Map<int, bool> get pendingCartOperations =>
       throw _privateConstructorUsedError;
+  List<LocalCartProduct> get localCartItems =>
+      throw _privateConstructorUsedError;
   CartResponse? get cartProduct => throw _privateConstructorUsedError;
   CreateOrderResponse? get orders => throw _privateConstructorUsedError;
   OrdersResponse? get getOrders => throw _privateConstructorUsedError;
@@ -55,6 +57,7 @@ abstract class $CartStateCopyWith<$Res> {
       String paymentType,
       String deliveryType,
       Map<int, bool> pendingCartOperations,
+      List<LocalCartProduct> localCartItems,
       CartResponse? cartProduct,
       CreateOrderResponse? orders,
       OrdersResponse? getOrders,
@@ -85,6 +88,7 @@ class _$CartStateCopyWithImpl<$Res, $Val extends CartState>
     Object? paymentType = null,
     Object? deliveryType = null,
     Object? pendingCartOperations = null,
+    Object? localCartItems = null,
     Object? cartProduct = freezed,
     Object? orders = freezed,
     Object? getOrders = freezed,
@@ -132,6 +136,10 @@ class _$CartStateCopyWithImpl<$Res, $Val extends CartState>
           ? _value.pendingCartOperations
           : pendingCartOperations // ignore: cast_nullable_to_non_nullable
               as Map<int, bool>,
+      localCartItems: null == localCartItems
+          ? _value.localCartItems
+          : localCartItems // ignore: cast_nullable_to_non_nullable
+              as List<LocalCartProduct>,
       cartProduct: freezed == cartProduct
           ? _value.cartProduct
           : cartProduct // ignore: cast_nullable_to_non_nullable
@@ -175,6 +183,7 @@ abstract class _$$CartStateImplCopyWith<$Res>
       String paymentType,
       String deliveryType,
       Map<int, bool> pendingCartOperations,
+      List<LocalCartProduct> localCartItems,
       CartResponse? cartProduct,
       CreateOrderResponse? orders,
       OrdersResponse? getOrders,
@@ -203,6 +212,7 @@ class __$$CartStateImplCopyWithImpl<$Res>
     Object? paymentType = null,
     Object? deliveryType = null,
     Object? pendingCartOperations = null,
+    Object? localCartItems = null,
     Object? cartProduct = freezed,
     Object? orders = freezed,
     Object? getOrders = freezed,
@@ -250,6 +260,10 @@ class __$$CartStateImplCopyWithImpl<$Res>
           ? _value._pendingCartOperations
           : pendingCartOperations // ignore: cast_nullable_to_non_nullable
               as Map<int, bool>,
+      localCartItems: null == localCartItems
+          ? _value._localCartItems
+          : localCartItems // ignore: cast_nullable_to_non_nullable
+              as List<LocalCartProduct>,
       cartProduct: freezed == cartProduct
           ? _value.cartProduct
           : cartProduct // ignore: cast_nullable_to_non_nullable
@@ -288,12 +302,14 @@ class _$CartStateImpl implements _CartState {
       this.paymentType = '',
       this.deliveryType = '',
       final Map<int, bool> pendingCartOperations = const {},
+      final List<LocalCartProduct> localCartItems = const [],
       this.cartProduct,
       this.orders,
       this.getOrders,
       this.userAllAddresses,
       this.selectedUserAddress})
-      : _pendingCartOperations = pendingCartOperations;
+      : _pendingCartOperations = pendingCartOperations,
+        _localCartItems = localCartItems;
 
   @override
   @JsonKey()
@@ -332,6 +348,15 @@ class _$CartStateImpl implements _CartState {
     return EqualUnmodifiableMapView(_pendingCartOperations);
   }
 
+  final List<LocalCartProduct> _localCartItems;
+  @override
+  @JsonKey()
+  List<LocalCartProduct> get localCartItems {
+    if (_localCartItems is EqualUnmodifiableListView) return _localCartItems;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_localCartItems);
+  }
+
   @override
   final CartResponse? cartProduct;
   @override
@@ -345,7 +370,7 @@ class _$CartStateImpl implements _CartState {
 
   @override
   String toString() {
-    return 'CartState(isLoading: $isLoading, isProductLoading: $isProductLoading, isOrdersLoading: $isOrdersLoading, isResponseError: $isResponseError, isError: $isError, selectedOrderTab: $selectedOrderTab, errorMessage: $errorMessage, paymentType: $paymentType, deliveryType: $deliveryType, pendingCartOperations: $pendingCartOperations, cartProduct: $cartProduct, orders: $orders, getOrders: $getOrders, userAllAddresses: $userAllAddresses, selectedUserAddress: $selectedUserAddress)';
+    return 'CartState(isLoading: $isLoading, isProductLoading: $isProductLoading, isOrdersLoading: $isOrdersLoading, isResponseError: $isResponseError, isError: $isError, selectedOrderTab: $selectedOrderTab, errorMessage: $errorMessage, paymentType: $paymentType, deliveryType: $deliveryType, pendingCartOperations: $pendingCartOperations, localCartItems: $localCartItems, cartProduct: $cartProduct, orders: $orders, getOrders: $getOrders, userAllAddresses: $userAllAddresses, selectedUserAddress: $selectedUserAddress)';
   }
 
   @override
@@ -372,6 +397,8 @@ class _$CartStateImpl implements _CartState {
                 other.deliveryType == deliveryType) &&
             const DeepCollectionEquality()
                 .equals(other._pendingCartOperations, _pendingCartOperations) &&
+            const DeepCollectionEquality()
+                .equals(other._localCartItems, _localCartItems) &&
             (identical(other.cartProduct, cartProduct) ||
                 other.cartProduct == cartProduct) &&
             (identical(other.orders, orders) || other.orders == orders) &&
@@ -396,6 +423,7 @@ class _$CartStateImpl implements _CartState {
       paymentType,
       deliveryType,
       const DeepCollectionEquality().hash(_pendingCartOperations),
+      const DeepCollectionEquality().hash(_localCartItems),
       cartProduct,
       orders,
       getOrders,
@@ -421,6 +449,7 @@ abstract class _CartState implements CartState {
       final String paymentType,
       final String deliveryType,
       final Map<int, bool> pendingCartOperations,
+      final List<LocalCartProduct> localCartItems,
       final CartResponse? cartProduct,
       final CreateOrderResponse? orders,
       final OrdersResponse? getOrders,
@@ -447,6 +476,8 @@ abstract class _CartState implements CartState {
   String get deliveryType;
   @override
   Map<int, bool> get pendingCartOperations;
+  @override
+  List<LocalCartProduct> get localCartItems;
   @override
   CartResponse? get cartProduct;
   @override

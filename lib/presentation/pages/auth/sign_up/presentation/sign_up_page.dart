@@ -17,6 +17,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
     final notifier = ref.read(signUpProvider.notifier);
     final state = ref.watch(signUpProvider);
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: Text("${AppLocalization.getText(context)?.sign_up}"),
       ),
@@ -34,8 +35,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                 requiredField: true,
                 title: "${AppLocalization.getText(context)?.name}",
                 labelText: "${AppLocalization.getText(context)?.enter_name}",
-                errorText:
-                    AppTextFieldErrorsStatus.status(state.errorMessage, "NAME"),
+                errorText: AppTextFieldErrorsStatus.status(state.errorMessage, "NAME"),
                 onChanged: (value) {
                   notifier.validator();
                 },
@@ -43,10 +43,10 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
               CustomTextField(
                 controller: notifier.emailController,
                 requiredField: true,
+                keyboardType: TextInputType.emailAddress,
                 title: "${AppLocalization.getText(context)?.email}",
                 labelText: "${AppLocalization.getText(context)?.enter_email}",
-                errorText:
-                    AppTextFieldErrorsStatus.status(state.errorMessage, "EMAIL"),
+                errorText: AppTextFieldErrorsStatus.status(state.errorMessage, "EMAIL"),
                 onChanged: (value) {
                   //notifier.validator();
                 },

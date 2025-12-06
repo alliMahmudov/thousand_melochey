@@ -1,8 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:thousand_melochey/contstants/app_assets.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
-import 'package:thousand_melochey/presentation/pages/catogories/presentation/riverpod/provider/categories_provider.dart';
 import 'package:thousand_melochey/service/localizations/localization.dart';
+
 
 @RoutePage()
 class CategoriesPage extends ConsumerStatefulWidget {
@@ -34,10 +33,6 @@ class _CategoriesPageState extends ConsumerState<CategoriesPage> {
         elevation: 0,
         title: Text(
           "${AppLocalization.getText(context)?.catalog}",
-          style: const TextStyle(
-            color: AppColors.white,
-            fontWeight: FontWeight.w600,
-          ),
         ),
         centerTitle: true,
       ),
@@ -202,7 +197,7 @@ class _CategoriesPageState extends ConsumerState<CategoriesPage> {
                   ),
                   SizedBox(width: 8.sp),
                   Text(
-                    "Все категории",
+                    "${AppLocalization.getText(context)?.all_categories}",
                     style: TextStyle(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w600,

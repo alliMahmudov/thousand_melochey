@@ -90,7 +90,19 @@
   "card": "Karta",
   "pick_up": "Borib olish",
   "courier": "Yetkazib berish",
-  "deliver_within_24_hours": "24 soat ichida yetkazib beramiz"
+  "deliver_within_24_hours": "24 soat ichida yetkazib beramiz",
+  "all_categories": "Barcha toifalar",
+  "register_first": "Buyurtma berish uchun siz hisobingizga kirishingiz yoki ro'yxatdan o'tishingiz kerak.",
+  "delete_account": "Akkauntni o'chirish",
+  "delete_account_info": "Akkauntni o'chirib yuborish tugmasi bosilganda, profildagi barcha ma'lumotlar, xaridlar tarixi va boshqa ma'lumotlar yo'qoladi va ularni qaytarib bo'lmaydi",
+  "delete": "O'chirish",
+  "current_password": "Hozirgi Parol",
+  "enter_current_password": "Hozirgi parolni kiriting",
+  "select_payment_type": "To'lov turini tanlang",
+  "select_delivery_type": "Yetkazib berish turini tanlang",
+  "shop_address": "Toshkent, Usta Shirin ko'cha, 122/1"
+
+
 
 
 

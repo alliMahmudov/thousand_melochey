@@ -1,5 +1,10 @@
 import 'package:flutter/cupertino.dart';
+import 'package:thousand_melochey/core/handlers/local_storage.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
+import 'package:thousand_melochey/presentation/pages/cart/data/local_cart_item_model.dart';
+import 'package:thousand_melochey/presentation/pages/favorite/data/single_type_model.dart';
+import 'package:thousand_melochey/presentation/pages/favorite/presentation/riverpod/notifier/favorites_notifier.dart';
+import 'package:thousand_melochey/presentation/pages/favorite/presentation/riverpod/state/favorites_state.dart';
 import 'package:thousand_melochey/presentation/pages/favorite/presentation/widgets/favorite_products_widget.dart';
 import 'package:thousand_melochey/presentation/pages/main/riverpod/provider/main_provider.dart';
 import 'package:thousand_melochey/service/localizations/localization.dart';
@@ -17,13 +22,13 @@ class FavoritePage extends ConsumerStatefulWidget {
 }
 
 class _FavoritePageState extends ConsumerState<FavoritePage> {
-  List<FavoritesDatum> _localFavorites = [];
-
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await ref.read(favoritesProvider.notifier).getFavoritesList();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (LocalStorage.instance.isAuthenticated()) {
+        ref.read(favoritesProvider.notifier).getFavoritesList();
+      }
     });
   }
 
@@ -34,6 +39,7 @@ class _FavoritePageState extends ConsumerState<FavoritePage> {
     final isLoading = state.isFavoritesLoading;
     final cartNotifier = ref.read(cartProvider.notifier);
     final bottomNavNotifier = ref.read(mainProvider(0).notifier);
+    final storage = LocalStorage.instance;
 
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
@@ -45,163 +51,204 @@ class _FavoritePageState extends ConsumerState<FavoritePage> {
       body: CustomShimmerEffect(
         leaf: false,
         isLoading: isLoading,
-        child: notifier.localFavorites.isEmpty
+        child: isFavoriteListEmpty(state)
             ? Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                AppColors.white,
-                AppColors.backgroundColor,
-              ],
-            ),
-          ),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Animated heart icon
-                TweenAnimationBuilder<double>(
-                  tween: Tween(begin: 0.0, end: 1.0),
-                  duration: const Duration(milliseconds: 1500),
-                  builder: (context, value, child) {
-                    return Transform.scale(
-                      scale: 0.8 + (0.2 * value),
-                      child: Container(
-                        width: 140,
-                        height: 140,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              AppColors.primaryColor.withAlpha(20),
-                              AppColors.primaryColor.withAlpha(10),
-                            ],
-                          ),
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(
-                          Icons.favorite_border,
-                          size: 70.sp * value,
-                          color: AppColors.primaryColor,
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      AppColors.white,
+                      AppColors.backgroundColor,
+                    ],
+                  ),
+                ),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // Animated heart icon
+                      TweenAnimationBuilder<double>(
+                        tween: Tween(begin: 0.0, end: 1.0),
+                        duration: const Duration(milliseconds: 1500),
+                        builder: (context, value, child) {
+                          return Transform.scale(
+                            scale: 0.8 + (0.2 * value),
+                            child: Container(
+                              width: 140,
+                              height: 140,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    AppColors.primaryColor.withAlpha(20),
+                                    AppColors.primaryColor.withAlpha(10),
+                                  ],
+                                ),
+                                shape: BoxShape.circle,
+                              ),
+                              child: Icon(
+                                Icons.favorite_border,
+                                size: 70.sp * value,
+                                color: AppColors.primaryColor,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      32.verticalSpace,
+                      Text(
+                        '${AppLocalization.getText(context)?.empty_favorite}',
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.grey[800],
                         ),
                       ),
-                    );
-                  },
-                ),
-                32.verticalSpace,
-                Text(
-                  '${AppLocalization.getText(context)?.empty_favorite}',
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.grey[800],
-                  ),
-                ),
-                12.verticalSpace,
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 40),
-                  child: Text(
-                    '${AppLocalization.getText(context)?.empty_favorite_title}',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey[600],
-                      height: 1.4,
-                    ),
-                  ),
-                ),
-                24.verticalSpace,
-                Container(
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      colors: [AppColors.primaryColor, AppColors.primaryShadeColor],
-                    ),
-                    borderRadius: BorderRadius.circular(25),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.primaryColor.withAlpha(70),
-                        blurRadius: 15,
-                        offset: const Offset(0, 5),
+                      12.verticalSpace,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 40),
+                        child: Text(
+                          '${AppLocalization.getText(context)?.empty_favorite_title}',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.grey[600],
+                            height: 1.4,
+                          ),
+                        ),
+                      ),
+                      24.verticalSpace,
+                      Container(
+                        decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                            colors: [
+                              AppColors.primaryColor,
+                              AppColors.primaryShadeColor
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(25),
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppColors.primaryColor.withAlpha(70),
+                              blurRadius: 15,
+                              offset: const Offset(0, 5),
+                            ),
+                          ],
+                        ),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            bottomNavNotifier.incrementPageIndex(0);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.transparent,
+                            shadowColor: Colors.transparent,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 40, vertical: 16),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(Icons.shopping_bag,
+                                  color: AppColors.white, size: 20),
+                              const SizedBox(width: 8),
+                              Text(
+                                '${AppLocalization.getText(context)?.start_shopping}',
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ],
                   ),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      bottomNavNotifier.incrementPageIndex(0);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.transparent,
-                      shadowColor: Colors.transparent,
-                      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(Icons.shopping_bag, color: AppColors.white, size: 20),
-                        const SizedBox(width: 8),
-                        Text(
-                          '${AppLocalization.getText(context)?.start_shopping}',
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
                 ),
-              ],
-            ),
-          ),
-        )
+              )
             : RefreshIndicator(
-          onRefresh: () async {
-            await notifier.getFavoritesList();
-            },
-          child: CustomScrollView(
-            slivers: [
-              SliverPadding(
-                padding: const EdgeInsets.only(top: 16),
-                sliver: SliverList(
+                onRefresh: () async {
+                  if (storage.isAuthenticated()) {
+                    await notifier.getFavoritesList();
+                  }
+                },
+                child: CustomScrollView (
+                  slivers: [
+                    SliverPadding(
+                      padding: const EdgeInsets.only(top: 16),
+                      sliver: SliverList(
                         delegate: SliverChildBuilderDelegate(
-                          (context, index) {
-                            final product = notifier.localFavorites[index];
-                            return InkWell(
-                              onTap: () {
-                                AppNavigator.push(ProductDetailRoute(
-                                    id: product.id,
-                                    name: product.name,
-                                    price: product.price,
-                                    description: product.description,
-                                    image: product.image,
-                                    images: product.images
-                                ));
+                              (context, index) {
+                                final product = storage.isAuthenticated()
+                                    ? ProductView.fromFavorites(notifier.localFavorites[index])
+                                    : ProductView.fromResult(storage.getLocalFavorites()[index]);
+                                return InkWell(
+                                  onTap: () {
+                                    AppNavigator.push(
+                                      ProductDetailRoute(
+                                        id: product.id,
+                                        name: product.name,
+                                        price: product.price,
+                                        description: product.description,
+                                        image: product.image,
+                                        images: product.images,
+                                      ),
+                                    );
+                                  },
+                                  child: FavoriteProductsWidget(
+                                    id: product.id ?? 0,
+                                    name: product.name ?? "",
+                                    image: product.image ?? "",
+                                    price: product.price ?? "",
+                                    description: product.description ?? "",
+                                    productIndex: index,
+                                    addToFavorite: () {
+                                      if (LocalStorage.instance.isAuthenticated()) {
+                                        notifier.localFavorites.removeAt(index);
+                                        notifier.removeFromFavorites(productID: product.id);
+                                      } else {
+                                        notifier.removeLocalFavorite(product.id);
+                                      }
+                                    },
+                                    addToCart: () {
+                                      cartNotifier.addToCart(context, LocalCartProduct(
+                                        quantity: 1,
+                                        id: product.id,
+                                        name: product.name,
+                                        price: product.price,
+                                        image: product.image,
+                                        images: product.images,
+                                        description: product.description,
+                                      ));
+                                    },
+                                  ),
+                                );
                               },
-                              child: FavoriteProductsWidget(
-                                  product: product,
-                                  notifier: notifier,
-                                  cartNotifier: cartNotifier,
-                                  productIndex: index),
-                            );
-                          },
-                          childCount: notifier.localFavorites.length,
+                          childCount: storage.isAuthenticated()
+                              ? notifier.localFavorites.length
+                              : storage.getLocalFavorites().length,
                         ),
                       ),
-              ),
-            ],
-          ),
+                    ),
+                  ],
+                ),
+            ),
         ),
-      ),
-    );
+      );
+    }
+    bool isFavoriteListEmpty(FavoritesState state) {
+    if (LocalStorage.instance.isAuthenticated()) {
+      return state.favoritesList?.data?.isEmpty ?? false;
+    } else {
+      return LocalStorage.instance.getLocalFavorites().isEmpty;
+    }
   }
 }
-
-// Widget favoritesInfoCard({required int length, required BuildContext context}) {
+ // Widget favoritesInfoCard({required int length, required BuildContext context}) {
 //   return SliverToBoxAdapter(
 //     child: Container(
 //       margin: EdgeInsets.all(16.sp),

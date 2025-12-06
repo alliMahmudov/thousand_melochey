@@ -22,6 +22,8 @@ abstract class ProfileRepository{
 
   Future<dynamic> logOut();
 
+  Future<ApiResult<dynamic>> deleteAccount({required String currentPassword});
+
  // Future<dynamic> getOrders();
 
 
