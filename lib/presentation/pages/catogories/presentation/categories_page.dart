@@ -1,5 +1,6 @@
 import 'package:thousand_melochey/contstants/app_assets.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
+import 'package:thousand_melochey/presentation/global_widgets/cached_network_image.dart';
 import 'package:thousand_melochey/service/localizations/localization.dart';
 
 
@@ -358,14 +359,15 @@ class _CategoriesPageState extends ConsumerState<CategoriesPage> {
                           topLeft: Radius.circular(12.r),
                           topRight: Radius.circular(12.r),
                         ),
-                        child: FadeInImage.assetNetwork(
-                          placeholder: AppAssets.emptyImagePlaceHolder,
-                          image: category.image,
-                          imageErrorBuilder: (context, error, stackTrace) => Image.asset(
-                            AppAssets.emptyImagePlaceHolder,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
+                        child: CustomNetworkImage(imagePath: category.image)
+                        // FadeInImage.assetNetwork(
+                        //   placeholder: AppAssets.emptyImagePlaceHolder,
+                        //   image: ,
+                        //   imageErrorBuilder: (context, error, stackTrace) => Image.asset(
+                        //     AppAssets.emptyImagePlaceHolder,
+                        //     fit: BoxFit.cover,
+                        //   ),
+                        // ),
                       )
                   ),
                   8.verticalSpace,

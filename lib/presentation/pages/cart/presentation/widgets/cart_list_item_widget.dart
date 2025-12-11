@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:thousand_melochey/contstants/app_assets.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
+import 'package:thousand_melochey/presentation/global_widgets/cached_network_image.dart';
 import 'package:thousand_melochey/presentation/global_widgets/money_formatter.dart';
 import 'package:thousand_melochey/service/localizations/localization.dart';
 
@@ -58,22 +59,7 @@ class CartListItemWidget extends StatelessWidget {
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8.r),
-                    child: FadeInImage.assetNetwork(
-                      placeholder: AppAssets.emptyImagePlaceHolder,
-                      image: image ?? AppAssets.emptyImagePlaceHolder,
-                      fit: BoxFit.fill,
-                      imageErrorBuilder: (context, error, stackTrace) => Container(
-                        decoration: BoxDecoration(
-                          color: Colors.grey[200],
-                          borderRadius: BorderRadius.circular(8.r),
-                        ),
-                        child: Icon(
-                          CupertinoIcons.photo,
-                          color: Colors.grey[400],
-                          size: 30.sp,
-                        ),
-                      ),
-                    ),
+                    child: CustomNetworkImage(imagePath: image)
                   ),
                 ),
                 
