@@ -107,7 +107,9 @@
     "carousel_search": "Find what you need\nin seconds",
     "carousel_payment": "Convenient payment —\ncash or card",
     "empty_catalog": "Empty catalog",
-    "error_occurred": "An error occurred, please try again"
+    "error_occurred": "An error occurred, please try again",
+    "no_internet_access": "No internet connection",
+    "check_wifi_or_network": "Check your Wi-Fi or mobile network"
 
 
 

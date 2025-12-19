@@ -23,7 +23,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       final notifier = ref.read(profileProvider.notifier);
       if(LocalStorage.instance.isAuthenticated()) {
-        notifier.getUserInfo();
+        notifier.getUserInfo(context: context);
       }
     });
     super.initState();
@@ -86,7 +86,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
       body: SafeArea(
         child: RefreshIndicator(
             onRefresh: () async {
-              await notifier.getUserInfo();
+              await notifier.getUserInfo(context: context);
             },
             child: SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
@@ -141,26 +141,17 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               return;
             }
           },
-          /*{
-                      */ /*AppHelpers.showCustomAlertDialog(
-                        context: context,
-                        padding: const EdgeInsets.all(12),
-                        title: "Connact number",
-                        content: "+99893 712-80-03",
-                        actions: [
-                          Material(
-                            child: InkWell(
-                                onTap: () {
-                                  AppNavigator.pop();
-                                },
-                                child: Container(
-                                    alignment: Alignment.center,
-                                    padding: const EdgeInsets.all(12),
-                                    child: const Text('close'))),
-                          )
-                        ]);*/ /*
-                    }*/
         ),
+        SectionButtonWidget(
+            icon: CupertinoIcons.location_solid,
+            title: "Bizning manzilimiz",
+            onTap: () {
+
+              final locationFunc = ref.read(cartProvider.notifier);
+
+              locationFunc.openMap();
+
+            }),
         SectionButtonWidget(
             icon: Icons.language,
             title: "${AppLocalization.getText(context)?.lang}",
@@ -271,11 +262,28 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               AppNavigator.push(const AllOrdersRoute());
             }),
         SectionButtonWidget(
-            icon: Icons.add_location_alt,
+            icon: Icons.house_outlined,
             title:
             "${AppLocalization.getText(context)?.my_addresses}",
             onTap: () {
               AppNavigator.push(const UserAddressesRoute());
+            }),
+        SectionButtonWidget(
+            icon: Icons.language,
+            title: "${AppLocalization.getText(context)?.lang}",
+            onTap: () {
+              AppHelpers.showCustomModalBottomSheetWithoutIosIcon(
+                  context: context, modal: const ChangeLangModal());
+            }),
+        SectionButtonWidget(
+            icon: Icons.storefront_sharp,
+            title: "Bizning manzilimiz",
+            onTap: () {
+
+              final locationFunc = ref.read(cartProvider.notifier);
+
+              locationFunc.openMap();
+
             }),
         SectionButtonWidget(
           icon: Icons.email_outlined,
@@ -301,33 +309,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               return;
             }
           },
-          /*{
-            */ /*AppHelpers.showCustomAlertDialog(
-              context: context,
-              padding: const EdgeInsets.all(12),
-              title: "Connact number",
-              content: "+99893 712-80-03",
-              actions: [
-                Material(
-                  child: InkWell(
-                      onTap: () {
-                        AppNavigator.pop();
-                      },
-                      child: Container(
-                          alignment: Alignment.center,
-                          padding: const EdgeInsets.all(12),
-                          child: const Text('close'))),
-                )
-              ]);*/ /*
-          }*/
         ),
-        SectionButtonWidget(
-            icon: Icons.language,
-            title: "${AppLocalization.getText(context)?.lang}",
-            onTap: () {
-              AppHelpers.showCustomModalBottomSheetWithoutIosIcon(
-                  context: context, modal: const ChangeLangModal());
-            }),
         SectionButtonWidget(
             icon: Icons.exit_to_app,
             title: "${AppLocalization.getText(context)?.log_out}",
@@ -351,5 +333,4 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
       ],
     );
   }
-
 }

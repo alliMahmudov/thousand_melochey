@@ -7,11 +7,13 @@ class EmptyPageTemplate extends ConsumerWidget {
   final IconData icon;
   final String? title;
   final String? subTitle;
+  final bool? needShopButton;
 
   const EmptyPageTemplate({
     required this.icon,
     this.title,
     this.subTitle,
+    this.needShopButton = true,
     super.key});
 
   @override
@@ -83,6 +85,7 @@ class EmptyPageTemplate extends ConsumerWidget {
             ),
           ),
           24.verticalSpace,
+          needShopButton == true ?
           Container(
             decoration: BoxDecoration(
               gradient: const LinearGradient(
@@ -125,7 +128,7 @@ class EmptyPageTemplate extends ConsumerWidget {
                 ],
               ),
             ),
-          ),
+          ) : const SizedBox()
         ],
       ),
     );

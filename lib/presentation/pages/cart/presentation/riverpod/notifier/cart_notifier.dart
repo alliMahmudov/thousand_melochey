@@ -1,16 +1,7 @@
-import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:thousand_melochey/core/handlers/local_storage.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
-import 'package:thousand_melochey/presentation/pages/cart/data/add_to_cart_response.dart';
-import 'package:thousand_melochey/presentation/pages/cart/data/get_districts_response.dart';
 import 'package:thousand_melochey/presentation/pages/cart/data/local_cart_item_model.dart';
-import 'package:thousand_melochey/service/connectivity_plus/app_connective.dart';
-import 'package:thousand_melochey/service/localizations/localization.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../../../../profile/data/all_adresses_response.dart';
 
 class CartNotifier extends StateNotifier<CartState> {
@@ -21,7 +12,8 @@ class CartNotifier extends StateNotifier<CartState> {
 
   TextEditingController orderCommentController = TextEditingController();
 
-  final isAuth = LocalStorage.instance.isAuthenticated();
+  // Проверка аутентификации должна быть динамической, а не вычисляться один раз
+  bool get isAuth => LocalStorage.instance.isAuthenticated();
 
   bool? checkForExistence(int id) {
     return state.cartProduct?.data
@@ -146,9 +138,9 @@ class CartNotifier extends StateNotifier<CartState> {
       updatedPendingOperations.remove(id);
       AppHelpers.showErrorToast(errorMessage: data.toString());
       state = state.copyWith(
-        pendingCartOperations: updatedPendingOperations,
-        isLoading: false,
-        isResponseError: true
+          pendingCartOperations: updatedPendingOperations,
+          isLoading: false,
+          isResponseError: true
       );
       if (failure == const NetworkExceptions.unauthorisedRequest()) {
         unAuthorised?.call();
@@ -179,27 +171,27 @@ class CartNotifier extends StateNotifier<CartState> {
     final response = await _cartRepository.removeFromCart(id: id);
     response.when(
         success: (data) async {
-      // Убираем из pending операций
-      final updatedPendingOperations = Map<int, bool>.from(state.pendingCartOperations);
-      updatedPendingOperations.remove(id);
-      state = state.copyWith(pendingCartOperations: updatedPendingOperations, isLoading: false);
-      success?.call();
-    },
+          // Убираем из pending операций
+          final updatedPendingOperations = Map<int, bool>.from(state.pendingCartOperations);
+          updatedPendingOperations.remove(id);
+          state = state.copyWith(pendingCartOperations: updatedPendingOperations, isLoading: false);
+          success?.call();
+        },
         failure: (failure, status, data) {
-      // Убираем из pending операций при ошибке
-      final updatedPendingOperations = Map<int, bool>.from(state.pendingCartOperations);
-      updatedPendingOperations.remove(id);
-      AppHelpers.showErrorToast(errorMessage: data.toString());
-      state = state.copyWith(
-        pendingCartOperations: updatedPendingOperations,
-        isResponseError: true,
-        isLoading: false
-      );
-      if (failure == const NetworkExceptions.unauthorisedRequest()) {
-        unAuthorised?.call();
-      }
-      debugPrint('==> remove from cart products response failure: $failure');
-    });
+          // Убираем из pending операций при ошибке
+          final updatedPendingOperations = Map<int, bool>.from(state.pendingCartOperations);
+          updatedPendingOperations.remove(id);
+          AppHelpers.showErrorToast(errorMessage: data.toString());
+          state = state.copyWith(
+              pendingCartOperations: updatedPendingOperations,
+              isResponseError: true,
+              isLoading: false
+          );
+          if (failure == const NetworkExceptions.unauthorisedRequest()) {
+            unAuthorised?.call();
+          }
+          debugPrint('==> remove from cart products response failure: $failure');
+        });
   }
 
   Future<void> deleteFromGlobalCart({
@@ -235,9 +227,9 @@ class CartNotifier extends StateNotifier<CartState> {
       updatedPendingOperations.remove(id);
       AppHelpers.showErrorToast(errorMessage: data.toString());
       state = state.copyWith(
-        pendingCartOperations: updatedPendingOperations,
-        isResponseError: true,
-        isLoading: false
+          pendingCartOperations: updatedPendingOperations,
+          isResponseError: true,
+          isLoading: false
       );
       if (failure == const NetworkExceptions.unauthorisedRequest()) {
         unAuthorised?.call();
@@ -371,7 +363,7 @@ class CartNotifier extends StateNotifier<CartState> {
           context: context,
           success: () {
             getCartProducts();
-         }
+          }
       );
     } else {
       addToLocalCart(cartProduct);
@@ -409,9 +401,9 @@ class CartNotifier extends StateNotifier<CartState> {
   clearCart() {
     if (LocalStorage.instance.isAuthenticated()) {
       clearGlobalCart(
-        success: () {
-          getCartProducts();
-        }
+          success: () {
+            getCartProducts();
+          }
       );
     } else {
       clearLocalCart();
@@ -426,35 +418,17 @@ class CartNotifier extends StateNotifier<CartState> {
     }
   }
 
-
-  // Future<void> openMap(double lat, double lng, String label) async {
-  //   final uri = Uri.parse('geo:$lat,$lng?q=$lat,$lng($label)');
-  //
-  //   if (await canLaunchUrl(uri)) {
-  //     await launchUrl(uri);
-  //   } else {
-  //     // fallback если geo: не поддерживается (например iOS)
-  //     final googleUri = Uri.parse(
-  //       'https://www.google.com/maps/search/?api=1&query=$lat,$lng',
-  //     );
-  //     await launchUrl(googleUri, mode: LaunchMode.externalApplication);
-  //   }
-  // }
-
-  Future<void> openMap(double lat, double lng, String label) async {
+  Future<void> openMap() async {
     if (Platform.isAndroid) {
       // Android покажет список приложений (chooser)
-      final uri = Uri.parse('geo:$lat,$lng?q=$lat,$lng($label)');
+      final uri = Uri.parse('geo:${41.355349},${69.253245}?q=${41.355349},${69.253245}(1000 Мелочей)');
       await launchUrl(uri, mode: LaunchMode.externalApplication);
     } else {
       // iOS откроет Apple Maps (или другую, если пользователь сменил по умолчанию)
-      final uri = Uri.parse('http://maps.apple.com/?ll=$lat,$lng&q=$label');
+      final uri = Uri.parse('http://maps.apple.com/?ll=${41.355349},${69.253245}&q=1000 Мелочей');
       await launchUrl(uri, mode: LaunchMode.externalApplication);
     }
   }
-
-
-
 
   Future<void> syncLocalCartToBackend() async {
     if (!isAuth) return;

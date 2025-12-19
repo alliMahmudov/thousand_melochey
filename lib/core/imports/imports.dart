@@ -72,5 +72,4 @@ export 'package:thousand_melochey/presentation/pages/home/presentation/widgets/p
 export 'package:thousand_melochey/presentation/pages/main/main_page.dart';
 export 'package:thousand_melochey/presentation/pages/auth/reset_password/presentation/reset_pass_page.dart';
 export 'package:thousand_melochey/presentation/pages/favorite/presentation/riverpod/provider/favorites_provider.dart';
-export 'package:thousand_melochey/presentation/pages/catogories/presentation/riverpod/provider/categories_provider.dart';
 

@@ -39,7 +39,7 @@ class AddressMapWidget extends ConsumerWidget {
               )),
           GestureDetector(
             onTap: () {
-              notifier.openMap(AppConstants.shopLat, AppConstants.shopLong, "1000 Мелочей");
+              notifier.openMap();
             },
             child: Container(
               decoration: BoxDecoration(

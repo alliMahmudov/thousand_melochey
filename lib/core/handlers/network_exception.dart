@@ -60,15 +60,41 @@ class NetworkExceptions with _$NetworkExceptions {
 
                   break;
                 case 401:
-                  LocalStorage.instance.logout();
-                  AppNavigator.pushAndPopUntil(SignInRoute());
+                  // Если токен есть, но сервер вернул 401 - токен невалидный
+                  // TokenInterceptor уже обработал это, но на всякий случай проверяем еще раз
+                  if (LocalStorage.instance.isAuthenticated()) {
+                    final path = error.requestOptions.path.toLowerCase();
+                    final isAuthRequest = path.contains('login') || 
+                                          path.contains('sign-in') || 
+                                          path.contains('sign-up') ||
+                                          path.contains('otp') ||
+                                          path.contains('forgot-password') ||
+                                          path.contains('reset-password');
+                    if (!isAuthRequest) {
+                      LocalStorage.instance.logout();
+                      AppNavigator.pushAndPopUntil(SignInRoute());
+                    }
+                  }
                   networkExceptions =
                       const NetworkExceptions.unauthorisedRequest();
 
                   break;
                 case 403:
-                  // LocalStorage.instance.logout();
-                  // AppNavigator.pushAndPopUntil(const SignInRoute());
+                  // Если токен есть, но сервер вернул 403 - токен невалидный
+                  // TokenInterceptor уже обработал это, но на всякий случай проверяем еще раз
+                  if (LocalStorage.instance.isAuthenticated()) {
+                    final path = error.requestOptions.path.toLowerCase();
+                    final isAuthRequest = path.contains('login') || 
+                                          path.contains('sign-in') || 
+                                          path.contains('sign-up') ||
+                                          path.contains('otp') ||
+                                          path.contains('forgot-password') ||
+                                          path.contains('reset-password');
+                    if (!isAuthRequest) {
+                      LocalStorage.instance.logout();
+                      AppNavigator.pushAndPopUntil(SignInRoute());
+                    }
+                  }
                   networkExceptions =
                       const NetworkExceptions.unauthorisedRequest();
 

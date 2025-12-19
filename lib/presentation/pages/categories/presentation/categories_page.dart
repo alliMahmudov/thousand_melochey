@@ -1,6 +1,8 @@
-import 'package:thousand_melochey/contstants/app_assets.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
 import 'package:thousand_melochey/presentation/global_widgets/cached_network_image.dart';
+import 'package:thousand_melochey/presentation/global_widgets/empty_page_template.dart';
+import 'package:thousand_melochey/presentation/pages/categories/presentation/riverpod/provider/categories_provider.dart';
 import 'package:thousand_melochey/service/localizations/localization.dart';
 
 
@@ -274,40 +276,10 @@ class _CategoriesPageState extends ConsumerState<CategoriesPage> {
   }
 
   Widget emptyState() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            padding: EdgeInsets.all(20.sp),
-            decoration: BoxDecoration(
-              color: AppColors.white,
-              borderRadius: BorderRadius.circular(20.r),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
-                  blurRadius: 10,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: Icon(Icons.category_outlined,
-              size: 80.sp,
-              color: Colors.grey[400],
-            ),
-          ),
-          24.verticalSpace,
-          Text(
-            "Нет доступных категорий",
-            style: TextStyle(
-              fontSize: 20.sp,
-              fontWeight: FontWeight.w600,
-              color: Colors.grey[700],
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
+    return EmptyPageTemplate(
+      icon: Icons.category_outlined,
+      title: "${AppLocalization.getText(context)?.empty_catalog}",
+      needShopButton: false,
     );
   }
 
@@ -327,7 +299,10 @@ class _CategoriesPageState extends ConsumerState<CategoriesPage> {
           final category = categories[index];
           return GestureDetector(
             onTap: () {
-              AppNavigator.push(CategoryProductsRoute(categoryName: category.name ?? ""));
+              AppNavigator.push(CategoryProductsRoute(
+                  categoryName: category.name ?? "",
+                  categoryId: category.id
+              ));
             },
             child: Container(
               decoration: BoxDecoration(

@@ -1,8 +1,7 @@
 import 'package:thousand_melochey/core/imports/imports.dart';
 import 'package:thousand_melochey/presentation/pages/cart/presentation/cart_page.dart';
-import 'package:thousand_melochey/presentation/pages/catogories/presentation/categories_page.dart';
-import 'package:thousand_melochey/presentation/pages/catogories/presentation/widgets/category_products.dart';
-
+import 'package:thousand_melochey/presentation/pages/categories/presentation/categories_page.dart';
+import 'package:thousand_melochey/presentation/pages/categories/presentation/widgets/category_products.dart';
 import '../presentation/pages/profile/presentation/widgets/all_orders_page.dart';
 import '../presentation/pages/profile/presentation/widgets/user_addresses_page.dart';
 

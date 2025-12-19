@@ -106,7 +106,9 @@
     "carousel_search": "Kerakli mahsulotni\nbir necha soniyada toping",
     "carousel_payment": "Qulay to'lov —\nnaqd yoki karta",
     "empty_catalog": "Bo'sh katalog",
-    "error_occurred": "Xatolik yuz berdi, qaytadan urinib ko'ring"
+    "error_occurred": "Xatolik yuz berdi, qaytadan urinib ko'ring",
+    "no_internet_access": "Internetga ulanish yo'q",
+    "check_wifi_or_network": "Wi-Fi yoki mobil tarmog'ingizni tekshiring"
 
 
 

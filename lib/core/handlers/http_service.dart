@@ -18,18 +18,16 @@ class HttpService {
       sendTimeout: const Duration(minutes: 1),
       headers: {
         'Accept': 'application/json',
-        // if (isToken) 'cookie': jwtToken,
         'Accept-Language': LocalStorage.instance.getLang(),
-        'cookie': 'jwt=${LocalStorage.instance.getJWT()}'
-        // 'Content-type': 'application/json',
-        // 'Authorization': 'Bearer ${LocalStorage.instance.getToken()}'
+        // Токен добавляется только через TokenInterceptor, чтобы избежать дублирования
+        // и правильно обрабатывать requireAuth
       },
     ),
   )
     ..interceptors.add(TokenInterceptor(requireAuth: requireAuth))
     ..interceptors.add(LogInterceptor(responseBody: true, requestBody: true))
     ..interceptors.add(CookieManager(CookieJar()))
-   // ..interceptors.add(CachedInterceptor(requiredPost: requiredPost))
-    //..transformer = FlutterTransformer()
-  ;
+  // ..interceptors.add(CachedInterceptor(requiredPost: requiredPost))
+  //..transformer = FlutterTransformer()
+      ;
 }

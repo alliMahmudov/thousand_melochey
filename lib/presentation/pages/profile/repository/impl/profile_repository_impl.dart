@@ -179,6 +179,32 @@ class ProfileRepositoryImpl extends ProfileRepository {
   }
 
   @override
+  Future<ApiResult> changeAppLanguage({
+    required String lang
+}) async {
+    final data = <String, dynamic> {
+      "language": lang,
+    };
+    try {
+      final client = inject<HttpService>().client(requireAuth: true);
+      final response = await client.post('api/change-language/', data: data);
+      return ApiResult.success(
+          data: GetDistrictsResponse.fromJson(response.data));
+    } on DioException catch (e) {
+      debugPrint('==> Get districts failure: ${e.response?.data}');
+      return ApiResult.failure(
+        error: NetworkExceptions.getDioException(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
+    } catch (e) {
+      debugPrint('==> Get districts failure: $e');
+      return ApiResult.failure(
+          error: NetworkExceptions.getDioException(e),
+          statusCode: NetworkExceptions.getDioStatus(e));
+    }
+  }
+
+  @override
   Future<ApiResult> deleteAccount({required String currentPassword}) async {
     try {
 

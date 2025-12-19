@@ -1,7 +1,6 @@
 import 'package:animated_loading_border/animated_loading_border.dart';
 import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:thousand_melochey/contstants/app_colors.dart';
 
 class CustomShimmerEffect extends StatelessWidget {
   final Widget child;
