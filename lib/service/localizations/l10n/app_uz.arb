@@ -100,7 +100,13 @@
   "enter_current_password": "Hozirgi parolni kiriting",
   "select_payment_type": "To'lov turini tanlang",
   "select_delivery_type": "Yetkazib berish turini tanlang",
-  "shop_address": "Toshkent, Usta Shirin ko'cha, 122/1"
+  "shop_address": "Toshkent, Usta Shirin ko'cha, 122/1",
+   "carousel_delivery": "Toshkent bo'ylab\nbepul yetkazib berish",
+    "carousel_popular": "Mashhur mahsulotlar\nqulay narxlarda",
+    "carousel_search": "Kerakli mahsulotni\nbir necha soniyada toping",
+    "carousel_payment": "Qulay to'lov —\nnaqd yoki karta",
+    "empty_catalog": "Bo'sh katalog",
+    "error_occurred": "Xatolik yuz berdi, qaytadan urinib ko'ring"
 
 
 

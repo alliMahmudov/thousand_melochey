@@ -101,7 +101,13 @@
   "enter_current_password": "Enter Current Password",
   "select_payment_type": "Select payment type",
   "select_delivery_type": "Select delivery type",
-  "shop_address": "Toshkent, Usta Shirin ko'cha, 122/1"
+  "shop_address": "Toshkent, Usta Shirin ko'cha, 122/1",
+   "carousel_delivery": "Free delivery\nwithin Tashkent",
+    "carousel_popular": "Popular products\nat great prices",
+    "carousel_search": "Find what you need\nin seconds",
+    "carousel_payment": "Convenient payment —\ncash or card",
+    "empty_catalog": "Empty catalog",
+    "error_occurred": "An error occurred, please try again"
 
 
 
