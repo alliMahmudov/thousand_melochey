@@ -6,7 +6,9 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:thousand_melochey/core/handlers/local_storage.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
+import 'package:thousand_melochey/presentation/global_widgets/no_internet_screen.dart';
 import 'package:thousand_melochey/presentation/global_widgets/restart_widget.dart';
+import 'package:thousand_melochey/service/connectivity_plus/internet_status_provider.dart';
 import 'package:thousand_melochey/service/localizations/localization.dart';
 import 'package:thousand_melochey/service/localizations/riverpod/provider/localization_provider.dart';
 import 'package:toastification/toastification.dart';
@@ -32,6 +34,7 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final langState = ref.watch(langProvider(0));
+    final internetState = ref.watch(internetStatusProvider);
     FlutterNativeSplash.remove();
     return RestartWidget(
       child: ScreenUtilInit(
@@ -44,10 +47,15 @@ class MyApp extends ConsumerWidget {
               debugShowCheckedModeBanner: false,
               routerConfig: appRouter.config(),
               title: '1000 МЕЛОЧЕЙ',
+              builder: (context, child) {
+                if (internetState != InternetState.disconnected) {
+                  return const NoInternetScreen();
+                }
+                return child!;
+              },
               theme: ThemeData(
-                //colorSchemeSeed: AppColors.primaryColor,
                 primaryColor: AppColors.primaryColor,
-                textTheme:  GoogleFonts.interTextTheme(),
+                textTheme: GoogleFonts.interTextTheme(),
                 appBarTheme: AppBarTheme(
                   color: AppColors.primaryColor,
                   centerTitle: true,
@@ -72,11 +80,11 @@ class MyApp extends ConsumerWidget {
               ],
               locale: langState.currentLang,
               supportedLocales: const [
-                // Locale('en'),
                 Locale('ru'),
                 Locale('uz'),
               ],
             ),
+
           );
         },
       ),
