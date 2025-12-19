@@ -1,11 +1,7 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
-import 'package:pinput/pinput.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
 import 'package:thousand_melochey/presentation/pages/home/presentation/widgets/categories/all_products_widget.dart';
-import 'package:thousand_melochey/presentation/pages/catogories/presentation/widgets/category_products.dart';
-import 'package:vibration/vibration.dart';
-import 'package:vibration/vibration_presets.dart';
 
 @RoutePage()
 class HomePage extends ConsumerStatefulWidget {
@@ -24,8 +20,7 @@ class _HomePageState extends ConsumerState<HomePage>
   void didChangeDependencies() {
     final notifier = ref.read(homeProvider.notifier);
 
-    tabController =
-        TabController(length: notifier.tabs(context).length, vsync: this);
+    tabController = TabController(length: notifier.tabs(context).length, vsync: this);
     super.didChangeDependencies();
   }
 
@@ -62,10 +57,30 @@ class _HomePageState extends ConsumerState<HomePage>
                     },
                   ),
                 ),
-                const Expanded(
+                Expanded(
                   child: CustomScrollView(
                     slivers: [
-                      ProductsListWidget()
+                      SliverToBoxAdapter(
+                          child: CarouselSlider(
+                        options: CarouselOptions(height: 150.h, viewportFraction: 0.9),
+                            items: [1, 2, 3, 4].map((i) {
+                              return Builder(
+                                builder: (BuildContext context) {
+                                  return Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      margin: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 4),
+                                      decoration: BoxDecoration(
+                                          color: Colors.amber,
+                                        borderRadius: BorderRadius.circular(12.r)
+                                      ),
+                                      child: Text('text $i', style: const TextStyle(fontSize: 16.0),)
+                                  );
+                                },
+                              );
+                            }).toList(),
+                      )),
+                      const SliverToBoxAdapter(child: SizedBox(height: 10,),),
+                      const ProductsListWidget()
                     ],
                   ),
                 ),
