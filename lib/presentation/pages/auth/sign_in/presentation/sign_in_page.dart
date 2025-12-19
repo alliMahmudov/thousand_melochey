@@ -92,8 +92,11 @@ class _SignInPageState extends ConsumerState<SignInPage> {
                         success: () async {
                           final cartNotifier = ref.read(cartProvider.notifier);
                           final favoritesNotifier = ref.read(favoritesProvider.notifier);
+                          final profileNotifier = ref.read(profileProvider.notifier);
                           await cartNotifier.syncLocalCartToBackend();
                           await favoritesNotifier.syncLocalFavoritesToBackend();
+                          // Синхронизируем язык при первой авторизации
+                          await profileNotifier.syncLanguageOnFirstAuth(context: context);
                           AppNavigator.pushAndPopUntil(const MainRoute());
                         },
                         checkYourNetwork: (){

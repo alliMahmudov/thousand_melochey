@@ -109,8 +109,11 @@ class _OTPPageState extends ConsumerState<OTPPage> {
                         // Синхронизируем локальные данные гостя с сервером
                         final cartNotifier = ref.read(cartProvider.notifier);
                         final favoritesNotifier = ref.read(favoritesProvider.notifier);
+                        final profileNotifier = ref.read(profileProvider.notifier);
                         await cartNotifier.syncLocalCartToBackend();
                         await favoritesNotifier.syncLocalFavoritesToBackend();
+                        // Синхронизируем язык при первой авторизации
+                        await profileNotifier.syncLanguageOnFirstAuth(context: context);
                         
                         AppNavigator.pushAndPopUntil(
                           const MainRoute(),
@@ -127,8 +130,11 @@ class _OTPPageState extends ConsumerState<OTPPage> {
                       // Синхронизируем локальные данные гостя с сервером
                       final cartNotifier = ref.read(cartProvider.notifier);
                       final favoritesNotifier = ref.read(favoritesProvider.notifier);
+                      final profileNotifier = ref.read(profileProvider.notifier);
                       await cartNotifier.syncLocalCartToBackend();
                       await favoritesNotifier.syncLocalFavoritesToBackend();
+                      // Синхронизируем язык при первой авторизации
+                      await profileNotifier.syncLanguageOnFirstAuth(context: context);
                       
                       AppNavigator.pushAndPopUntil(
                         const MainRoute(),

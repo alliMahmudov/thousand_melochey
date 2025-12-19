@@ -25,7 +25,9 @@ class _ChangeLangModalState extends ConsumerState<ChangeLangModal> {
   @override
   Widget build(BuildContext context) {
     final langNotifier = ref.read(langProvider(0).notifier);
+    final notifier = ref.read(profileProvider.notifier);
     final langState = ref.watch(langProvider(0));
+    final state = ref.watch(profileProvider);
     return Container(
       decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12))
@@ -149,10 +151,35 @@ class _ChangeLangModalState extends ConsumerState<ChangeLangModal> {
           const Divider(thickness: .6, color: Colors.grey),
           CustomButtonWidget(
               title: '${AppLocalization.getText(context)?.save}',
-              isLoading: false,
-              onTap: () {
-                langNotifier.setLang(langState.localLang ?? "ru", context);
-                AppNavigator.pop();
+              isLoading: state.isLoading,
+              onTap: () async {
+                final selectedLang = langState.localLang ?? "ru";
+                final isAuthenticated = LocalStorage.instance.isAuthenticated();
+
+                // Если пользователь авторизован и язык отличается от бэкенда
+                if (isAuthenticated && selectedLang != state.userInfo?.language) {
+                  // Обновляем на бэкенде, затем локально
+                  notifier.changeAppLanguage(
+                    lang: selectedLang,
+                    context: context,
+                    success: () {
+                      // После успешного обновления на бэкенде применяем язык локально
+                      langNotifier.setLang(selectedLang, context);
+                    },
+                    unAuthorised: () {
+                      AppHelpers.showErrorToast(
+                        errorMessage: "${AppLocalization.getText(context)?.error_occurred}",
+                      );
+                      AppNavigator.pop();
+                    },
+                  );
+                } else if (!isAuthenticated) {
+                  // Для неавторизованных пользователей - только локальное изменение
+                  langNotifier.setLang(selectedLang, context);
+                } else {
+                  // Язык не изменился - просто закрываем
+                  AppNavigator.pop();
+                }
               }
           ),
           10.h.verticalSpace,

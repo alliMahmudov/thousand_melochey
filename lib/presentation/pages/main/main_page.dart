@@ -1,5 +1,6 @@
 
 import 'package:proste_indexed_stack/proste_indexed_stack.dart';
+import 'package:thousand_melochey/core/handlers/local_storage.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
 import 'package:thousand_melochey/presentation/pages/main/packages/custom_navbar.dart';
 import 'package:thousand_melochey/presentation/pages/main/riverpod/provider/main_provider.dart';
@@ -20,6 +21,20 @@ class _MainPageState extends ConsumerState<MainPage> {
 
   final controller = TextEditingController();
   final focusNode = FocusNode();
+  bool _hasInitializedLanguage = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Инициализируем язык из бэкенда при первом запуске, если пользователь авторизован
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!_hasInitializedLanguage && LocalStorage.instance.isAuthenticated()) {
+        _hasInitializedLanguage = true;
+        final profileNotifier = ref.read(profileProvider.notifier);
+        profileNotifier.getUserInfo(context: context);
+      }
+    });
+  }
 
   @override
   void dispose() {
