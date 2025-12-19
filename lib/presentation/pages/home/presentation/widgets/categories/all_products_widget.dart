@@ -1,5 +1,6 @@
 import 'package:thousand_melochey/core/handlers/local_storage.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
+import 'package:thousand_melochey/presentation/global_widgets/custom_pagination_widget.dart';
 import 'package:thousand_melochey/presentation/pages/cart/data/cart_response.dart';
 import 'package:thousand_melochey/presentation/pages/cart/data/local_cart_item_model.dart';
 import 'package:thousand_melochey/service/localizations/localization.dart';
@@ -29,10 +30,12 @@ class _ProductsListWidgetState extends ConsumerState<ProductsListWidget>
   Widget build(BuildContext context) {
     super.build(context);
     final state = ref.watch(homeProvider);
+    final notifier = ref.read(homeProvider.notifier);
     final cartState = ref.watch(cartProvider);
     final favoriteNotifier = ref.read(favoritesProvider.notifier);
     final favoritesState = ref.watch(favoritesProvider);
     final cartNotifier = ref.read(cartProvider.notifier);
+
     if (state.isLoading) {
       return CustomShimmerEffectSliver(
         isLoading: state.isLoading,
@@ -45,7 +48,7 @@ class _ProductsListWidgetState extends ConsumerState<ProductsListWidget>
           ),
           delegate: SliverChildBuilderDelegate(
             childCount: 10,
-            (BuildContext context, int index) {
+                (BuildContext context, int index) {
               return ProductWidget(
                 name: "shimmer template",
                 image: "shimmer template",
@@ -61,9 +64,9 @@ class _ProductsListWidgetState extends ConsumerState<ProductsListWidget>
         ),
       );
     }
-    
+
     // Если загрузка завершена, но данных нет - показываем ошибку
-    if (state.products?.results == null || state.products!.results!.isEmpty) {
+    if (state.products?.data == null || state.products!.data!.isEmpty) {
       return SliverToBoxAdapter(
         child: SizedBox(
           height: .8.sh,
@@ -75,8 +78,8 @@ class _ProductsListWidgetState extends ConsumerState<ProductsListWidget>
                   "${AppLocalization.getText(context)?.product_not_available}",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 18.sp
+                      fontWeight: FontWeight.w700,
+                      fontSize: 18.sp
                   ),
                 ),
               )
@@ -85,65 +88,201 @@ class _ProductsListWidgetState extends ConsumerState<ProductsListWidget>
         ),
       );
     }
-    
-    return SliverGrid(
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2, // Number of columns
-        mainAxisSpacing: 10.h, // Space between rows
-        crossAxisSpacing: 10.h,
-        childAspectRatio: .585, // Aspect ratio of the cards
-      ),
-      delegate: SliverChildBuilderDelegate(
-        childCount: state.products?.results?.length,
-        (BuildContext context, int index) {
-          final product = state.products?.results?[index];
-          final isLiked = favoriteNotifier.checkFavorite(product?.id ?? 0);
-          return InkWell(
-            onTap: () {
-              AppNavigator.push(
-                ProductDetailRoute(
-                  id: product?.id,
-                  name: product?.name,
-                  price: product?.price,
-                  description: product?.description,
-                  image: product?.image,
-                  images: product?.images
-                )
-              );
-            },
-            child: ProductWidget(
-              name: product?.name,
-              image: product?.image,
-              price: product?.price,
-              id: product?.id,
-              isFavorite: isLiked ?? false,
-              onTap: () {
-                if (product != null) {
-                  favoriteNotifier.switchFavorite(
-                      context,
-                      isLiked ?? false,
-                      product.id ?? 0,
-                      product,
-                  );
-                }
-              },
-              addToCart: () {
-                cartNotifier.addToCart(context, LocalCartProduct(
-                  quantity: 1,
-                  id: product?.id,
-                  name: product?.name,
-                  price: product?.price,
-                  image: product?.image,
-                  images: product?.images,
-                  description: product?.description,
-                ));
-              },
-            )
-          );
+    return SliverFillRemaining(
+      child: CustomPaginationWidget(
+        scrollIndicatorShow: false,
+        loadMore: () {
+          final currentPage = state.products?.meta?.page ?? 0;
+          final hasNext = state.products?.meta?.hasNext ?? false;
+
+          if (!state.isLoadMore && hasNext) {
+            notifier.getProducts(
+              currentPage: currentPage + 1,
+            );
+          }
         },
-        // Number of grid items
+        onRefresh: () {
+          return notifier.getProducts();
+        },
+        scrollController: notifier.scrollController,
+        child: GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            mainAxisSpacing: 4.0.h,
+            crossAxisSpacing: 4.0.h,
+            childAspectRatio: .585,
+          ),
+          itemCount: state.products?.data?.length,
+          itemBuilder: (BuildContext context, int index) {
+            final product = state.products?.data?[index];
+            final isLiked = favoriteNotifier.checkFavorite(product?.id ?? 0);
+            return InkWell(
+                onTap: () {
+                  AppNavigator.push(
+                      ProductDetailRoute(
+                          id: product?.id,
+                          name: product?.name,
+                          price: product?.price,
+                          description: product?.description,
+                          image: product?.image,
+                          images: product?.images
+                      )
+                  );
+                },
+                child: ProductWidget(
+                  name: product?.name,
+                  image: product?.image,
+                  price: product?.price,
+                  id: product?.id,
+                  isFavorite: isLiked ?? false,
+                  onTap: () {
+                    if (product != null) {
+                      favoriteNotifier.switchFavorite(
+                        context,
+                        isLiked ?? false,
+                        product.id ?? 0,
+                        product,
+                      );
+                    }
+                  },
+                  addToCart: () {
+                    cartNotifier.addToCart(context, LocalCartProduct(
+                      quantity: 1,
+                      id: product?.id,
+                      name: product?.name,
+                      price: product?.price,
+                      image: product?.image,
+                      images: product?.images,
+                      description: product?.description,
+                    ));
+                  },
+                )
+            );
+          },
+        ),
       ),
     );
+    /*SliverToBoxAdapter(
+      child: CustomPaginationWidget(child: SliverGrid(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2, // Number of columns
+          mainAxisSpacing: 10.h, // Space between rows
+          crossAxisSpacing: 10.h,
+          childAspectRatio: .585, // Aspect ratio of the cards
+        ),
+        delegate: SliverChildBuilderDelegate(
+          childCount: state.products?.data?.length,
+              (BuildContext context, int index) {
+            final product = state.products?.data?[index];
+            final isLiked = favoriteNotifier.checkFavorite(product?.id ?? 0);
+            return InkWell(
+                onTap: () {
+                  AppNavigator.push(
+                      ProductDetailRoute(
+                          id: product?.id,
+                          name: product?.name,
+                          price: product?.price,
+                          description: product?.description,
+                          image: product?.image,
+                          images: product?.images
+                      )
+                  );
+                },
+                child: ProductWidget(
+                  name: product?.name,
+                  image: product?.image,
+                  price: product?.price,
+                  id: product?.id,
+                  isFavorite: isLiked ?? false,
+                  onTap: () {
+                    if (product != null) {
+                      favoriteNotifier.switchFavorite(
+                        context,
+                        isLiked ?? false,
+                        product.id ?? 0,
+                        product,
+                      );
+                    }
+                  },
+                  addToCart: () {
+                    cartNotifier.addToCart(context, LocalCartProduct(
+                      quantity: 1,
+                      id: product?.id,
+                      name: product?.name,
+                      price: product?.price,
+                      image: product?.image,
+                      images: product?.images,
+                      description: product?.description,
+                    ));
+                  },
+                )
+            );
+          },
+          // Number of grid items
+        ),
+      ), scrollController: notifier.scrollController),
+    );*/
+
+    /*SliverToBoxAdapter(
+      child: CustomPaginationWidget(child: SliverGrid(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2, // Number of columns
+          mainAxisSpacing: 10.h, // Space between rows
+          crossAxisSpacing: 10.h,
+          childAspectRatio: .585, // Aspect ratio of the cards
+        ),
+        delegate: SliverChildBuilderDelegate(
+          childCount: state.products?.data?.length,
+              (BuildContext context, int index) {
+            final product = state.products?.data?[index];
+            final isLiked = favoriteNotifier.checkFavorite(product?.id ?? 0);
+            return InkWell(
+                onTap: () {
+                  AppNavigator.push(
+                      ProductDetailRoute(
+                          id: product?.id,
+                          name: product?.name,
+                          price: product?.price,
+                          description: product?.description,
+                          image: product?.image,
+                          images: product?.images
+                      )
+                  );
+                },
+                child: ProductWidget(
+                  name: product?.name,
+                  image: product?.image,
+                  price: product?.price,
+                  id: product?.id,
+                  isFavorite: isLiked ?? false,
+                  onTap: () {
+                    if (product != null) {
+                      favoriteNotifier.switchFavorite(
+                        context,
+                        isLiked ?? false,
+                        product.id ?? 0,
+                        product,
+                      );
+                    }
+                  },
+                  addToCart: () {
+                    cartNotifier.addToCart(context, LocalCartProduct(
+                      quantity: 1,
+                      id: product?.id,
+                      name: product?.name,
+                      price: product?.price,
+                      image: product?.image,
+                      images: product?.images,
+                      description: product?.description,
+                    ));
+                  },
+                )
+            );
+          },
+          // Number of grid items
+        ),
+      ), scrollController: notifier.scrollController),
+    );*/
   }
 
   @override
