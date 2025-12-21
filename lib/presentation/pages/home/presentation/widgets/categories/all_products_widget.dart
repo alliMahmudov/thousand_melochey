@@ -91,6 +91,7 @@ class _ProductsListWidgetState extends ConsumerState<ProductsListWidget>
     return SliverFillRemaining(
       child: CustomPaginationWidget(
         scrollIndicatorShow: false,
+        isLoadingMore: state.isLoadMore,
         loadMore: () {
           final currentPage = state.products?.meta?.page ?? 0;
           final hasNext = state.products?.meta?.hasNext ?? false;

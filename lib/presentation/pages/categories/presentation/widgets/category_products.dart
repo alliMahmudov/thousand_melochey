@@ -1,8 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
 import 'package:thousand_melochey/presentation/global_widgets/custom_pagination_widget.dart';
+import 'package:thousand_melochey/presentation/global_widgets/empty_page_template.dart';
 import 'package:thousand_melochey/presentation/pages/cart/data/local_cart_item_model.dart';
 import 'package:thousand_melochey/presentation/pages/categories/presentation/riverpod/provider/categories_provider.dart';
 import 'package:thousand_melochey/presentation/pages/home/data/products_response.dart';
+
+import '../../../../../service/localizations/localization.dart';
 
 @RoutePage()
 class CategoryProductsPage extends ConsumerStatefulWidget {
@@ -43,12 +47,13 @@ class _CategoryProductsState extends ConsumerState<CategoryProductsPage> {
         child: CustomPaginationWidget(
           scrollController: notifier.scrollController,
           scrollIndicatorShow: false,
+          isLoadingMore: state.isLoadMore,
           loadMore: () {
             final currentPage = state.categoryProducts?.meta?.page ?? 0;
             final hasNext = state.categoryProducts?.meta?.hasNext ?? false;
 
             if (!state.isLoadMore && hasNext) {
-              notifier.getCategoryProducts(
+              notifier.getPaginationCategoryProducts(
                 categoryId: widget.categoryId,
                 currentPage: currentPage + 1,
                 isRefresh: false,
@@ -56,7 +61,7 @@ class _CategoryProductsState extends ConsumerState<CategoryProductsPage> {
             }
           },
           onRefresh: () {
-            return notifier.getCategoryProducts(categoryId: widget.categoryId);
+            return notifier.getCategoryProducts(categoryId: widget.categoryId, isRefresh: true);
           },
           child: CustomScrollView(
             slivers: [
@@ -151,9 +156,24 @@ class _CategoryProductsState extends ConsumerState<CategoryProductsPage> {
                   ),
                 ),
               ]
-              else const SliverToBoxAdapter(
-                  child: Center(
-                    child: Text("Something went wrong"),
+              else SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: .8.sh,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Center(
+                          child: Text(
+                            "${AppLocalization.getText(context)?.product_not_available}",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 18.sp
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 )
             ],

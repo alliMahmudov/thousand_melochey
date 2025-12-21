@@ -64,46 +64,59 @@ class _HomePageState extends ConsumerState<HomePage>
                   child: CustomScrollView(
                     slivers: [
                       SliverToBoxAdapter(
-                          child: CarouselSlider(
-                  options: CarouselOptions(
-                    height: 150.h,
-                    viewportFraction: 0.9,
-                    autoPlay: true,
-                    autoPlayInterval: const Duration(seconds: 4),
-                    autoPlayAnimationDuration: const Duration(milliseconds: 800),
-                    autoPlayCurve: Curves.fastOutSlowIn,
-                    enlargeCenterPage: true,
-                    enlargeFactor: 0.2,
-                  ),
-                  items: [
-                    CarouselSlideWidget(
-                      title: AppLocalization.getText(context)?.carousel_delivery ?? '',
-                      icon: Icons.local_shipping_rounded,
-                      accentColor: AppColors.primaryColor,
-                      slideIndex: 0,
-                    ),
-                    CarouselSlideWidget(
-                      title: AppLocalization.getText(context)?.carousel_popular ?? '',
-                      icon: Icons.star_rounded,
-                      accentColor: Color(0xFFF57C00),
-                      slideIndex: 1,
-                    ),
-                    CarouselSlideWidget(
-                      title: AppLocalization.getText(context)?.carousel_search ?? '',
-                      icon: Icons.search_rounded,
-                      accentColor: AppColors.primaryShadeColor,
-                      slideIndex: 2,
-                    ),
-                    CarouselSlideWidget(
-                      title: AppLocalization.getText(context)?.carousel_payment ?? '',
-                      icon: Icons.payment_rounded,
-                      accentColor: AppColors.red,
-                      slideIndex: 3,
-                    ),
-                  ],
-                ),
+                        child: CarouselSlider(
+                          options: CarouselOptions(
+                            height: 150.h,
+                            viewportFraction: 0.9,
+                            autoPlay: true,
+                            autoPlayInterval: const Duration(seconds: 4),
+                            autoPlayAnimationDuration:
+                                const Duration(milliseconds: 800),
+                            autoPlayCurve: Curves.fastOutSlowIn,
+                            enlargeCenterPage: true,
+                            enlargeFactor: 0.2,
+                          ),
+                          items: [
+                            CarouselSlideWidget(
+                              title: AppLocalization.getText(context)
+                                      ?.carousel_delivery ??
+                                  '',
+                              icon: Icons.local_shipping_rounded,
+                              accentColor: AppColors.primaryColor,
+                              slideIndex: 0,
+                            ),
+                            CarouselSlideWidget(
+                              title: AppLocalization.getText(context)
+                                      ?.carousel_popular ??
+                                  '',
+                              icon: Icons.star_rounded,
+                              accentColor: Color(0xFFF57C00),
+                              slideIndex: 1,
+                            ),
+                            CarouselSlideWidget(
+                              title: AppLocalization.getText(context)
+                                      ?.carousel_search ??
+                                  '',
+                              icon: Icons.search_rounded,
+                              accentColor: AppColors.primaryShadeColor,
+                              slideIndex: 2,
+                            ),
+                            CarouselSlideWidget(
+                              title: AppLocalization.getText(context)
+                                      ?.carousel_payment ??
+                                  '',
+                              icon: Icons.payment_rounded,
+                              accentColor: AppColors.red,
+                              slideIndex: 3,
+                            ),
+                          ],
+                        ),
                       ),
-                      const SliverToBoxAdapter(child: SizedBox(height: 10,),),
+                      const SliverToBoxAdapter(
+                        child: SizedBox(
+                          height: 10,
+                        ),
+                      ),
                       const ProductsListWidget()
                     ],
                   ),

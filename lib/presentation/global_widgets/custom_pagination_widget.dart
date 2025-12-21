@@ -6,6 +6,7 @@ class CustomPaginationWidget extends StatefulWidget {
   final ScrollController scrollController;
 
   final bool? scrollIndicatorShow;
+  final bool isLoadingMore;
 
   final Widget child;
 
@@ -16,6 +17,7 @@ class CustomPaginationWidget extends StatefulWidget {
     required this.scrollController,
     this.onRefresh,
     this.scrollIndicatorShow = true,
+    this.isLoadingMore = false,
   });
 
   @override
@@ -36,14 +38,15 @@ class _CustomPaginationWidgetState extends State<CustomPaginationWidget> {
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      onRefresh: () => widget.onRefresh?.call(),
+      onRefresh: () => widget.onRefresh?.call() ?? Future.value(),
       notificationPredicate: (scrollNotification) {
         if (scrollNotification is ScrollEndNotification) {
           if (scrollNotification.metrics.maxScrollExtent <= scrollNotification.metrics.pixels) {
-            widget.loadMore?.call();
+            if (!widget.isLoadingMore) {
+              widget.loadMore?.call();
+            }
           }
         }
-
         return true;
       },
       child: widget.scrollIndicatorShow ?? true
@@ -55,9 +58,34 @@ class _CustomPaginationWidgetState extends State<CustomPaginationWidget> {
               thickness: 4,
               padding: const EdgeInsets.all(5),
               radius: const Radius.circular(10),
-              child: widget.child,
+              child: _buildContent(),
             )
-          : widget.child,
+          : _buildContent(),
+    );
+  }
+
+  Widget _buildContent() {
+    return Stack(
+      children: [
+        widget.child,
+        if (widget.isLoadingMore)
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: Container(
+              padding: const EdgeInsets.all(16.0),
+              color: Colors.transparent,
+              child: const Center(
+                child: SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                ),
+              ),
+            ),
+          ),
+      ],
     );
   }
 }

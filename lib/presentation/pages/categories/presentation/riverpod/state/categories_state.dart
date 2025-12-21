@@ -1,14 +1,13 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:thousand_melochey/presentation/pages/categories/data/categories_response.dart';
 import 'package:thousand_melochey/presentation/pages/home/data/category_products_response.dart';
-import 'package:thousand_melochey/presentation/pages/home/data/products_response.dart';
-
 part 'categories_state.freezed.dart';
 
 @freezed
 class CategoriesState with _$CategoriesState{
   const factory CategoriesState({
     @Default(false) bool isLoading,
+    @Default(false) bool isLoadingPaginationProducts,
     @Default(false) bool isLoadMore,
     CategoriesResponse? categories,
     CategoryProductsResponse? categoryProducts,

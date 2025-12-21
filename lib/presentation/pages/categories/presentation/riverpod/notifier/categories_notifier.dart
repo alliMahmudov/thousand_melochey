@@ -88,4 +88,59 @@ class CategoriesNotifier extends StateNotifier<CategoriesState> {
       state = state.copyWith(isLoadMore: false, isLoading: false);
     }
   }
+
+  Future<void> getPaginationCategoryProducts({
+    VoidCallback? checkYourNetwork,
+    VoidCallback? unAuthorised,
+    VoidCallback? success,
+    required int categoryId,
+    int currentPage = 1,
+    bool isRefresh = false
+  }) async {
+
+    state = state.copyWith(isLoadingPaginationProducts: true);
+
+    try {
+      if (isRefresh) {
+        state = state.copyWith(isLoadingPaginationProducts: true);
+      } else {
+        state = state.copyWith(isLoadMore: true);
+      }
+
+      final response = await _categoriesRepository.getCategoryProducts(
+          categoryId: categoryId,
+          currentPage: currentPage
+      );
+
+      response.when(
+        success: (data) async {
+          List<Datum> products = List.from(state.categoryProducts?.data ?? []);
+          List<Datum> newProducts = data.data ?? [];
+
+          isRefresh ? products = newProducts : products.addAll(newProducts);
+
+          state = state.copyWith(
+              isLoadingPaginationProducts: false,
+              isLoadMore: false,
+              categoryProducts: CategoryProductsResponse(
+                  data: products,
+                  meta: data.meta
+              ));
+
+          success?.call();
+        },
+        failure: (failure, status, data) {
+          state = state.copyWith(isLoadingPaginationProducts: false, isLoadMore: false);
+
+          if (failure == const NetworkExceptions.unauthorisedRequest()) {
+            unAuthorised?.call();
+          }
+          debugPrint('==> get category products response failure: $failure');
+        },
+      );
+
+    } catch (e) {
+      state = state.copyWith(isLoadMore: false, isLoadingPaginationProducts: false);
+    }
+  }
 }
