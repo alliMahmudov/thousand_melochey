@@ -28,6 +28,7 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
   final TextEditingController streetNameController = TextEditingController();
   final TextEditingController editStreetNameController = TextEditingController();
   final TextEditingController currentPasswordController = TextEditingController();
+  final TextEditingController domainController = TextEditingController();
 
   selectDistrict(District district) => state = state.copyWith(selectedDistrict: district);
 

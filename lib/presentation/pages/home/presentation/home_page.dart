@@ -1,8 +1,11 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/rendering.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
+import 'package:thousand_melochey/presentation/pages/categories/presentation/riverpod/provider/categories_provider.dart';
 import 'package:thousand_melochey/presentation/pages/home/presentation/widgets/carousel_slide_widget.dart';
-import 'package:thousand_melochey/presentation/pages/home/presentation/widgets/categories/all_products_widget.dart';
+import 'package:thousand_melochey/presentation/pages/home/presentation/widgets/all_products_widget.dart';
+import 'package:thousand_melochey/presentation/pages/home/presentation/widgets/product_categories_widget.dart';
 
 import '../../../../service/localizations/localization.dart';
 
@@ -30,6 +33,8 @@ class _HomePageState extends ConsumerState<HomePage>
   @override
   Widget build(BuildContext context) {
     final notifier = ref.read(homeProvider.notifier);
+    final categoryNotifier = ref.read(categoriesProvider.notifier);
+    ref.watch(categoriesProvider);
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
         resizeToAvoidBottomInset: false,
@@ -39,12 +44,15 @@ class _HomePageState extends ConsumerState<HomePage>
           ),
           centerTitle: true,
         ),
-        body: RefreshIndicator(
-          onRefresh: (){
-            return notifier.getProducts(isRefresh: true);
+        body: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
           },
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
+          child: RefreshIndicator(
+            onRefresh: (){
+              categoryNotifier.getCategories();
+              return notifier.getProducts(isRefresh: true);
+            },
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -52,7 +60,7 @@ class _HomePageState extends ConsumerState<HomePage>
                   padding: const EdgeInsets.all(8.0),
                   child: CupertinoSearchTextField(
                     controller: notifier.searchTextFieldController,
-                    onChanged: (value){
+                    onChanged: (value) {
                       notifier.getProducts(
                         searchQuery: notifier.searchTextFieldController.text,
                         isRefresh: true
@@ -117,6 +125,14 @@ class _HomePageState extends ConsumerState<HomePage>
                           height: 10,
                         ),
                       ),
+                      const SliverToBoxAdapter(
+                        child: ProductCategoriesWidget()
+                      ),
+                      // const SliverToBoxAdapter(
+                      //   child: SizedBox(
+                      //     height: 10,
+                      //   ),
+                      // ),
                       const ProductsListWidget()
                     ],
                   ),

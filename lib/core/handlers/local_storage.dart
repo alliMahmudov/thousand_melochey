@@ -24,9 +24,17 @@ class LocalStorage {
     await _storage?.write(AppConstants.lang, lang);
   }
 
-  String getLang() => _storage?.read(AppConstants.lang) ?? "ru";
+  String getLang() => _storage?.read(AppConstants.lang) ?? "uz";
 
   void deleteLang() => _storage?.remove(AppConstants.lang);
+
+  Future<void> setDomain(String domain) async {
+    await _storage?.write(AppConstants.domain, domain);
+  }
+
+  String getDomain() => _storage?.read(AppConstants.domain) ?? "https://1000melochey.uz/";
+
+  void deleteDomain() => _storage?.remove(AppConstants.domain);
 
   Future<void> setJWT(String jwt) async {
     await _storage?.write(AppConstants.jwt, jwt);

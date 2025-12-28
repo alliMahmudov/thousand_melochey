@@ -1,6 +1,4 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
-
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -48,9 +46,9 @@ class MyApp extends ConsumerWidget {
               routerConfig: appRouter.config(),
               title: '1000 МЕЛОЧЕЙ',
               builder: (context, child) {
-                if (internetState != InternetState.disconnected) {
-                  return const NoInternetScreen();
-                }
+                // if (internetState != InternetState.disconnected) {
+                //   return const NoInternetScreen();
+                // }
                 return child!;
               },
               theme: ThemeData(

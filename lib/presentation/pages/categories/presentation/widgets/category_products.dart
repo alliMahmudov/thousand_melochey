@@ -1,20 +1,17 @@
-import 'package:flutter/cupertino.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
 import 'package:thousand_melochey/presentation/global_widgets/custom_pagination_widget.dart';
-import 'package:thousand_melochey/presentation/global_widgets/empty_page_template.dart';
 import 'package:thousand_melochey/presentation/pages/cart/data/local_cart_item_model.dart';
 import 'package:thousand_melochey/presentation/pages/categories/presentation/riverpod/provider/categories_provider.dart';
 import 'package:thousand_melochey/presentation/pages/home/data/products_response.dart';
-
 import '../../../../../service/localizations/localization.dart';
 
 @RoutePage()
 class CategoryProductsPage extends ConsumerStatefulWidget {
   final String categoryName;
-  final int categoryId;
+  final int? categoryId;
   const CategoryProductsPage({
     required this.categoryName,
-    required this.categoryId,
+    this.categoryId,
     super.key});
 
   @override
@@ -27,7 +24,7 @@ class _CategoryProductsState extends ConsumerState<CategoryProductsPage> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       final notifier = ref.read(categoriesProvider.notifier);
-      notifier.getCategoryProducts(categoryId: widget.categoryId);
+      notifier.getCategoryProducts(categoryId: widget.categoryId ?? 0, isRefresh: true);
     });
     super.initState();
   }
@@ -36,8 +33,16 @@ class _CategoryProductsState extends ConsumerState<CategoryProductsPage> {
   Widget build(BuildContext context) {
     final state = ref.watch(categoriesProvider);
     final notifier = ref.read(categoriesProvider.notifier);
+    final cart = ref.read(categoriesProvider.notifier);
     ref.watch(favoritesProvider); // подписка для обновления UI при изменении лайков
     final favoriteNotifier = ref.read(favoritesProvider.notifier);
+
+    // Determine which data source to use based on viewAll flag
+    final isLoading = state.isLoading;
+    final isLoadMore = state.isLoadMore;
+    final products = state.categoryProducts;
+
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.categoryName),
@@ -47,37 +52,40 @@ class _CategoryProductsState extends ConsumerState<CategoryProductsPage> {
         child: CustomPaginationWidget(
           scrollController: notifier.scrollController,
           scrollIndicatorShow: false,
-          isLoadingMore: state.isLoadMore,
+          isLoadingMore: isLoadMore,
           loadMore: () {
-            final currentPage = state.categoryProducts?.meta?.page ?? 0;
-            final hasNext = state.categoryProducts?.meta?.hasNext ?? false;
+            final currentPage = products?.meta?.page ?? 0;
+            final hasNext = products?.meta?.hasNext ?? false;
 
-            if (!state.isLoadMore && hasNext) {
-              notifier.getPaginationCategoryProducts(
-                categoryId: widget.categoryId,
-                currentPage: currentPage + 1,
-                isRefresh: false,
-              );
+            if (!isLoadMore && hasNext) {
+                notifier.getPaginationCategoryProducts(
+                  categoryId: widget.categoryId ?? 0,
+                  currentPage: currentPage + 1,
+                  isRefresh: false,
+                );
             }
           },
-          onRefresh: () {
-            return notifier.getCategoryProducts(categoryId: widget.categoryId, isRefresh: true);
+          onRefresh: () async {
+              await notifier.getCategoryProducts(
+                categoryId: widget.categoryId ?? 0, 
+                isRefresh: true
+              );
           },
           child: CustomScrollView(
             slivers: [
-              if (state.isLoading)
+              if (isLoading)
                 CustomShimmerEffectSliver(
                   isLoading: true,
                   child: SliverGrid(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2, // Number of columns
-                      crossAxisSpacing: 10.0.h, // Space between columns
-                      mainAxisSpacing: 10.0.h, // Space between rows
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 10.0.h,
+                      mainAxisSpacing: 10.0.h,
                       childAspectRatio: .585,
                     ),
                     delegate: SliverChildBuilderDelegate(
                       childCount: 10,
-                          (BuildContext context, int index) {
+                      (BuildContext context, int index) {
                         return ProductWidget(
                           name: "shimmer template",
                           image: "shimmer template",
@@ -91,24 +99,24 @@ class _CategoryProductsState extends ConsumerState<CategoryProductsPage> {
                     ),
                   ),
                 )
-              else if ((state.categoryProducts?.data?.isNotEmpty ?? false) && state.categoryProducts?.data != null) ...[
+              else if (products?.data?.isNotEmpty ?? false) ...[
                 SliverGrid(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2, // Number of columns
-                    crossAxisSpacing: 10.0.h, // Space between columns
-                    mainAxisSpacing: 10.0.h, // Space between rows
-                    childAspectRatio: .585, // Aspect ratio of the cards
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 10.0.h,
+                    mainAxisSpacing: 10.0.h,
+                    childAspectRatio: .585,
                   ),
                   delegate: SliverChildBuilderDelegate(
-                    childCount: state.categoryProducts?.data?.length ?? 0,
-                        (BuildContext context, int index) {
-                      final product = state.categoryProducts?.data?[index];
+                    childCount: products?.data?.length,
+                    (BuildContext context, int index) {
+                      final product = products?.data?[index];
                       final isLiked = favoriteNotifier.checkFavorite(product?.id ?? 0);
                       return InkWell(
                           onTap: () {
                             AppNavigator.push(
                                 ProductDetailRoute(
-                                    id: product?.id,
+                                    id: product?.id ?? 0,
                                     name: product?.name,
                                     price: product?.price,
                                     description: product?.description,
@@ -124,31 +132,33 @@ class _CategoryProductsState extends ConsumerState<CategoryProductsPage> {
                             isFavorite: isLiked ?? false,
                             onTap: () {
                               if (product != null) {
-                                favoriteNotifier.switchFavorite(
-                                  context,
-                                  isLiked ?? false,
-                                  product.id ?? 0,
-                                  Product(
-                                    id: product.id,
-                                    name: product.name,
-                                    price: product.price,
-                                    description: product.description,
-                                    image: product.image,
-                                  ),
-                                );
+                                if (product.id != null) {
+                                  if (isLiked ?? false) {
+                                    favoriteNotifier.removeFromFavorites(productID: product.id ?? 0);
+                                  } else {
+                                    favoriteNotifier.addToFavorites(productID: product.id ?? 0);
+                                  }
+                                }
                               }
-                              // ref.read(favoritesProvider.notifier).switchGlobalFavorite(isLiked ?? false, product?.id ?? 0, context);
                             },
                             addToCart: () {
-                              ref.read(cartProvider.notifier).addToCart(context, LocalCartProduct(
-                                quantity: 1,
-                                id: product?.id,
-                                name: product?.name,
-                                price: product?.price,
-                                image: product?.image,
-                                images: product?.images,
-                                description: product?.description,
-                              ));
+                              if (product != null) {
+                                product.name;
+                                product.price;
+                                product.image;
+
+                                final cartItem = LocalCartProduct(
+                                  id: product.id,
+                                  name: product.name,
+                                  price: product.price,
+                                  image: product.image,
+                                  images: product.images,
+                                  description: product.description,
+                                  quantity: 1,
+                                );
+
+                                ref.read(cartProvider.notifier).addToCart(context, cartItem);
+                              }
                             },
                           ));
                     },

@@ -25,6 +25,11 @@ class _CategoriesPageState extends ConsumerState<CategoriesPage> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final state = ref.watch(categoriesProvider);
     final categories = state.categories?.data ?? [];
@@ -41,153 +46,6 @@ class _CategoriesPageState extends ConsumerState<CategoriesPage> {
       ),
       body: Column(
         children: [
-          // Search Section
-          // AnimatedContainer(
-          //   duration: const Duration(milliseconds: 300),
-          //   padding: EdgeInsets.all(16.sp),
-          //   decoration: BoxDecoration(
-          //     color: AppColors.primaryColor,
-          //     borderRadius: BorderRadius.only(
-          //       bottomLeft: Radius.circular(20),
-          //       bottomRight: Radius.circular(20),
-          //     ),
-          //     boxShadow: [
-          //       BoxShadow(
-          //         color: AppColors.primaryColor.withOpacity(0.3),
-          //         blurRadius: 15,
-          //         offset: const Offset(0, 5),
-          //       ),
-          //     ],
-          //   ),
-          //   child: Container(
-          //     decoration: BoxDecoration(
-          //       color: AppColors.white,
-          //       borderRadius: BorderRadius.circular(12.r),
-          //       boxShadow: [
-          //         BoxShadow(
-          //           color: Colors.black.withOpacity(0.1),
-          //           blurRadius: 8,
-          //           offset: const Offset(0, 2),
-          //         ),
-          //       ],
-          //     ),
-          //     child: Stack(
-          //       children: [
-          //         CupertinoSearchTextField(
-          //           controller: _searchController,
-          //           onChanged: _onSearchChanged,
-          //           placeholder: "Поиск категорий...",
-          //           style: const TextStyle(fontSize: 16),
-          //           decoration: BoxDecoration(
-          //             color: AppColors.white,
-          //             borderRadius: BorderRadius.circular(12.r),
-          //           ),
-          //         ),
-          //         if (isSearchLoading)
-          //           Positioned(
-          //             right: 12.sp,
-          //             top: 0,
-          //             bottom: 0,
-          //             child: Center(
-          //               child: SizedBox(
-          //                 width: 16.sp,
-          //                 height: 16.sp,
-          //                 child: CircularProgressIndicator(
-          //                   strokeWidth: 2,
-          //                   valueColor: AlwaysStoppedAnimation<Color>(AppColors.primaryColor),
-          //                 ),
-          //               ),
-          //             ),
-          //           ),
-          //       ],
-          //     ),
-          //   ),
-          // ),
-          
-          // // Categories Section
-          // if (categories.isNotEmpty && !isSearching) ...[
-          //   Padding(
-          //     padding: EdgeInsets.symmetric(horizontal: 16.sp, vertical: 8.sp),
-          //     child: Row(
-          //       children: [
-          //         Icon(
-          //           Icons.category_rounded,
-          //           color: AppColors.primaryColor,
-          //           size: 20.sp,
-          //         ),
-          //         SizedBox(width: 8.sp),
-          //         Text(
-          //           "Категории",
-          //           style: TextStyle(
-          //             fontSize: 16.sp,
-          //             fontWeight: FontWeight.w600,
-          //             color: Colors.grey[800],
-          //           ),
-          //         ),
-          //         const Spacer(),
-          //         Text(
-          //           "${categories.length} категорий",
-          //           style: TextStyle(
-          //             fontSize: 12.sp,
-          //             color: Colors.grey[600],
-          //           ),
-          //         ),
-          //       ],
-          //     ),
-          //   ),
-          //   Container(
-          //     height: 80.h,
-          //     margin: EdgeInsets.only(bottom: 16.sp),
-          //     child: ListView.builder(
-          //       scrollDirection: Axis.horizontal,
-          //       padding: EdgeInsets.symmetric(horizontal: 16.sp),
-          //       itemCount: categories.length + 1, // +1 for "All" category
-          //       itemBuilder: (context, index) {
-          //         final isSelected = selectedCategoryIndex == index;
-          //         final categoryName = index == 0 ? "Все" : categories[index - 1].name ?? "";
-          //
-          //         return AnimatedContainer(
-          //           duration: const Duration(milliseconds: 300),
-          //           curve: Curves.easeInOut,
-          //           margin: EdgeInsets.only(right: 12.sp),
-          //           padding: EdgeInsets.symmetric(horizontal: 20.sp, vertical: 12.sp),
-          //           decoration: BoxDecoration(
-          //             color: isSelected ? AppColors.primaryColor : AppColors.white,
-          //             borderRadius: BorderRadius.circular(25.r),
-          //             border: Border.all(
-          //               color: isSelected ? AppColors.primaryColor : AppColors.primaryColor.withOpacity(0.3),
-          //               width: 1.5,
-          //             ),
-          //             boxShadow: [
-          //               BoxShadow(
-          //                 color: isSelected
-          //                     ? AppColors.primaryColor.withOpacity(0.3)
-          //                     : Colors.black.withOpacity(0.08),
-          //                 blurRadius: isSelected ? 12 : 8,
-          //                 offset: const Offset(0, 2),
-          //               ),
-          //             ],
-          //           ),
-          //           child: InkWell(
-          //             onTap: () => _onCategorySelected(index, categoryName),
-          //             child: Center(
-          //               child: Text(
-          //                 categoryName,
-          //                 style: TextStyle(
-          //                   color: isSelected ? AppColors.white : AppColors.primaryColor,
-          //                   fontWeight: FontWeight.w600,
-          //                   fontSize: 14.sp,
-          //                 ),
-          //               ),
-          //             ),
-          //           ),
-          //         );
-          //       },
-          //     ),
-          //   ),
-          // ],
-          
-          // Categories Grid Section
           if (categories.isNotEmpty) ...[
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.sp, vertical: 8.sp),
@@ -236,7 +94,7 @@ class _CategoriesPageState extends ConsumerState<CategoriesPage> {
           crossAxisSpacing: 12.sp,
           mainAxisSpacing: 12.sp,
         ),
-        itemCount: 6,
+        itemCount: 8,
         itemBuilder: (context, index) {
           return Container(
             decoration: BoxDecoration(

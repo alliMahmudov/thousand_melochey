@@ -108,7 +108,8 @@ class _ProductWidgetState extends ConsumerState<ProductWidget> {
                     alignment: Alignment.center,
                     child: widget.image != null && widget.image!.isNotEmpty
                         ?
-                        CustomNetworkImage(imagePath: widget.image)
+                        CustomNetworkImage(
+                            imagePath: widget.image)
                         // CachedNetworkImage(imageUrl: widget.image ?? AppAssets.emptyImagePlaceHolder)
                     // FadeInImage.assetNetwork(
                     //         placeholder: AppAssets.emptyImagePlaceHolder,

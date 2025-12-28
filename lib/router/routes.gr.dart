@@ -182,7 +182,7 @@ class CategoriesRoute extends PageRouteInfo<void> {
 class CategoryProductsRoute extends PageRouteInfo<CategoryProductsRouteArgs> {
   CategoryProductsRoute({
     required String categoryName,
-    required int categoryId,
+    int? categoryId,
     Key? key,
     List<PageRouteInfo>? children,
   }) : super(
@@ -204,13 +204,13 @@ class CategoryProductsRoute extends PageRouteInfo<CategoryProductsRouteArgs> {
 class CategoryProductsRouteArgs {
   const CategoryProductsRouteArgs({
     required this.categoryName,
-    required this.categoryId,
+    this.categoryId,
     this.key,
   });
 
   final String categoryName;
 
-  final int categoryId;
+  final int? categoryId;
 
   final Key? key;
 

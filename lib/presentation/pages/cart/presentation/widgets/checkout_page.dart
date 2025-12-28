@@ -1,19 +1,10 @@
-import 'dart:math';
-
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
 import 'package:thousand_melochey/presentation/global_widgets/money_formatter.dart';
 import 'package:thousand_melochey/presentation/pages/cart/presentation/widgets/address_animated_textfield.dart';
 import 'package:thousand_melochey/presentation/pages/cart/presentation/widgets/address_map_widget.dart';
-import 'package:thousand_melochey/presentation/pages/cart/presentation/widgets/selection_field_widget.dart';
-import 'package:thousand_melochey/presentation/pages/cart/presentation/widgets/user_addresses_modal.dart';
 import 'package:thousand_melochey/presentation/pages/main/riverpod/provider/main_provider.dart';
 import 'package:thousand_melochey/presentation/pages/profile/data/all_adresses_response.dart';
 import 'package:thousand_melochey/service/localizations/localization.dart';
-
-import '../../../../../contstants/app_constants.dart';
 
 @RoutePage()
 class CheckOutPage extends ConsumerStatefulWidget {
