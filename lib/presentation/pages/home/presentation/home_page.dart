@@ -18,7 +18,7 @@ class HomePage extends ConsumerStatefulWidget {
 }
 
 class _HomePageState extends ConsumerState<HomePage>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late TabController tabController;
 
 

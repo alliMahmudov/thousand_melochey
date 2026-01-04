@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
 import 'package:thousand_melochey/presentation/global_widgets/cached_network_image.dart';
 import 'package:thousand_melochey/presentation/global_widgets/empty_page_template.dart';
@@ -44,41 +43,11 @@ class _CategoriesPageState extends ConsumerState<CategoriesPage> {
         ),
         centerTitle: true,
       ),
-      body: Column(
-        children: [
-          if (categories.isNotEmpty) ...[
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.sp, vertical: 8.sp),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.grid_view_rounded,
-                    color: AppColors.primaryColor,
-                    size: 20.sp,
-                  ),
-                  SizedBox(width: 8.sp),
-                  Text(
-                    "${AppLocalization.getText(context)?.all_categories}",
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.grey[800],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-          
-          Expanded(
-            child: state.isLoading
-                ? loadingShimmer()
-                : categories.isEmpty
-                    ? emptyState()
-                    : _buildCategoriesGrid(categories),
-          ),
-        ],
-      ),
+      body: state.isLoading
+          ? loadingShimmer()
+          : categories.isEmpty
+              ? emptyState()
+              : _buildCategoriesGrid(categories),
     );
   }
 

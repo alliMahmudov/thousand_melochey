@@ -27,12 +27,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    final notifier = ref.read(profileProvider.notifier);
-    notifier.domainController.dispose();
-    super.dispose();
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -106,22 +101,21 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                         ? asUser(state: state, notifier: notifier)
                         : asGuest(),
 
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: TextField(
-                        controller: notifier.domainController,
-                        decoration: InputDecoration(
-                          hintText: "Hozirgi domain: ${LocalStorage.instance.getDomain()}",
-                          hintStyle: const TextStyle(color: AppColors.primaryColor),
-                          suffix: IconButton(onPressed: () {
-                            LocalStorage.instance.setDomain(ref.read(profileProvider.notifier).domainController.text);
-
-                            print(LocalStorage.instance.getDomain());
-                            FocusScope.of(context).unfocus();
-                          }, icon: const Icon(Icons.done))
-                        ),
-                      )
-                    )
+                    // Padding(
+                    //   padding: const EdgeInsets.all(16.0),
+                    //   child: TextField(
+                    //     controller: notifier.domainController,
+                    //     decoration: InputDecoration(
+                    //       hintText: "Hozirgi domain: ${LocalStorage.instance.getDomain()}",
+                    //       hintStyle: const TextStyle(color: AppColors.primaryColor),
+                    //       suffix: IconButton(onPressed: () {
+                    //         LocalStorage.instance.setDomain(ref.read(profileProvider.notifier).domainController.text);
+                    //
+                    //         FocusScope.of(context).unfocus();
+                    //       }, icon: const Icon(Icons.done))
+                    //     ),
+                    //   )
+                    // )
                   ],
                 ),
               ),
@@ -170,8 +164,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
           },
         ),
         SectionButtonWidget(
-            icon: CupertinoIcons.location_solid,
-            title: "Bizning manzilimiz",
+            icon: Icons.storefront_sharp,
+            title: "${AppLocalization.getText(context)?.our_address}",
             onTap: () {
 
               final locationFunc = ref.read(cartProvider.notifier);
@@ -304,7 +298,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             }),
         SectionButtonWidget(
             icon: Icons.storefront_sharp,
-            title: "Bizning manzilimiz",
+            title: "${AppLocalization.getText(context)?.our_address}",
             onTap: () {
 
               final locationFunc = ref.read(cartProvider.notifier);

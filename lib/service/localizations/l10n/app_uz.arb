@@ -19,6 +19,7 @@
   "favorites_count": "Sizda $count ta saqlangan mahsulot bor",
   "favorite_products": "Sevimli mahsulotlar",
   "empty_cart": "Savat bo‘sh",
+  "empty_cart_title": "Lekin buni tuzatish oson! Yangi mahsulotlarimizni ko'rib chiqing",
   "checkout": "Buyurtma berish",
   "phone_number": "Telefon raqami",
   "address": "Manzil",
@@ -108,7 +109,8 @@
     "empty_catalog": "Bo'sh katalog",
     "error_occurred": "Xatolik yuz berdi, qaytadan urinib ko'ring",
     "no_internet_access": "Internetga ulanish yo'q",
-    "check_wifi_or_network": "Wi-Fi yoki mobil tarmog'ingizni tekshiring"
+    "check_wifi_or_network": "Wi-Fi yoki mobil tarmog'ingizni tekshiring",
+    "our_address": "Bizning manzilimiz"
 
 
 

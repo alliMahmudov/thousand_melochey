@@ -36,7 +36,8 @@ class EmptyPageTemplate extends ConsumerWidget {
         children: [
           TweenAnimationBuilder<double>(
             tween: Tween(begin: 0.0, end: 1.0),
-            duration: const Duration(milliseconds: 1500),
+            duration: const Duration(milliseconds: 400),
+            curve: Curves.easeInOut,
             builder: (context, value, child) {
               return Transform.scale(
                 scale: 0.8 + (0.2 * value),

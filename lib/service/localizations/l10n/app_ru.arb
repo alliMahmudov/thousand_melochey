@@ -19,6 +19,7 @@
   "favorites_count": "У вас $count сохраненных товаров",
   "favorite_products": "Избранные товары",
   "empty_cart": "Корзина пуста",
+  "empty_cart_title": "Но это легко исправить! Посмотрите наши новинки",
   "checkout": "Оформить заказ",
   "phone_number": "Номер телефона",
   "address": "Адрес",
@@ -114,7 +115,9 @@
   "empty_catalog": "Пустой каталог",
   "error_occurred": "Произошла ошибка, пожалуйста, попробуйте еще раз",
   "no_internet_access": "Нет подключения к интернету",
-  "check_wifi_or_network": "Проверьте Wi-Fi или мобильную сеть"
+  "check_wifi_or_network": "Проверьте Wi-Fi или мобильную сеть",
+  "our_address": "Наш адрес"
+
 
 
 

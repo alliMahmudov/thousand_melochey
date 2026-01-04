@@ -19,6 +19,7 @@
   "favorites_count": "You have $count saved products",
   "favorite_products": "Favorite products",
   "empty_cart": "No cart items",
+  "empty_cart_title": "But it's easy to fix! Check out our new products",
   "checkout": "Checkout",
   "checkout": "Checkout",
   "phone_number": "Phone number",
@@ -109,7 +110,9 @@
     "empty_catalog": "Empty catalog",
     "error_occurred": "An error occurred, please try again",
     "no_internet_access": "No internet connection",
-    "check_wifi_or_network": "Check your Wi-Fi or mobile network"
+    "check_wifi_or_network": "Check your Wi-Fi or mobile network",
+    "our_address": "Store address"
+
 
 
 
