@@ -6,6 +6,7 @@ import 'package:thousand_melochey/presentation/pages/categories/presentation/riv
 import 'package:thousand_melochey/presentation/pages/home/presentation/widgets/carousel_slide_widget.dart';
 import 'package:thousand_melochey/presentation/pages/home/presentation/widgets/all_products_widget.dart';
 import 'package:thousand_melochey/presentation/pages/home/presentation/widgets/product_categories_widget.dart';
+import 'package:thousand_melochey/core/config/banner_config.dart';
 
 import '../../../../service/localizations/localization.dart';
 
@@ -75,7 +76,7 @@ class _HomePageState extends ConsumerState<HomePage>
                         child: CarouselSlider(
                           options: CarouselOptions(
                             height: 150.h,
-                            viewportFraction: 0.9,
+                            viewportFraction: 0.85,
                             autoPlay: true,
                             autoPlayInterval: const Duration(seconds: 4),
                             autoPlayAnimationDuration:
@@ -84,40 +85,11 @@ class _HomePageState extends ConsumerState<HomePage>
                             enlargeCenterPage: true,
                             enlargeFactor: 0.2,
                           ),
-                          items: [
-                            CarouselSlideWidget(
-                              title: AppLocalization.getText(context)
-                                      ?.carousel_delivery ??
-                                  '',
-                              icon: Icons.local_shipping_rounded,
-                              accentColor: AppColors.primaryColor,
-                              slideIndex: 0,
-                            ),
-                            CarouselSlideWidget(
-                              title: AppLocalization.getText(context)
-                                      ?.carousel_popular ??
-                                  '',
-                              icon: Icons.star_rounded,
-                              accentColor: Color(0xFFF57C00),
-                              slideIndex: 1,
-                            ),
-                            CarouselSlideWidget(
-                              title: AppLocalization.getText(context)
-                                      ?.carousel_search ??
-                                  '',
-                              icon: Icons.search_rounded,
-                              accentColor: AppColors.primaryShadeColor,
-                              slideIndex: 2,
-                            ),
-                            CarouselSlideWidget(
-                              title: AppLocalization.getText(context)
-                                      ?.carousel_payment ??
-                                  '',
-                              icon: Icons.payment_rounded,
-                              accentColor: AppColors.red,
-                              slideIndex: 3,
-                            ),
-                          ],
+                          items: BannerData.getBanners().map((banner) {
+                            return CarouselSlideWidget(
+                              bannerConfig: banner,
+                            );
+                          }).toList(),
                         ),
                       ),
                       const SliverToBoxAdapter(

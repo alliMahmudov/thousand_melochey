@@ -341,7 +341,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
                         alignment: Alignment.center,
                         child: Text(
                           "${AppLocalization.getText(context)?.go_to_cart}",
-                          style: TextStyle(color: AppColors.primaryColor, fontWeight: FontWeight.w600),
+                          style: const TextStyle(color: AppColors.primaryColor, fontWeight: FontWeight.w600),
                         ),
                       ),
                     ),

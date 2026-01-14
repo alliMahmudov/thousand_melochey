@@ -64,7 +64,7 @@
   "orders": "Buyurtmalar",
   "price": "Narxi",
   "product_added_to_cart": "Mahsulot savatga qo'shildi",
-  "go_to_cart": "Savatga borish",
+  "go_to_cart": "Savatga o'tish",
   "save_favorite": "Sevimli mahsulotlaringizni keyinroq tezda topish uchun ularni saqlang",
   "start_shopping": "Xarid qilishni boshlash",
   "comment": "Izoh",
@@ -111,6 +111,7 @@
     "no_internet_access": "Internetga ulanish yo'q",
     "check_wifi_or_network": "Wi-Fi yoki mobil tarmog'ingizni tekshiring",
     "our_address": "Bizning manzilimiz"
+
 
 
 
