@@ -2,13 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:proste_indexed_stack/proste_indexed_stack.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
 import 'package:thousand_melochey/presentation/pages/cart/presentation/cart_page.dart';
-import 'package:thousand_melochey/presentation/pages/catogories/presentation/categories_page.dart';
+import 'package:thousand_melochey/presentation/pages/categories/presentation/categories_page.dart';
 import 'package:thousand_melochey/presentation/pages/favorite/presentation/favorite_page.dart';
-import 'package:thousand_melochey/presentation/pages/home/presentation/home_page.dart';
 import 'package:thousand_melochey/presentation/pages/main/data/navbar_enum.dart';
 import 'package:thousand_melochey/presentation/pages/profile/presentation/profile_page.dart';
 import 'package:thousand_melochey/service/localizations/localization.dart';
-
 import '../state/main_state.dart';
 
 class MainNotifier extends StateNotifier<MainState> {

@@ -1,17 +1,16 @@
 import 'package:animated_loading_border/animated_loading_border.dart';
 import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:thousand_melochey/contstants/app_colors.dart';
 
 class CustomShimmerEffect extends StatelessWidget {
   final Widget child;
   final bool? isLoading;
-  final bool? leaf;
+  final bool leaf;
 
   // final GlobalKey? globalKey;
 
   const CustomShimmerEffect(
-      {super.key, required this.child, this.isLoading = false, this.leaf});
+      {super.key, required this.child, this.isLoading = false, this.leaf = false});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +20,9 @@ class CustomShimmerEffect extends StatelessWidget {
         highlightColor: Color(0xffF9FAFE),
       ),
       enabled: isLoading ?? false,
-      child: leaf ?? true ? Skeleton.leaf(child: child) : child,
+      child: leaf
+          ? Skeleton.leaf(child: child)
+          : child,
     );
   }
 

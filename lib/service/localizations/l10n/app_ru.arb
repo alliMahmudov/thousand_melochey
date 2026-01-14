@@ -19,6 +19,7 @@
   "favorites_count": "У вас $count сохраненных товаров",
   "favorite_products": "Избранные товары",
   "empty_cart": "Корзина пуста",
+  "empty_cart_title": "Но это легко исправить! Посмотрите наши новинки",
   "checkout": "Оформить заказ",
   "phone_number": "Номер телефона",
   "address": "Адрес",
@@ -88,7 +89,7 @@
   "add_address": "Добавить адрес",
   "select_an_address_before_saving": "Выберите адрес перед созданием заказа",
   "saved_addresses": "Сохраненные адресы",
-  "product_not_available": "Продукт недоступен",
+  "product_not_available": "Продукты недоступны",
   "select_lang": "Выберите язык",
   "payment_type": "Тип оплаты",
   "delivery_type": "Тип доставки",
@@ -106,7 +107,18 @@
   "enter_current_password": "Введите текущий пароль",
   "select_payment_type": "Выберите тип оплаты",
   "select_delivery_type": "Выберите тип доставки",
-  "shop_address": "Ташкент, улица Уста Ширин, 122/1"
+  "shop_address": "Ташкент, улица Уста Ширин, 122/1",
+  "carousel_delivery": "Бесплатная доставка\nвнутри Ташкента",
+  "carousel_popular": "Популярные товары\nпо выгодным ценам",
+  "carousel_search": "Найдите нужный товар\nза пару секунд",
+  "carousel_payment": "Удобная оплата —\nналичными или картой",
+  "empty_catalog": "Пустой каталог",
+  "error_occurred": "Произошла ошибка, пожалуйста, попробуйте еще раз",
+  "no_internet_access": "Нет подключения к интернету",
+  "check_wifi_or_network": "Проверьте Wi-Fi или мобильную сеть",
+  "our_address": "Наш адрес"
+
+
 
 
 

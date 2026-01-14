@@ -1,13 +1,6 @@
 import 'package:thousand_melochey/contstants/app_api_error_helper.dart';
-import 'package:thousand_melochey/core/handlers/http_service.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
-import 'package:thousand_melochey/presentation/pages/catogories/data/categories_response.dart';
-import 'package:thousand_melochey/presentation/pages/home/data/category_products_response.dart';
-import 'package:thousand_melochey/presentation/pages/home/data/electronic_response.dart';
-import 'package:thousand_melochey/presentation/pages/home/data/gloves_response.dart';
 import 'package:thousand_melochey/presentation/pages/home/data/products_response.dart';
-import 'package:thousand_melochey/presentation/pages/home/data/screwdrivers_response.dart';
-import 'package:thousand_melochey/presentation/pages/home/data/tools_response.dart';
 
 class HomeRepositoryImpl extends HomeRepository {
   @override

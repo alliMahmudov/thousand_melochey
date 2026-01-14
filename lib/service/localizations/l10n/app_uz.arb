@@ -19,6 +19,7 @@
   "favorites_count": "Sizda $count ta saqlangan mahsulot bor",
   "favorite_products": "Sevimli mahsulotlar",
   "empty_cart": "Savat bo‘sh",
+  "empty_cart_title": "Lekin buni tuzatish oson! Yangi mahsulotlarimizni ko'rib chiqing",
   "checkout": "Buyurtma berish",
   "phone_number": "Telefon raqami",
   "address": "Manzil",
@@ -82,7 +83,7 @@
   "address_added_successfully": "Manzil muvaffaqiyatli qo'shildi",
   "select_an_address_before_saving": "Buyurtma yaratishdan oldin manzilni tanlang",
   "saved_addresses": "Saqlangan manzillar",
-  "product_not_available": "Mahsulot mavjud emas",
+  "product_not_available": "Mahsulotlar mavjud emas",
   "select_lang": "Tilni tanlang",
   "payment_type": "To'lov turi",
   "delivery_type": "Yetkazib berish turi",
@@ -100,7 +101,16 @@
   "enter_current_password": "Hozirgi parolni kiriting",
   "select_payment_type": "To'lov turini tanlang",
   "select_delivery_type": "Yetkazib berish turini tanlang",
-  "shop_address": "Toshkent, Usta Shirin ko'cha, 122/1"
+  "shop_address": "Toshkent, Usta Shirin ko'cha, 122/1",
+   "carousel_delivery": "Toshkent bo'ylab\nbepul yetkazib berish",
+    "carousel_popular": "Mashhur mahsulotlar\nqulay narxlarda",
+    "carousel_search": "Kerakli mahsulotni\nbir necha soniyada toping",
+    "carousel_payment": "Qulay to'lov —\nnaqd yoki karta",
+    "empty_catalog": "Bo'sh katalog",
+    "error_occurred": "Xatolik yuz berdi, qaytadan urinib ko'ring",
+    "no_internet_access": "Internetga ulanish yo'q",
+    "check_wifi_or_network": "Wi-Fi yoki mobil tarmog'ingizni tekshiring",
+    "our_address": "Bizning manzilimiz"
 
 
 

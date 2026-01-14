@@ -17,6 +17,8 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$CategoriesState {
   bool get isLoading => throw _privateConstructorUsedError;
+  bool get isLoadingPaginationProducts => throw _privateConstructorUsedError;
+  bool get isLoadMore => throw _privateConstructorUsedError;
   CategoriesResponse? get categories => throw _privateConstructorUsedError;
   CategoryProductsResponse? get categoryProducts =>
       throw _privateConstructorUsedError;
@@ -34,6 +36,8 @@ abstract class $CategoriesStateCopyWith<$Res> {
   @useResult
   $Res call(
       {bool isLoading,
+      bool isLoadingPaginationProducts,
+      bool isLoadMore,
       CategoriesResponse? categories,
       CategoryProductsResponse? categoryProducts});
 }
@@ -52,6 +56,8 @@ class _$CategoriesStateCopyWithImpl<$Res, $Val extends CategoriesState>
   @override
   $Res call({
     Object? isLoading = null,
+    Object? isLoadingPaginationProducts = null,
+    Object? isLoadMore = null,
     Object? categories = freezed,
     Object? categoryProducts = freezed,
   }) {
@@ -59,6 +65,14 @@ class _$CategoriesStateCopyWithImpl<$Res, $Val extends CategoriesState>
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isLoadingPaginationProducts: null == isLoadingPaginationProducts
+          ? _value.isLoadingPaginationProducts
+          : isLoadingPaginationProducts // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isLoadMore: null == isLoadMore
+          ? _value.isLoadMore
+          : isLoadMore // ignore: cast_nullable_to_non_nullable
               as bool,
       categories: freezed == categories
           ? _value.categories
@@ -82,6 +96,8 @@ abstract class _$$CategoriesStateImplCopyWith<$Res>
   @useResult
   $Res call(
       {bool isLoading,
+      bool isLoadingPaginationProducts,
+      bool isLoadMore,
       CategoriesResponse? categories,
       CategoryProductsResponse? categoryProducts});
 }
@@ -98,6 +114,8 @@ class __$$CategoriesStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? isLoading = null,
+    Object? isLoadingPaginationProducts = null,
+    Object? isLoadMore = null,
     Object? categories = freezed,
     Object? categoryProducts = freezed,
   }) {
@@ -105,6 +123,14 @@ class __$$CategoriesStateImplCopyWithImpl<$Res>
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isLoadingPaginationProducts: null == isLoadingPaginationProducts
+          ? _value.isLoadingPaginationProducts
+          : isLoadingPaginationProducts // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isLoadMore: null == isLoadMore
+          ? _value.isLoadMore
+          : isLoadMore // ignore: cast_nullable_to_non_nullable
               as bool,
       categories: freezed == categories
           ? _value.categories
@@ -122,11 +148,21 @@ class __$$CategoriesStateImplCopyWithImpl<$Res>
 
 class _$CategoriesStateImpl implements _CategoriesState {
   const _$CategoriesStateImpl(
-      {this.isLoading = false, this.categories, this.categoryProducts});
+      {this.isLoading = false,
+      this.isLoadingPaginationProducts = false,
+      this.isLoadMore = false,
+      this.categories,
+      this.categoryProducts});
 
   @override
   @JsonKey()
   final bool isLoading;
+  @override
+  @JsonKey()
+  final bool isLoadingPaginationProducts;
+  @override
+  @JsonKey()
+  final bool isLoadMore;
   @override
   final CategoriesResponse? categories;
   @override
@@ -134,7 +170,7 @@ class _$CategoriesStateImpl implements _CategoriesState {
 
   @override
   String toString() {
-    return 'CategoriesState(isLoading: $isLoading, categories: $categories, categoryProducts: $categoryProducts)';
+    return 'CategoriesState(isLoading: $isLoading, isLoadingPaginationProducts: $isLoadingPaginationProducts, isLoadMore: $isLoadMore, categories: $categories, categoryProducts: $categoryProducts)';
   }
 
   @override
@@ -144,6 +180,12 @@ class _$CategoriesStateImpl implements _CategoriesState {
             other is _$CategoriesStateImpl &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
+            (identical(other.isLoadingPaginationProducts,
+                    isLoadingPaginationProducts) ||
+                other.isLoadingPaginationProducts ==
+                    isLoadingPaginationProducts) &&
+            (identical(other.isLoadMore, isLoadMore) ||
+                other.isLoadMore == isLoadMore) &&
             (identical(other.categories, categories) ||
                 other.categories == categories) &&
             (identical(other.categoryProducts, categoryProducts) ||
@@ -151,8 +193,8 @@ class _$CategoriesStateImpl implements _CategoriesState {
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, isLoading, categories, categoryProducts);
+  int get hashCode => Object.hash(runtimeType, isLoading,
+      isLoadingPaginationProducts, isLoadMore, categories, categoryProducts);
 
   @JsonKey(ignore: true)
   @override
@@ -165,12 +207,18 @@ class _$CategoriesStateImpl implements _CategoriesState {
 abstract class _CategoriesState implements CategoriesState {
   const factory _CategoriesState(
           {final bool isLoading,
+          final bool isLoadingPaginationProducts,
+          final bool isLoadMore,
           final CategoriesResponse? categories,
           final CategoryProductsResponse? categoryProducts}) =
       _$CategoriesStateImpl;
 
   @override
   bool get isLoading;
+  @override
+  bool get isLoadingPaginationProducts;
+  @override
+  bool get isLoadMore;
   @override
   CategoriesResponse? get categories;
   @override

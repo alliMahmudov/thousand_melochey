@@ -39,6 +39,7 @@ abstract class _$AppRouter extends RootStackRouter {
         routeData: routeData,
         child: CategoryProductsPage(
           categoryName: args.categoryName,
+          categoryId: args.categoryId,
           key: args.key,
         ),
       );
@@ -181,12 +182,14 @@ class CategoriesRoute extends PageRouteInfo<void> {
 class CategoryProductsRoute extends PageRouteInfo<CategoryProductsRouteArgs> {
   CategoryProductsRoute({
     required String categoryName,
+    int? categoryId,
     Key? key,
     List<PageRouteInfo>? children,
   }) : super(
           CategoryProductsRoute.name,
           args: CategoryProductsRouteArgs(
             categoryName: categoryName,
+            categoryId: categoryId,
             key: key,
           ),
           initialChildren: children,
@@ -201,16 +204,19 @@ class CategoryProductsRoute extends PageRouteInfo<CategoryProductsRouteArgs> {
 class CategoryProductsRouteArgs {
   const CategoryProductsRouteArgs({
     required this.categoryName,
+    this.categoryId,
     this.key,
   });
 
   final String categoryName;
 
+  final int? categoryId;
+
   final Key? key;
 
   @override
   String toString() {
-    return 'CategoryProductsRouteArgs{categoryName: $categoryName, key: $key}';
+    return 'CategoryProductsRouteArgs{categoryName: $categoryName, categoryId: $categoryId, key: $key}';
   }
 }
 

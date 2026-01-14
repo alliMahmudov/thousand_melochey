@@ -68,6 +68,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                 ? EmptyPageTemplate(
               icon: CupertinoIcons.shopping_cart,
               title: "${AppLocalization.getText(context)?.empty_cart}",
+              subTitle: "${AppLocalization.getText(context)?.empty_cart_title}",
             )
                 : RefreshIndicator(
               onRefresh: () => notifier.getCartItems(),

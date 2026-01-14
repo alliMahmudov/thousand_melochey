@@ -1,6 +1,6 @@
 import 'package:thousand_melochey/core/imports/imports.dart';
-import 'package:thousand_melochey/presentation/pages/catogories/repository/categories_repository.dart';
-import 'package:thousand_melochey/presentation/pages/catogories/repository/impl/categories_repository_impl.dart';
+import 'package:thousand_melochey/presentation/pages/categories/repository/categories_repository.dart';
+import 'package:thousand_melochey/presentation/pages/categories/repository/impl/categories_repository_impl.dart';
 
 
 T inject<T extends Object>() {

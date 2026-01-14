@@ -24,6 +24,8 @@ abstract class ProfileRepository{
 
   Future<ApiResult<dynamic>> deleteAccount({required String currentPassword});
 
+  Future<ApiResult<dynamic>> changeAppLanguage({required String lang});
+
  // Future<dynamic> getOrders();
 
 

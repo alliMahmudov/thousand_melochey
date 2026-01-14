@@ -1,8 +1,7 @@
 import 'package:thousand_melochey/core/imports/imports.dart';
-import 'package:thousand_melochey/presentation/pages/catogories/data/categories_response.dart';
-import 'package:thousand_melochey/presentation/pages/catogories/repository/categories_repository.dart';
+import 'package:thousand_melochey/presentation/pages/categories/data/categories_response.dart';
+import 'package:thousand_melochey/presentation/pages/categories/repository/categories_repository.dart';
 import 'package:thousand_melochey/presentation/pages/home/data/category_products_response.dart';
-import 'package:thousand_melochey/presentation/pages/home/data/products_response.dart';
 
 class CategoriesRepositoryImpl extends CategoriesRepository{
   @override
@@ -29,10 +28,10 @@ class CategoriesRepositoryImpl extends CategoriesRepository{
   }
 
   @override
-  Future<ApiResult<dynamic>> getCategoryProducts({required String categoryName}) async{
+  Future<ApiResult<dynamic>> getCategoryProducts({required int categoryId, int? currentPage}) async{
     try {
       final client = inject<HttpService>().client(requireAuth: true);
-      final response = await client.get("/api/categories/$categoryName/products");
+      final response = await client.get("/api/categories/$categoryId/products/?page=$currentPage");
 
       return ApiResult.success(
         data: CategoryProductsResponse.fromJson(response.data),

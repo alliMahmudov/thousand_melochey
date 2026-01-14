@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:restart_app/restart_app.dart';
 import 'package:thousand_melochey/contstants/app_assets.dart';
 import 'package:thousand_melochey/core/handlers/local_storage.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
-import 'package:thousand_melochey/presentation/global_widgets/restart_widget.dart';
 import 'package:thousand_melochey/presentation/pages/profile/presentation/widgets/change_lang_modal.dart';
 import 'package:thousand_melochey/presentation/pages/profile/presentation/widgets/section_button_widget.dart';
 import 'package:thousand_melochey/service/localizations/localization.dart';
@@ -23,11 +21,13 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       final notifier = ref.read(profileProvider.notifier);
       if(LocalStorage.instance.isAuthenticated()) {
-        notifier.getUserInfo();
+        notifier.getUserInfo(context: context);
       }
     });
     super.initState();
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -86,17 +86,38 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
       body: SafeArea(
         child: RefreshIndicator(
             onRefresh: () async {
-              await notifier.getUserInfo();
+              await notifier.getUserInfo(context: context);
             },
-            child: SingleChildScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              child: Column(
-                children: [
-                  60.verticalSpace,
-                  LocalStorage.instance.isAuthenticated() 
-                      ? asUser(state: state, notifier: notifier)
-                      : asGuest()
-                ],
+            child: GestureDetector(
+              onTap: (){
+                FocusScope.of(context).unfocus();
+              },
+              child: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                child: Column(
+                  children: [
+                    60.verticalSpace,
+                    LocalStorage.instance.isAuthenticated()
+                        ? asUser(state: state, notifier: notifier)
+                        : asGuest(),
+
+                    // Padding(
+                    //   padding: const EdgeInsets.all(16.0),
+                    //   child: TextField(
+                    //     controller: notifier.domainController,
+                    //     decoration: InputDecoration(
+                    //       hintText: "Hozirgi domain: ${LocalStorage.instance.getDomain()}",
+                    //       hintStyle: const TextStyle(color: AppColors.primaryColor),
+                    //       suffix: IconButton(onPressed: () {
+                    //         LocalStorage.instance.setDomain(ref.read(profileProvider.notifier).domainController.text);
+                    //
+                    //         FocusScope.of(context).unfocus();
+                    //       }, icon: const Icon(Icons.done))
+                    //     ),
+                    //   )
+                    // )
+                  ],
+                ),
               ),
             )),
       ),
@@ -141,26 +162,17 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               return;
             }
           },
-          /*{
-                      */ /*AppHelpers.showCustomAlertDialog(
-                        context: context,
-                        padding: const EdgeInsets.all(12),
-                        title: "Connact number",
-                        content: "+99893 712-80-03",
-                        actions: [
-                          Material(
-                            child: InkWell(
-                                onTap: () {
-                                  AppNavigator.pop();
-                                },
-                                child: Container(
-                                    alignment: Alignment.center,
-                                    padding: const EdgeInsets.all(12),
-                                    child: const Text('close'))),
-                          )
-                        ]);*/ /*
-                    }*/
         ),
+        SectionButtonWidget(
+            icon: Icons.storefront_sharp,
+            title: "${AppLocalization.getText(context)?.our_address}",
+            onTap: () {
+
+              final locationFunc = ref.read(cartProvider.notifier);
+
+              locationFunc.openMap();
+
+            }),
         SectionButtonWidget(
             icon: Icons.language,
             title: "${AppLocalization.getText(context)?.lang}",
@@ -271,11 +283,28 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               AppNavigator.push(const AllOrdersRoute());
             }),
         SectionButtonWidget(
-            icon: Icons.add_location_alt,
+            icon: Icons.house_outlined,
             title:
             "${AppLocalization.getText(context)?.my_addresses}",
             onTap: () {
               AppNavigator.push(const UserAddressesRoute());
+            }),
+        SectionButtonWidget(
+            icon: Icons.language,
+            title: "${AppLocalization.getText(context)?.lang}",
+            onTap: () {
+              AppHelpers.showCustomModalBottomSheetWithoutIosIcon(
+                  context: context, modal: const ChangeLangModal());
+            }),
+        SectionButtonWidget(
+            icon: Icons.storefront_sharp,
+            title: "${AppLocalization.getText(context)?.our_address}",
+            onTap: () {
+
+              final locationFunc = ref.read(cartProvider.notifier);
+
+              locationFunc.openMap();
+
             }),
         SectionButtonWidget(
           icon: Icons.email_outlined,
@@ -301,33 +330,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               return;
             }
           },
-          /*{
-            */ /*AppHelpers.showCustomAlertDialog(
-              context: context,
-              padding: const EdgeInsets.all(12),
-              title: "Connact number",
-              content: "+99893 712-80-03",
-              actions: [
-                Material(
-                  child: InkWell(
-                      onTap: () {
-                        AppNavigator.pop();
-                      },
-                      child: Container(
-                          alignment: Alignment.center,
-                          padding: const EdgeInsets.all(12),
-                          child: const Text('close'))),
-                )
-              ]);*/ /*
-          }*/
         ),
-        SectionButtonWidget(
-            icon: Icons.language,
-            title: "${AppLocalization.getText(context)?.lang}",
-            onTap: () {
-              AppHelpers.showCustomModalBottomSheetWithoutIosIcon(
-                  context: context, modal: const ChangeLangModal());
-            }),
         SectionButtonWidget(
             icon: Icons.exit_to_app,
             title: "${AppLocalization.getText(context)?.log_out}",
@@ -351,5 +354,4 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
       ],
     );
   }
-
 }

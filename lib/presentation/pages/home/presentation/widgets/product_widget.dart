@@ -1,14 +1,11 @@
-
 import 'package:flutter/cupertino.dart';
-import 'package:overlay_kit/overlay_kit.dart';
 import 'package:thousand_melochey/contstants/app_assets.dart';
-import 'package:thousand_melochey/contstants/app_constants.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
 import 'package:thousand_melochey/core/handlers/local_storage.dart';
+import 'package:thousand_melochey/presentation/global_widgets/cached_network_image.dart';
 import 'package:thousand_melochey/presentation/global_widgets/money_formatter.dart';
 import 'package:thousand_melochey/service/localizations/localization.dart';
 import 'package:thousand_melochey/presentation/pages/cart/data/local_cart_item_model.dart';
-
 import '../../../cart/data/cart_response.dart';
 
 class ProductWidget extends ConsumerStatefulWidget {
@@ -83,7 +80,7 @@ class _ProductWidgetState extends ConsumerState<ProductWidget> {
           id: id,
           context: context,
           success: () {
-            cartNotifier.getCartProducts();
+            // cartNotifier.getCartProducts();
           },
         );
       } else {
@@ -110,15 +107,19 @@ class _ProductWidgetState extends ConsumerState<ProductWidget> {
                   Container(
                     alignment: Alignment.center,
                     child: widget.image != null && widget.image!.isNotEmpty
-                        ? FadeInImage.assetNetwork(
-                            placeholder: AppAssets.emptyImagePlaceHolder,
-                            image: widget.image!,
-                            fit: BoxFit.cover,
-                            imageErrorBuilder: (context, error, stackTrace) => Image.asset(
-                              AppAssets.emptyImagePlaceHolder,
-                              fit: BoxFit.cover,
-                            ),
-                          )
+                        ?
+                        CustomNetworkImage(
+                            imagePath: widget.image)
+                        // CachedNetworkImage(imageUrl: widget.image ?? AppAssets.emptyImagePlaceHolder)
+                    // FadeInImage.assetNetwork(
+                    //         placeholder: AppAssets.emptyImagePlaceHolder,
+                    //         image: widget.image!,
+                    //         fit: BoxFit.cover,
+                    //         imageErrorBuilder: (context, error, stackTrace) => Image.asset(
+                    //           AppAssets.emptyImagePlaceHolder,
+                    //           fit: BoxFit.cover,
+                    //         ),
+                    //       )
                         : Image.asset(
                             AppAssets.emptyImagePlaceHolder,
                             fit: BoxFit.cover,

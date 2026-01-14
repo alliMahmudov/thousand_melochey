@@ -10,6 +10,9 @@ class CustomNetworkImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return CachedNetworkImage(
       imageUrl: imagePath ?? "",
+      fadeInDuration: Duration.zero,
+      fadeOutDuration: Duration.zero,
+      placeholderFadeInDuration: Duration.zero,
       placeholder: (context, url) => Transform.scale(
           scale: 0.7,
           child: const CircularProgressIndicator()),
