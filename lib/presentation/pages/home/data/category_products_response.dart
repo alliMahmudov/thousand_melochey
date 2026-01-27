@@ -33,6 +33,7 @@ class Datum {
   final String? name;
   final String? description;
   final String? price;
+  final String? finalPriceUzs;
   final String? image;
   final List<String>? images;
   final double? availableQuantity;
@@ -42,6 +43,7 @@ class Datum {
     this.name,
     this.description,
     this.price,
+    this.finalPriceUzs,
     this.image,
     this.images,
     this.availableQuantity,
@@ -52,6 +54,7 @@ class Datum {
     name: json["name"],
     description: json["description"],
     price: json["price"],
+    finalPriceUzs: json["final_price_uzs"],
     image: json["image"],
     images: json["images"] == null ? [] : List<String>.from(json["images"]!.map((x) => x)),
     availableQuantity: json["available_quantity"],
@@ -62,6 +65,7 @@ class Datum {
     "name": name,
     "description": description,
     "price": price,
+    "final_price_uzs": finalPriceUzs,
     "image": image,
     "images": images == null ? [] : List<dynamic>.from(images!.map((x) => x)),
     "available_quantity": availableQuantity,

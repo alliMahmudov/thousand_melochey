@@ -33,6 +33,7 @@ class Product {
   final String? name;
   final String? description;
   final String? price;
+  final String? finalPrizeUzs;
   final String? image;
   final List<String>? images;
   final double? availableQuantity;
@@ -42,6 +43,7 @@ class Product {
     this.name,
     this.description,
     this.price,
+    this.finalPrizeUzs,
     this.image,
     this.images,
     this.availableQuantity,
@@ -52,6 +54,7 @@ class Product {
     name: json["name"],
     description: json["description"],
     price: json["price"],
+    finalPrizeUzs: json["final_price_uzs"],
     image: json["image"],
     images: json["images"] == null ? [] : List<String>.from(json["images"]!.map((x) => x)),
     availableQuantity: json["available_quantity"],
@@ -62,6 +65,7 @@ class Product {
     "name": name,
     "description": description,
     "price": price,
+    "final_price_uzs": finalPrizeUzs,
     "image": image,
     "images": images == null ? [] : List<dynamic>.from(images!.map((x) => x)),
     "available_quantity": availableQuantity,

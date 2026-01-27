@@ -118,7 +118,7 @@ class _CategoryProductsState extends ConsumerState<CategoryProductsPage> {
                                 ProductDetailRoute(
                                     id: product?.id ?? 0,
                                     name: product?.name,
-                                    price: product?.price,
+                                    price: product?.finalPriceUzs,
                                     description: product?.description,
                                     image: product?.image,
                                     images: product?.images
@@ -127,7 +127,7 @@ class _CategoryProductsState extends ConsumerState<CategoryProductsPage> {
                           child: ProductWidget(
                             name: product?.name,
                             image: product?.image,
-                            price: product?.price,
+                            price: product?.finalPriceUzs,
                             id: product?.id,
                             isFavorite: isLiked ?? false,
                             onTap: () {
@@ -144,13 +144,13 @@ class _CategoryProductsState extends ConsumerState<CategoryProductsPage> {
                             addToCart: () {
                               if (product != null) {
                                 product.name;
-                                product.price;
+                                product.finalPriceUzs;
                                 product.image;
 
                                 final cartItem = LocalCartProduct(
                                   id: product.id,
                                   name: product.name,
-                                  price: product.price,
+                                  price: product.finalPriceUzs,
                                   image: product.image,
                                   images: product.images,
                                   description: product.description,
