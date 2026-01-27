@@ -28,6 +28,29 @@ class CategoriesRepositoryImpl extends CategoriesRepository{
   }
 
   @override
+  Future<ApiResult<dynamic>> getSearchedCategory({String? search}) async {
+    try {
+      final client = inject<HttpService>().client(requireAuth: true);
+      final response = await client.get("/api/categories/${search != null && search != "" ? "?q=$search" : ""}");
+
+      return ApiResult.success(
+        data: CategoriesResponse.fromJson(response.data),
+      );
+    } on DioException catch (e) {
+      debugPrint('==> get searched categories failure: ${e.response?.data}');
+      return ApiResult.failure(
+        error: NetworkExceptions.getDioException(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
+    } catch (e) {
+      debugPrint('==> get searched categories failure: $e');
+      return ApiResult.failure(
+          error: NetworkExceptions.getDioException(e),
+          statusCode: NetworkExceptions.getDioStatus(e));
+    }
+  }
+
+  @override
   Future<ApiResult<dynamic>> getCategoryProducts({required int categoryId, int? currentPage}) async{
     try {
       final client = inject<HttpService>().client(requireAuth: true);

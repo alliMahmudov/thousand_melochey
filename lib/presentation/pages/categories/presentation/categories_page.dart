@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
 import 'package:thousand_melochey/presentation/global_widgets/cached_network_image.dart';
 import 'package:thousand_melochey/presentation/global_widgets/empty_page_template.dart';
@@ -31,6 +32,7 @@ class _CategoriesPageState extends ConsumerState<CategoriesPage> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(categoriesProvider);
+    final notifier = ref.read(categoriesProvider.notifier);
     final categories = state.categories?.data ?? [];
     
     return Scaffold(
@@ -43,11 +45,25 @@ class _CategoriesPageState extends ConsumerState<CategoriesPage> {
         ),
         centerTitle: true,
       ),
-      body: state.isLoading
-          ? loadingShimmer()
-          : categories.isEmpty
-              ? emptyState()
-              : _buildCategoriesGrid(categories),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: CupertinoSearchTextField(
+              controller: notifier.categorySearchController,
+              onChanged: (value) {
+                notifier.getCategories();
+              },
+            ),
+          ),
+          Expanded(
+              child: state.isLoading
+                  ? loadingShimmer()
+                  : categories.isEmpty
+                      ? emptyState()
+                      : _buildCategoriesGrid(categories))
+        ],
+      ),
     );
   }
 
@@ -146,22 +162,22 @@ class _CategoriesPageState extends ConsumerState<CategoriesPage> {
               child: Column(
                 children: [
                   Container(
-                    height: 110.sp,
-                    width: MediaQuery.sizeOf(context).width,
-                    padding: const EdgeInsets.only(bottom: 1),
+                      height: 110.sp,
+                      width: MediaQuery.sizeOf(context).width,
+                      padding: const EdgeInsets.only(bottom: 1),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(12.r),
-                          topRight: Radius.circular(12.r),
-                        ),
-                        border: Border(bottom: BorderSide(color: AppColors.primaryColor.withAlpha(50)))
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(12.r),
+                            topRight: Radius.circular(12.r),
+                          ),
+                          border: Border(bottom: BorderSide(color: AppColors.primaryColor.withAlpha(50)))
                       ),
                       child: ClipRRect(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(12.r),
-                          topRight: Radius.circular(12.r),
-                        ),
-                        child: CustomNetworkImage(imagePath: category.image)
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(12.r),
+                            topRight: Radius.circular(12.r),
+                          ),
+                          child: CustomNetworkImage(imagePath: category.image)
                         // FadeInImage.assetNetwork(
                         //   placeholder: AppAssets.emptyImagePlaceHolder,
                         //   image: ,
