@@ -22,6 +22,7 @@ mixin _$CategoriesState {
   CategoriesResponse? get categories => throw _privateConstructorUsedError;
   CategoryProductsResponse? get categoryProducts =>
       throw _privateConstructorUsedError;
+  ProductsResponse? get products => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $CategoriesStateCopyWith<CategoriesState> get copyWith =>
@@ -39,7 +40,8 @@ abstract class $CategoriesStateCopyWith<$Res> {
       bool isLoadingPaginationProducts,
       bool isLoadMore,
       CategoriesResponse? categories,
-      CategoryProductsResponse? categoryProducts});
+      CategoryProductsResponse? categoryProducts,
+      ProductsResponse? products});
 }
 
 /// @nodoc
@@ -60,6 +62,7 @@ class _$CategoriesStateCopyWithImpl<$Res, $Val extends CategoriesState>
     Object? isLoadMore = null,
     Object? categories = freezed,
     Object? categoryProducts = freezed,
+    Object? products = freezed,
   }) {
     return _then(_value.copyWith(
       isLoading: null == isLoading
@@ -82,6 +85,10 @@ class _$CategoriesStateCopyWithImpl<$Res, $Val extends CategoriesState>
           ? _value.categoryProducts
           : categoryProducts // ignore: cast_nullable_to_non_nullable
               as CategoryProductsResponse?,
+      products: freezed == products
+          ? _value.products
+          : products // ignore: cast_nullable_to_non_nullable
+              as ProductsResponse?,
     ) as $Val);
   }
 }
@@ -99,7 +106,8 @@ abstract class _$$CategoriesStateImplCopyWith<$Res>
       bool isLoadingPaginationProducts,
       bool isLoadMore,
       CategoriesResponse? categories,
-      CategoryProductsResponse? categoryProducts});
+      CategoryProductsResponse? categoryProducts,
+      ProductsResponse? products});
 }
 
 /// @nodoc
@@ -118,6 +126,7 @@ class __$$CategoriesStateImplCopyWithImpl<$Res>
     Object? isLoadMore = null,
     Object? categories = freezed,
     Object? categoryProducts = freezed,
+    Object? products = freezed,
   }) {
     return _then(_$CategoriesStateImpl(
       isLoading: null == isLoading
@@ -140,6 +149,10 @@ class __$$CategoriesStateImplCopyWithImpl<$Res>
           ? _value.categoryProducts
           : categoryProducts // ignore: cast_nullable_to_non_nullable
               as CategoryProductsResponse?,
+      products: freezed == products
+          ? _value.products
+          : products // ignore: cast_nullable_to_non_nullable
+              as ProductsResponse?,
     ));
   }
 }
@@ -152,7 +165,8 @@ class _$CategoriesStateImpl implements _CategoriesState {
       this.isLoadingPaginationProducts = false,
       this.isLoadMore = false,
       this.categories,
-      this.categoryProducts});
+      this.categoryProducts,
+      this.products});
 
   @override
   @JsonKey()
@@ -167,10 +181,12 @@ class _$CategoriesStateImpl implements _CategoriesState {
   final CategoriesResponse? categories;
   @override
   final CategoryProductsResponse? categoryProducts;
+  @override
+  final ProductsResponse? products;
 
   @override
   String toString() {
-    return 'CategoriesState(isLoading: $isLoading, isLoadingPaginationProducts: $isLoadingPaginationProducts, isLoadMore: $isLoadMore, categories: $categories, categoryProducts: $categoryProducts)';
+    return 'CategoriesState(isLoading: $isLoading, isLoadingPaginationProducts: $isLoadingPaginationProducts, isLoadMore: $isLoadMore, categories: $categories, categoryProducts: $categoryProducts, products: $products)';
   }
 
   @override
@@ -189,12 +205,20 @@ class _$CategoriesStateImpl implements _CategoriesState {
             (identical(other.categories, categories) ||
                 other.categories == categories) &&
             (identical(other.categoryProducts, categoryProducts) ||
-                other.categoryProducts == categoryProducts));
+                other.categoryProducts == categoryProducts) &&
+            (identical(other.products, products) ||
+                other.products == products));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isLoading,
-      isLoadingPaginationProducts, isLoadMore, categories, categoryProducts);
+  int get hashCode => Object.hash(
+      runtimeType,
+      isLoading,
+      isLoadingPaginationProducts,
+      isLoadMore,
+      categories,
+      categoryProducts,
+      products);
 
   @JsonKey(ignore: true)
   @override
@@ -206,12 +230,12 @@ class _$CategoriesStateImpl implements _CategoriesState {
 
 abstract class _CategoriesState implements CategoriesState {
   const factory _CategoriesState(
-          {final bool isLoading,
-          final bool isLoadingPaginationProducts,
-          final bool isLoadMore,
-          final CategoriesResponse? categories,
-          final CategoryProductsResponse? categoryProducts}) =
-      _$CategoriesStateImpl;
+      {final bool isLoading,
+      final bool isLoadingPaginationProducts,
+      final bool isLoadMore,
+      final CategoriesResponse? categories,
+      final CategoryProductsResponse? categoryProducts,
+      final ProductsResponse? products}) = _$CategoriesStateImpl;
 
   @override
   bool get isLoading;
@@ -223,6 +247,8 @@ abstract class _CategoriesState implements CategoriesState {
   CategoriesResponse? get categories;
   @override
   CategoryProductsResponse? get categoryProducts;
+  @override
+  ProductsResponse? get products;
   @override
   @JsonKey(ignore: true)
   _$$CategoriesStateImplCopyWith<_$CategoriesStateImpl> get copyWith =>

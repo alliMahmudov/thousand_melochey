@@ -5,4 +5,6 @@ abstract class CategoriesRepository{
 
   Future<ApiResult<dynamic>> getCategoryProducts({required int categoryId, int? currentPage});
 
+  Future<ApiResult<dynamic>> getSearchedCategory({String? search});
+
 }

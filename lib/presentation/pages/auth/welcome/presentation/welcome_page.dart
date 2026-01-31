@@ -34,7 +34,7 @@ class _WelcomePageState extends State<WelcomePage>
 
     Future.delayed(const Duration(seconds: 1), () async {
       if (Platform.isIOS) {
-        HapticFeedback.mediumImpact();
+        HapticFeedback.heavyImpact();
       } else if (Platform.isAndroid) {
         if (await Vibration.hasVibrator() ?? false) {
       Vibration.vibrate(duration: 30);
