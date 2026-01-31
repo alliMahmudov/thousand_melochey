@@ -20,15 +20,23 @@ class HomePage extends ConsumerStatefulWidget {
 
 class _HomePageState extends ConsumerState<HomePage>
     with TickerProviderStateMixin {
-  late TabController tabController;
-
+  TabController? _tabController;
 
   @override
   void didChangeDependencies() {
     final notifier = ref.read(homeProvider.notifier);
-
-    tabController = TabController(length: notifier.tabs(context).length, vsync: this);
+    final tabLength = notifier.tabs(context).length;
+    
+    if (_tabController == null || _tabController!.length != tabLength) {
+      _tabController = TabController(length: tabLength, vsync: this);
+    }
     super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    _tabController?.dispose();
+    super.dispose();
   }
 
   @override

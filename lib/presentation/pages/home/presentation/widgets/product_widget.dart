@@ -35,23 +35,30 @@ class ProductWidget extends ConsumerStatefulWidget {
 }
 
 class _ProductWidgetState extends ConsumerState<ProductWidget> {
+  late final int productId;
+  
+  @override
+  void initState() {
+    super.initState();
+    productId = widget.id ?? 0;
+  }
+  
   @override
   Widget build(BuildContext context) {
     final cartNotifier = ref.read(cartProvider.notifier);
-    final cartState = ref.watch(cartProvider);
+    final cartState = ref.watch(cartProvider.select((state) => state.localCartItems));
+    final globalCartItems = ref.watch(cartProvider.select((state) => state.cartProduct?.data ?? []));
 
     int quantityInCart() {
-      if (widget.id == null) return 0;
-      final int productId = widget.id!;
+      if (productId == 0) return 0;
       if (LocalStorage.instance.isAuthenticated()) {
-        final items = cartState.cartProduct?.data ?? [];
-        final found = items.firstWhere(
+        final found = globalCartItems.firstWhere(
           (e) => e.product?.id == productId,
           orElse: () => Datum(product: null, quantity: 0),
         );
         return found.quantity ?? 0;
       } else {
-        final items = cartState.localCartItems ?? [];
+        final items = cartState ?? [];
         final found = items.firstWhere(
           (e) => e.id == productId,
           orElse: () => LocalCartProduct(id: productId, quantity: 0),
@@ -61,9 +68,9 @@ class _ProductWidgetState extends ConsumerState<ProductWidget> {
     }
 
     void increment() {
-      if (widget.id == null) return;
+      if (productId == 0) return;
       final product = LocalCartProduct(
-        id: widget.id,
+        id: productId,
         name: widget.name,
         price: widget.price,
         image: widget.image,
@@ -73,18 +80,17 @@ class _ProductWidgetState extends ConsumerState<ProductWidget> {
     }
 
     void decrement() {
-      if (widget.id == null) return;
-      final id = widget.id!;
+      if (productId == 0) return;
       if (LocalStorage.instance.isAuthenticated()) {
         cartNotifier.removeFromGlobalCart(
-          id: id,
+          id: productId,
           context: context,
           success: () {
             // cartNotifier.getCartProducts();
           },
         );
       } else {
-        cartNotifier.removeFromLocalCart(id);
+        cartNotifier.removeFromLocalCart(productId);
       }
     }
 

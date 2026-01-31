@@ -2,6 +2,7 @@ import 'package:thousand_melochey/core/imports/imports.dart';
 import 'package:thousand_melochey/presentation/pages/categories/data/categories_response.dart';
 import 'package:thousand_melochey/presentation/pages/categories/repository/categories_repository.dart';
 import 'package:thousand_melochey/presentation/pages/home/data/category_products_response.dart';
+import 'package:thousand_melochey/presentation/pages/home/data/products_response.dart';
 
 class CategoriesRepositoryImpl extends CategoriesRepository{
   @override
@@ -57,7 +58,7 @@ class CategoriesRepositoryImpl extends CategoriesRepository{
       final response = await client.get("/api/categories/$categoryId/products/?page=$currentPage");
 
       return ApiResult.success(
-        data: CategoryProductsResponse.fromJson(response.data),
+        data: ProductsResponse.fromJson(response.data),
       );
     } on DioException catch (e) {
       debugPrint('==> get category products failure: ${e.response?.data}');

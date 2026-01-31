@@ -4,6 +4,7 @@ import 'package:thousand_melochey/presentation/pages/categories/repository/categ
 import 'package:thousand_melochey/presentation/pages/home/data/category_products_response.dart';
 // import 'package:thousand_melochey/presentation/pages/home/data/category_products_response.dart';
 import '../../../../../../core/imports/imports.dart';
+import '../../../../home/data/products_response.dart';
 
 class CategoriesNotifier extends StateNotifier<CategoriesState> {
   final CategoriesRepository _categoriesRepository;
@@ -145,15 +146,15 @@ class CategoriesNotifier extends StateNotifier<CategoriesState> {
 
       response.when(
         success: (data) async {
-            List<Datum> products = List.from(state.categoryProducts?.data ?? []);
-            List<Datum> newProducts = data.data ?? [];
+            List<Product> products = List.from(state.products?.data ?? []);
+            List<Product> newProducts = data.data ?? [];
 
             isRefresh ? products = newProducts : products.addAll(newProducts);
 
             state = state.copyWith(
                 isLoading: false,
                 isLoadMore: false,
-                categoryProducts: CategoryProductsResponse(
+                products: ProductsResponse(
                   data: products,
                   meta: data.meta
                 ));

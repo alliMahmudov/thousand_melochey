@@ -5,6 +5,7 @@ import 'package:thousand_melochey/presentation/pages/cart/data/cart_response.dar
 import 'package:thousand_melochey/presentation/pages/cart/data/local_cart_item_model.dart';
 import 'package:thousand_melochey/presentation/pages/categories/presentation/riverpod/provider/categories_provider.dart';
 import 'package:thousand_melochey/service/localizations/localization.dart';
+import 'package:thousand_melochey/presentation/pages/home/presentation/widgets/optimized_product_item.dart';
 
 class ProductsListWidget extends ConsumerStatefulWidget {
   const ProductsListWidget({super.key});
@@ -17,6 +18,7 @@ class _ProductsListWidgetState extends ConsumerState<ProductsListWidget>
     with AutomaticKeepAliveClientMixin {
   @override
   void initState() {
+    super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       final notifier = ref.read(homeProvider.notifier);
       final cartNotifier = ref.read(cartProvider.notifier);
@@ -25,13 +27,13 @@ class _ProductsListWidgetState extends ConsumerState<ProductsListWidget>
       cartNotifier.getCartItems();
       categoryNotifier.getCategories();
     });
-    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
     final state = ref.watch(homeProvider);
+    ref.watch(favoritesProvider); // подписка для обновления UI при изменении лайков
     final favoriteNotifier = ref.read(favoritesProvider.notifier);
     final cartNotifier = ref.read(cartProvider.notifier);
 
@@ -103,48 +105,24 @@ class _ProductsListWidgetState extends ConsumerState<ProductsListWidget>
         delegate: SliverChildBuilderDelegate(
           (BuildContext context, int index) {
             final product = state.products?.data?[index];
-            final isLiked = favoriteNotifier.checkFavorite(product?.id ?? 0);
+            if (product == null) return const SizedBox.shrink();
+            
             return InkWell(
-                onTap: () {
-                  AppNavigator.push(
-                      ProductDetailRoute(
-                          id: product?.id,
-                          name: product?.name,
-                          price: product?.finalPrizeUzs,
-                          description: product?.description,
-                          image: product?.image,
-                          images: product?.images
-                      )
-                  );
-                },
-                child: ProductWidget(
-                  name: product?.name,
-                  image: product?.image,
-                  price: product?.finalPrizeUzs,
-                  id: product?.id,
-                  isFavorite: isLiked ?? false,
-                  onTap: () {
-                    if (product != null) {
-                      favoriteNotifier.switchFavorite(
-                        context,
-                        isLiked ?? false,
-                        product.id ?? 0,
-                        product,
-                      );
-                    }
-                  },
-                  addToCart: () {
-                    cartNotifier.addToCart(context, LocalCartProduct(
-                      quantity: 1,
-                      id: product?.id,
-                      name: product?.name,
-                      price: product?.finalPrizeUzs,
-                      image: product?.image,
-                      images: product?.images,
-                      description: product?.description,
-                    ));
-                  },
-                )
+              onTap: (){
+                AppNavigator.push(
+                    ProductDetailRoute(
+                        id: product.id,
+                        name: product.name,
+                        price: product.finalPriceUzs,
+                        description: product.description,
+                        image: product.image,
+                        images: product.images
+                    )
+                );
+              },
+              child: OptimizedProductItem(
+                product: product,
+              ),
             );
           },
           childCount: state.products?.data?.length ?? 0,

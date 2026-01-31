@@ -1,8 +1,10 @@
+import 'package:thousand_melochey/core/handlers/local_storage.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
 import 'package:thousand_melochey/presentation/global_widgets/custom_pagination_widget.dart';
 import 'package:thousand_melochey/presentation/pages/cart/data/local_cart_item_model.dart';
 import 'package:thousand_melochey/presentation/pages/categories/presentation/riverpod/provider/categories_provider.dart';
 import 'package:thousand_melochey/presentation/pages/home/data/products_response.dart';
+import 'package:thousand_melochey/presentation/pages/home/presentation/widgets/optimized_product_item.dart';
 import '../../../../../service/localizations/localization.dart';
 
 @RoutePage()
@@ -40,7 +42,7 @@ class _CategoryProductsState extends ConsumerState<CategoryProductsPage> {
     // Determine which data source to use based on viewAll flag
     final isLoading = state.isLoading;
     final isLoadMore = state.isLoadMore;
-    final products = state.categoryProducts;
+    final products = state.products;
 
 
     return Scaffold(
@@ -111,56 +113,22 @@ class _CategoryProductsState extends ConsumerState<CategoryProductsPage> {
                     childCount: products?.data?.length,
                     (BuildContext context, int index) {
                       final product = products?.data?[index];
-                      final isLiked = favoriteNotifier.checkFavorite(product?.id ?? 0);
+                      if (product == null) return const SizedBox.shrink();
+
                       return InkWell(
                           onTap: () {
                             AppNavigator.push(
                                 ProductDetailRoute(
-                                    id: product?.id ?? 0,
-                                    name: product?.name,
-                                    price: product?.finalPriceUzs,
-                                    description: product?.description,
-                                    image: product?.image,
-                                    images: product?.images
+                                    id: product.id ?? 0,
+                                    name: product.name,
+                                    price: product.finalPriceUzs,
+                                    description: product.description,
+                                    image: product.image,
+                                    images: product.images
                                 ));
                           },
-                          child: ProductWidget(
-                            name: product?.name,
-                            image: product?.image,
-                            price: product?.finalPriceUzs,
-                            id: product?.id,
-                            isFavorite: isLiked ?? false,
-                            onTap: () {
-                              if (product != null) {
-                                if (product.id != null) {
-                                  if (isLiked ?? false) {
-                                    favoriteNotifier.removeFromFavorites(productID: product.id ?? 0);
-                                  } else {
-                                    favoriteNotifier.addToFavorites(productID: product.id ?? 0);
-                                  }
-                                }
-                              }
-                            },
-                            addToCart: () {
-                              if (product != null) {
-                                product.name;
-                                product.finalPriceUzs;
-                                product.image;
-
-                                final cartItem = LocalCartProduct(
-                                  id: product.id,
-                                  name: product.name,
-                                  price: product.finalPriceUzs,
-                                  image: product.image,
-                                  images: product.images,
-                                  description: product.description,
-                                  quantity: 1,
-                                );
-
-                                ref.read(cartProvider.notifier).addToCart(context, cartItem);
-                              }
-                            },
-                          ));
+                          child: 
+                        OptimizedProductItem(product: product));
                     },
                     // Number of grid items
                   ),
