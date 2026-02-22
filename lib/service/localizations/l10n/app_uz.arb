@@ -110,7 +110,15 @@
     "error_occurred": "Xatolik yuz berdi, qaytadan urinib ko'ring",
     "no_internet_access": "Internetga ulanish yo'q",
     "check_wifi_or_network": "Wi-Fi yoki mobil tarmog'ingizni tekshiring",
-    "our_address": "Bizning manzilimiz"
+    "our_address": "Bizning manzilimiz",
+    "go_to_cart": "Savatga o'tish",
+    "new_arrivals": "Yangiliklar",
+    "view_more": "Ko'proq ko'rish",
+    "hot": "qaynoq",
+    "all": "Barchasi",
+    "see_all": "Barchisini ko'rish"
+
+
 
 
 

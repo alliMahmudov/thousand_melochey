@@ -24,6 +24,7 @@ class _ProductsListWidgetState extends ConsumerState<ProductsListWidget>
       final cartNotifier = ref.read(cartProvider.notifier);
       final categoryNotifier = ref.read(categoriesProvider.notifier);
       notifier.getProducts(isRefresh: true);
+      notifier.getNewProducts();
       cartNotifier.getCartItems();
       categoryNotifier.getCategories();
     });

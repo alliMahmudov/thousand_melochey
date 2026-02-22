@@ -111,7 +111,14 @@
     "error_occurred": "An error occurred, please try again",
     "no_internet_access": "No internet connection",
     "check_wifi_or_network": "Check your Wi-Fi or mobile network",
-    "our_address": "Store address"
+    "our_address": "Store address",
+    "go_to_cart": "Go to cart",
+    "new_arrivals": "New Arrivals",
+    "view_more": "View More",
+    "hot": "Hot",
+    "all": "All",
+    "see_all": "See all"
+
 
 
 

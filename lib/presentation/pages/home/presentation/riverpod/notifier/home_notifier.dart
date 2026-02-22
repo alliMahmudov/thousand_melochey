@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:thousand_melochey/core/handlers/local_storage.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
 import 'package:thousand_melochey/presentation/pages/home/data/products_response.dart';
@@ -9,26 +11,6 @@ class HomeNotifier extends StateNotifier<HomeState> {
 
   TextEditingController searchTextFieldController = TextEditingController();
   ScrollController scrollController = ScrollController();
-
-  List<Widget> tabs(context) {
-    return [
-      const Tab(
-        child: Text("All"),
-      ),
-      const Tab(
-        child: Text("Gloves"),
-      ),
-      const Tab(
-        child: Text("Screwdrivers"),
-      ),
-      const Tab(
-        child: Text("Electronics"),
-      ),
-      const Tab(
-        child: Text("Tools"),
-      ),
-    ];
-  }
 
   void expandDescription (bool isDescriptionExpanded) => state = state.copyWith(isDescriptionExpanded: isDescriptionExpanded);
 
@@ -181,26 +163,25 @@ class HomeNotifier extends StateNotifier<HomeState> {
     }
   }
 
-// Future<void> getCategories({
-//   VoidCallback? checkYourNetwork,
-//   VoidCallback? unAuthorised,
-//   VoidCallback? success,
-// }) async {
-//   state = state.copyWith(isLoading: true);
-//   final response = await _homeRepository.getCategories();
-//   response.when(
-//     success: (data) async {
-//       state = state.copyWith(isLoading: false, categories: data);
-//       success?.call();
-//     },
-//     failure: (failure, status, data) {
-//       state = state.copyWith(
-//           isLoading: false, isResponseError: true, categories: data);
-//       if (failure == const NetworkExceptions.unauthorisedRequest()) {
-//         unAuthorised?.call();
-//       }
-//       debugPrint('==> get categories response failure: $failure');
-//     },
-//   );
-// }
+  Future<void> getNewProducts({
+    VoidCallback? checkYourNetwork,
+    VoidCallback? unAuthorised,
+    VoidCallback? success,
+  }) async {
+    state = state.copyWith(isLoading: true);
+    final response = await _homeRepository.getNewProducts();
+    response.when(
+      success: (data) async {
+        state = state.copyWith(isLoading: false, newProducts: data);
+        success?.call();
+      },
+      failure: (failure, status, data) {
+        state = state.copyWith(isLoading: false, isResponseError: true, newProducts: data);
+        if (failure == const NetworkExceptions.unauthorisedRequest()) {
+          unAuthorised?.call();
+        }
+        debugPrint('==> get new products response failure: $failure');
+      },
+    );
+  }
 }
