@@ -52,10 +52,15 @@ class CategoriesRepositoryImpl extends CategoriesRepository{
   }
 
   @override
-  Future<ApiResult<dynamic>> getCategoryProducts({required int categoryId, int? currentPage}) async{
+  Future<ApiResult<dynamic>> getCategoryProducts({required int categoryId, int? currentPage, String? filterMinPrice, String? filterMaxPrice}) async{
     try {
       final client = inject<HttpService>().client(requireAuth: true);
-      final response = await client.get("/api/categories/$categoryId/products/?page=$currentPage");
+      final response = await client.get(
+        "/api/categories/$categoryId/products"
+        "?page=$currentPage"
+        "${filterMinPrice != null && filterMinPrice.isNotEmpty ? "&min_price=$filterMinPrice" : ""}"
+        "${filterMaxPrice != null && filterMaxPrice.isNotEmpty ? "&max_price=$filterMaxPrice" : ""}",
+      );
 
       return ApiResult.success(
         data: ProductsResponse.fromJson(response.data),

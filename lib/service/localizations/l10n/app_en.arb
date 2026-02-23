@@ -117,7 +117,16 @@
     "view_more": "View More",
     "hot": "Hot",
     "all": "All",
-    "see_all": "See all"
+    "see_all": "See all",
+    "filter_by_price": "Filter by price",
+    "min_price": "Min price",
+    "max_price": "Max price",
+    "from": "from",
+    "to": "to",
+    "apply": "Apply"
+
+
+
 
 
 

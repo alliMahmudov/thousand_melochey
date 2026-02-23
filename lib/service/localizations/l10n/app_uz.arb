@@ -116,7 +116,16 @@
     "view_more": "Ko'proq ko'rish",
     "hot": "qaynoq",
     "all": "Barchasi",
-    "see_all": "Barchisini ko'rish"
+    "see_all": "Barchisini ko'rish",
+    "filter_by_price": "Narx bo'yicha filterlash",
+    "min_price": "Minimal narx",
+    "max_price": "Maksimal narx",
+    "from": "dan",
+    "to": "gacha",
+    "apply": "Qo'llash"
+
+
+
 
 
 

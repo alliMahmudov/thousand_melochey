@@ -6,7 +6,7 @@ import '../presentation/pages/home/data/new_products_response.dart';
 import '../presentation/pages/home/data/products_response.dart';
 import '../presentation/pages/profile/presentation/widgets/all_orders_page.dart';
 import '../presentation/pages/profile/presentation/widgets/user_addresses_page.dart';
-import '../presentation/pages/new_arrivals/presentation/new_arrivals_page.dart';
+import '../presentation/pages/home/presentation/widgets/new_arrivals_page.dart';
 
 part 'routes.gr.dart';
 

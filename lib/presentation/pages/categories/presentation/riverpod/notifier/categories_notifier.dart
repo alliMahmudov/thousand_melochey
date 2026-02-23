@@ -13,6 +13,8 @@ class CategoriesNotifier extends StateNotifier<CategoriesState> {
 
   final ScrollController scrollController = ScrollController();
   final TextEditingController categorySearchController = TextEditingController();
+  final TextEditingController filterMinPrice = TextEditingController();
+  final TextEditingController filterMaxPrice = TextEditingController();
 
 
   Future<void> getCategories({
@@ -127,7 +129,7 @@ class CategoriesNotifier extends StateNotifier<CategoriesState> {
     VoidCallback? success,
     required int categoryId,
     int currentPage = 1,
-    bool isRefresh = false
+    bool isRefresh = false,
   }) async {
 
     state = state.copyWith(isLoading: true);
@@ -140,8 +142,10 @@ class CategoriesNotifier extends StateNotifier<CategoriesState> {
       }
 
       final response = await _categoriesRepository.getCategoryProducts(
-          categoryId: categoryId,
-          currentPage: currentPage
+        categoryId: categoryId,
+        currentPage: currentPage,
+        filterMinPrice: filterMinPrice.text,
+        filterMaxPrice: filterMaxPrice.text,
       );
 
       response.when(
@@ -182,7 +186,9 @@ class CategoriesNotifier extends StateNotifier<CategoriesState> {
     VoidCallback? success,
     required int categoryId,
     int currentPage = 1,
-    bool isRefresh = false
+    bool isRefresh = false,
+    String? minPrice,
+    String? maxPrice,
   }) async {
 
     state = state.copyWith(isLoadingPaginationProducts: true);
@@ -195,8 +201,10 @@ class CategoriesNotifier extends StateNotifier<CategoriesState> {
       }
 
       final response = await _categoriesRepository.getCategoryProducts(
-          categoryId: categoryId,
-          currentPage: currentPage
+        categoryId: categoryId,
+        currentPage: currentPage,
+        filterMinPrice: minPrice,
+        filterMaxPrice: maxPrice,
       );
 
       response.when(
