@@ -84,15 +84,16 @@ class _HomeNewArrivalsSectionWidgetState
     }
 
     return Container(
-      margin: EdgeInsets.all(8.r),
+      margin: EdgeInsets.symmetric(horizontal: 8.w, vertical: 12.h),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16.r),
+        border: Border.all(color: AppColors.primaryColor.withAlpha(100)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: AppColors.primaryColor.withAlpha(100),
             blurRadius: 10,
-            offset: const Offset(0, 2),
+            offset: const Offset(0, 0),
           ),
         ],
       ),

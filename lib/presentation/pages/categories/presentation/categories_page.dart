@@ -37,6 +37,7 @@ class _CategoriesPageState extends ConsumerState<CategoriesPage> {
     
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: AppColors.primaryColor,
         elevation: 0,
