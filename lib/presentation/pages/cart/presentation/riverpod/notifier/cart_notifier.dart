@@ -1,8 +1,10 @@
+import 'package:flutter/services.dart';
 import 'package:thousand_melochey/core/handlers/local_storage.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
 import 'package:thousand_melochey/presentation/pages/cart/data/local_cart_item_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../profile/data/all_adresses_response.dart';
+import 'package:vibration/vibration.dart';
 
 class CartNotifier extends StateNotifier<CartState> {
   final CartRepository _cartRepository;
@@ -357,6 +359,13 @@ class CartNotifier extends StateNotifier<CartState> {
   }
 
   addToCart(BuildContext context, LocalCartProduct cartProduct) {
+
+    if (Platform.isIOS) {
+      HapticFeedback.mediumImpact();
+    } else if (Platform.isAndroid) {
+      Vibration.vibrate(duration: 30);
+    }
+
     if (LocalStorage.instance.isAuthenticated()) {
       addToGlobalCart(
           id: cartProduct.id ?? 0,

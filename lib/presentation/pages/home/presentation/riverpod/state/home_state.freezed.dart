@@ -23,6 +23,7 @@ mixin _$HomeState {
   bool get isError => throw _privateConstructorUsedError;
   bool get isProductLoading => throw _privateConstructorUsedError;
   bool get isLoadMore => throw _privateConstructorUsedError;
+  bool get isSearching => throw _privateConstructorUsedError;
   bool get isDescriptionExpanded => throw _privateConstructorUsedError;
   String get selectedCategory => throw _privateConstructorUsedError;
   String get jwt => throw _privateConstructorUsedError;
@@ -51,6 +52,7 @@ abstract class $HomeStateCopyWith<$Res> {
       bool isError,
       bool isProductLoading,
       bool isLoadMore,
+      bool isSearching,
       bool isDescriptionExpanded,
       String selectedCategory,
       String jwt,
@@ -81,6 +83,7 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
     Object? isError = null,
     Object? isProductLoading = null,
     Object? isLoadMore = null,
+    Object? isSearching = null,
     Object? isDescriptionExpanded = null,
     Object? selectedCategory = null,
     Object? jwt = null,
@@ -118,6 +121,10 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
       isLoadMore: null == isLoadMore
           ? _value.isLoadMore
           : isLoadMore // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isSearching: null == isSearching
+          ? _value.isSearching
+          : isSearching // ignore: cast_nullable_to_non_nullable
               as bool,
       isDescriptionExpanded: null == isDescriptionExpanded
           ? _value.isDescriptionExpanded
@@ -171,6 +178,7 @@ abstract class _$$HomeStateImplCopyWith<$Res>
       bool isError,
       bool isProductLoading,
       bool isLoadMore,
+      bool isSearching,
       bool isDescriptionExpanded,
       String selectedCategory,
       String jwt,
@@ -199,6 +207,7 @@ class __$$HomeStateImplCopyWithImpl<$Res>
     Object? isError = null,
     Object? isProductLoading = null,
     Object? isLoadMore = null,
+    Object? isSearching = null,
     Object? isDescriptionExpanded = null,
     Object? selectedCategory = null,
     Object? jwt = null,
@@ -236,6 +245,10 @@ class __$$HomeStateImplCopyWithImpl<$Res>
       isLoadMore: null == isLoadMore
           ? _value.isLoadMore
           : isLoadMore // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isSearching: null == isSearching
+          ? _value.isSearching
+          : isSearching // ignore: cast_nullable_to_non_nullable
               as bool,
       isDescriptionExpanded: null == isDescriptionExpanded
           ? _value.isDescriptionExpanded
@@ -284,6 +297,7 @@ class _$HomeStateImpl implements _HomeState {
       this.isError = false,
       this.isProductLoading = false,
       this.isLoadMore = false,
+      this.isSearching = false,
       this.isDescriptionExpanded = false,
       this.selectedCategory = "",
       this.jwt = "",
@@ -316,6 +330,9 @@ class _$HomeStateImpl implements _HomeState {
   final bool isLoadMore;
   @override
   @JsonKey()
+  final bool isSearching;
+  @override
+  @JsonKey()
   final bool isDescriptionExpanded;
   @override
   @JsonKey()
@@ -336,7 +353,7 @@ class _$HomeStateImpl implements _HomeState {
 
   @override
   String toString() {
-    return 'HomeState(isLoading: $isLoading, isResponseError: $isResponseError, isNotEmpty: $isNotEmpty, isCollapse: $isCollapse, isError: $isError, isProductLoading: $isProductLoading, isLoadMore: $isLoadMore, isDescriptionExpanded: $isDescriptionExpanded, selectedCategory: $selectedCategory, jwt: $jwt, products: $products, newProducts: $newProducts, categories: $categories, categoryProducts: $categoryProducts, errorMessage: $errorMessage)';
+    return 'HomeState(isLoading: $isLoading, isResponseError: $isResponseError, isNotEmpty: $isNotEmpty, isCollapse: $isCollapse, isError: $isError, isProductLoading: $isProductLoading, isLoadMore: $isLoadMore, isSearching: $isSearching, isDescriptionExpanded: $isDescriptionExpanded, selectedCategory: $selectedCategory, jwt: $jwt, products: $products, newProducts: $newProducts, categories: $categories, categoryProducts: $categoryProducts, errorMessage: $errorMessage)';
   }
 
   @override
@@ -357,6 +374,8 @@ class _$HomeStateImpl implements _HomeState {
                 other.isProductLoading == isProductLoading) &&
             (identical(other.isLoadMore, isLoadMore) ||
                 other.isLoadMore == isLoadMore) &&
+            (identical(other.isSearching, isSearching) ||
+                other.isSearching == isSearching) &&
             (identical(other.isDescriptionExpanded, isDescriptionExpanded) ||
                 other.isDescriptionExpanded == isDescriptionExpanded) &&
             (identical(other.selectedCategory, selectedCategory) ||
@@ -384,6 +403,7 @@ class _$HomeStateImpl implements _HomeState {
       isError,
       isProductLoading,
       isLoadMore,
+      isSearching,
       isDescriptionExpanded,
       selectedCategory,
       jwt,
@@ -409,6 +429,7 @@ abstract class _HomeState implements HomeState {
       final bool isError,
       final bool isProductLoading,
       final bool isLoadMore,
+      final bool isSearching,
       final bool isDescriptionExpanded,
       final String selectedCategory,
       final String jwt,
@@ -432,6 +453,8 @@ abstract class _HomeState implements HomeState {
   bool get isProductLoading;
   @override
   bool get isLoadMore;
+  @override
+  bool get isSearching;
   @override
   bool get isDescriptionExpanded;
   @override
