@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:thousand_melochey/core/handlers/local_storage.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
 import 'package:thousand_melochey/presentation/global_widgets/empty_page_template.dart';
@@ -6,6 +7,7 @@ import 'package:thousand_melochey/presentation/global_widgets/money_formatter.da
 import 'package:thousand_melochey/presentation/pages/cart/data/local_cart_item_model.dart';
 import 'package:thousand_melochey/presentation/pages/cart/presentation/widgets/cart_list_item_widget.dart';
 import 'package:thousand_melochey/service/localizations/localization.dart';
+import 'package:vibration/vibration.dart';
 
 @RoutePage()
 class CartPage extends ConsumerStatefulWidget {
@@ -219,6 +221,11 @@ class _CartPageState extends ConsumerState<CartPage> {
               onTap: () {
                 // Проверяем авторизацию перед переходом на checkout
                 if (isAuth) {
+                  if (Platform.isIOS) {
+                    HapticFeedback.heavyImpact();
+                  } else if (Platform.isAndroid) {
+                    Vibration.vibrate(duration: 50);
+                  }
                   AppNavigator.push(const CheckOutRoute());
                 } else {
                   // AppHelpers.showErrorToast(errorMessage: "Please sign in to continue");
