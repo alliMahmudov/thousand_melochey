@@ -8,4 +8,6 @@ abstract class HomeRepository{
 
   Future<ApiResult<dynamic>> getSearchedProducts({String? search});
 
+  Future<ApiResult<dynamic>> getNewProducts();
+
 }

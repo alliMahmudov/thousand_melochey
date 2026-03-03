@@ -6,7 +6,10 @@ import 'package:thousand_melochey/presentation/pages/categories/presentation/riv
 import 'package:thousand_melochey/presentation/pages/home/presentation/widgets/carousel_slide_widget.dart';
 import 'package:thousand_melochey/presentation/pages/home/presentation/widgets/all_products_widget.dart';
 import 'package:thousand_melochey/presentation/pages/home/presentation/widgets/product_categories_widget.dart';
+import 'package:thousand_melochey/presentation/pages/home/presentation/widgets/new_arrivals_widget.dart';
+import 'package:thousand_melochey/presentation/pages/home/presentation/widgets/home_new_arrivals_section_widget.dart';
 import 'package:thousand_melochey/core/config/banner_config.dart';
+import 'package:thousand_melochey/presentation/pages/home/data/products_response.dart';
 
 import '../../../../service/localizations/localization.dart';
 
@@ -18,32 +21,18 @@ class HomePage extends ConsumerStatefulWidget {
   ConsumerState<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends ConsumerState<HomePage>
-    with TickerProviderStateMixin {
-  TabController? _tabController;
-
-  @override
-  void didChangeDependencies() {
-    final notifier = ref.read(homeProvider.notifier);
-    final tabLength = notifier.tabs(context).length;
-    
-    if (_tabController == null || _tabController!.length != tabLength) {
-      _tabController = TabController(length: tabLength, vsync: this);
-    }
-    super.didChangeDependencies();
-  }
-
-  @override
-  void dispose() {
-    _tabController?.dispose();
-    super.dispose();
-  }
+class _HomePageState extends ConsumerState<HomePage> {
 
   @override
   Widget build(BuildContext context) {
     final notifier = ref.read(homeProvider.notifier);
     final categoryNotifier = ref.read(categoriesProvider.notifier);
+    final homeState = ref.watch(homeProvider);
     ref.watch(categoriesProvider);
+    
+    // Get new products (first 20 products from the list)
+    // final List<Product> newProducts = homeState.products?.data?.take(20).toList() ?? [];
+    
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
         resizeToAvoidBottomInset: false,
@@ -60,6 +49,7 @@ class _HomePageState extends ConsumerState<HomePage>
           child: RefreshIndicator(
             onRefresh: (){
               categoryNotifier.getCategories();
+              notifier.getNewProducts();
               return notifier.getProducts(isRefresh: true);
             },
             child: Column(
@@ -108,11 +98,9 @@ class _HomePageState extends ConsumerState<HomePage>
                       const SliverToBoxAdapter(
                         child: ProductCategoriesWidget()
                       ),
-                      // const SliverToBoxAdapter(
-                      //   child: SizedBox(
-                      //     height: 10,
-                      //   ),
-                      // ),
+                      const SliverToBoxAdapter(
+                        child: HomeNewArrivalsSectionWidget(),
+                      ),
                       const ProductsListWidget()
                     ],
                   ),

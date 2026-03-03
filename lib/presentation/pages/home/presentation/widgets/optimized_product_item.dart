@@ -3,6 +3,7 @@ import 'package:thousand_melochey/presentation/pages/home/presentation/widgets/p
 import 'package:thousand_melochey/presentation/pages/cart/data/local_cart_item_model.dart';
 
 import '../../../../../core/handlers/local_storage.dart';
+import '../../data/products_response.dart';
 
 class OptimizedProductItem extends ConsumerWidget {
   final dynamic product;
@@ -35,13 +36,19 @@ class OptimizedProductItem extends ConsumerWidget {
       image: image ?? product?.image,
       price: price ?? product?.finalPriceUzs,
       id: productId,
-      isFavorite: favoriteNotifier.checkFavorite(product?.id ?? 0) ?? false,
+      isFavorite: isLiked ?? false,
       onTap: () {
         favoriteNotifier.switchFavorite(
           context,
           isLiked ?? false,
           product.id ?? 0,
-          product,
+            Product(
+              id: productId,
+              name: product.name,
+              price: product.price,
+              description: product.description,
+              image: product.image,
+            ),
         );
       },
       addToCart: () {

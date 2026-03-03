@@ -68,6 +68,16 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const MainPage(),
       );
     },
+    NewArrivalsRoute.name: (routeData) {
+      final args = routeData.argsAs<NewArrivalsRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: NewArrivalsPage(
+          key: args.key,
+          newProducts: args.newProducts,
+        ),
+      );
+    },
     OTPRoute.name: (routeData) {
       final args = routeData.argsAs<OTPRouteArgs>();
       return AutoRoutePage<dynamic>(
@@ -274,6 +284,44 @@ class MainRoute extends PageRouteInfo<void> {
   static const String name = 'MainRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [NewArrivalsPage]
+class NewArrivalsRoute extends PageRouteInfo<NewArrivalsRouteArgs> {
+  NewArrivalsRoute({
+    Key? key,
+    required List<Result> newProducts,
+    List<PageRouteInfo>? children,
+  }) : super(
+          NewArrivalsRoute.name,
+          args: NewArrivalsRouteArgs(
+            key: key,
+            newProducts: newProducts,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'NewArrivalsRoute';
+
+  static const PageInfo<NewArrivalsRouteArgs> page =
+      PageInfo<NewArrivalsRouteArgs>(name);
+}
+
+class NewArrivalsRouteArgs {
+  const NewArrivalsRouteArgs({
+    this.key,
+    required this.newProducts,
+  });
+
+  final Key? key;
+
+  final List<Result> newProducts;
+
+  @override
+  String toString() {
+    return 'NewArrivalsRouteArgs{key: $key, newProducts: $newProducts}';
+  }
 }
 
 /// generated route for

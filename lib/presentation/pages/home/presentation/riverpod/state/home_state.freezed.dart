@@ -27,6 +27,7 @@ mixin _$HomeState {
   String get selectedCategory => throw _privateConstructorUsedError;
   String get jwt => throw _privateConstructorUsedError;
   ProductsResponse? get products => throw _privateConstructorUsedError;
+  NewProductsResponse? get newProducts => throw _privateConstructorUsedError;
   CategoriesResponse? get categories => throw _privateConstructorUsedError;
   CategoryProductsResponse? get categoryProducts =>
       throw _privateConstructorUsedError;
@@ -54,6 +55,7 @@ abstract class $HomeStateCopyWith<$Res> {
       String selectedCategory,
       String jwt,
       ProductsResponse? products,
+      NewProductsResponse? newProducts,
       CategoriesResponse? categories,
       CategoryProductsResponse? categoryProducts,
       String? errorMessage});
@@ -83,6 +85,7 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
     Object? selectedCategory = null,
     Object? jwt = null,
     Object? products = freezed,
+    Object? newProducts = freezed,
     Object? categories = freezed,
     Object? categoryProducts = freezed,
     Object? errorMessage = freezed,
@@ -132,6 +135,10 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
           ? _value.products
           : products // ignore: cast_nullable_to_non_nullable
               as ProductsResponse?,
+      newProducts: freezed == newProducts
+          ? _value.newProducts
+          : newProducts // ignore: cast_nullable_to_non_nullable
+              as NewProductsResponse?,
       categories: freezed == categories
           ? _value.categories
           : categories // ignore: cast_nullable_to_non_nullable
@@ -168,6 +175,7 @@ abstract class _$$HomeStateImplCopyWith<$Res>
       String selectedCategory,
       String jwt,
       ProductsResponse? products,
+      NewProductsResponse? newProducts,
       CategoriesResponse? categories,
       CategoryProductsResponse? categoryProducts,
       String? errorMessage});
@@ -195,6 +203,7 @@ class __$$HomeStateImplCopyWithImpl<$Res>
     Object? selectedCategory = null,
     Object? jwt = null,
     Object? products = freezed,
+    Object? newProducts = freezed,
     Object? categories = freezed,
     Object? categoryProducts = freezed,
     Object? errorMessage = freezed,
@@ -244,6 +253,10 @@ class __$$HomeStateImplCopyWithImpl<$Res>
           ? _value.products
           : products // ignore: cast_nullable_to_non_nullable
               as ProductsResponse?,
+      newProducts: freezed == newProducts
+          ? _value.newProducts
+          : newProducts // ignore: cast_nullable_to_non_nullable
+              as NewProductsResponse?,
       categories: freezed == categories
           ? _value.categories
           : categories // ignore: cast_nullable_to_non_nullable
@@ -275,6 +288,7 @@ class _$HomeStateImpl implements _HomeState {
       this.selectedCategory = "",
       this.jwt = "",
       this.products,
+      this.newProducts,
       this.categories,
       this.categoryProducts,
       this.errorMessage});
@@ -312,6 +326,8 @@ class _$HomeStateImpl implements _HomeState {
   @override
   final ProductsResponse? products;
   @override
+  final NewProductsResponse? newProducts;
+  @override
   final CategoriesResponse? categories;
   @override
   final CategoryProductsResponse? categoryProducts;
@@ -320,7 +336,7 @@ class _$HomeStateImpl implements _HomeState {
 
   @override
   String toString() {
-    return 'HomeState(isLoading: $isLoading, isResponseError: $isResponseError, isNotEmpty: $isNotEmpty, isCollapse: $isCollapse, isError: $isError, isProductLoading: $isProductLoading, isLoadMore: $isLoadMore, isDescriptionExpanded: $isDescriptionExpanded, selectedCategory: $selectedCategory, jwt: $jwt, products: $products, categories: $categories, categoryProducts: $categoryProducts, errorMessage: $errorMessage)';
+    return 'HomeState(isLoading: $isLoading, isResponseError: $isResponseError, isNotEmpty: $isNotEmpty, isCollapse: $isCollapse, isError: $isError, isProductLoading: $isProductLoading, isLoadMore: $isLoadMore, isDescriptionExpanded: $isDescriptionExpanded, selectedCategory: $selectedCategory, jwt: $jwt, products: $products, newProducts: $newProducts, categories: $categories, categoryProducts: $categoryProducts, errorMessage: $errorMessage)';
   }
 
   @override
@@ -348,6 +364,8 @@ class _$HomeStateImpl implements _HomeState {
             (identical(other.jwt, jwt) || other.jwt == jwt) &&
             (identical(other.products, products) ||
                 other.products == products) &&
+            (identical(other.newProducts, newProducts) ||
+                other.newProducts == newProducts) &&
             (identical(other.categories, categories) ||
                 other.categories == categories) &&
             (identical(other.categoryProducts, categoryProducts) ||
@@ -370,6 +388,7 @@ class _$HomeStateImpl implements _HomeState {
       selectedCategory,
       jwt,
       products,
+      newProducts,
       categories,
       categoryProducts,
       errorMessage);
@@ -394,6 +413,7 @@ abstract class _HomeState implements HomeState {
       final String selectedCategory,
       final String jwt,
       final ProductsResponse? products,
+      final NewProductsResponse? newProducts,
       final CategoriesResponse? categories,
       final CategoryProductsResponse? categoryProducts,
       final String? errorMessage}) = _$HomeStateImpl;
@@ -420,6 +440,8 @@ abstract class _HomeState implements HomeState {
   String get jwt;
   @override
   ProductsResponse? get products;
+  @override
+  NewProductsResponse? get newProducts;
   @override
   CategoriesResponse? get categories;
   @override

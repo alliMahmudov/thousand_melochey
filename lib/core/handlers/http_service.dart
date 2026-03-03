@@ -11,7 +11,7 @@ class HttpService {
 
   Dio client({bool requireAuth = false, bool? requiredPost}) => Dio(
     BaseOptions(
-      baseUrl: ApiPath.baseUrl,
+      baseUrl: ApiPath.devUrl,
       connectTimeout: const Duration(minutes: 1),
       receiveTimeout: const Duration(minutes: 1),
       sendTimeout: const Duration(minutes: 1),

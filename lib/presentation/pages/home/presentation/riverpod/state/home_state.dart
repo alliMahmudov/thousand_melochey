@@ -1,6 +1,7 @@
 import 'package:thousand_melochey/core/imports/imports.dart';
 import 'package:thousand_melochey/presentation/pages/categories/data/categories_response.dart';
 import 'package:thousand_melochey/presentation/pages/home/data/category_products_response.dart';
+import 'package:thousand_melochey/presentation/pages/home/data/new_products_response.dart';
 import 'package:thousand_melochey/presentation/pages/home/data/products_response.dart';
 part 'home_state.freezed.dart';
 
@@ -20,6 +21,7 @@ class HomeState with _$HomeState {
     @Default("") String jwt,
 
     ProductsResponse? products,
+    NewProductsResponse? newProducts,
     CategoriesResponse? categories,
     CategoryProductsResponse? categoryProducts,
     String? errorMessage,

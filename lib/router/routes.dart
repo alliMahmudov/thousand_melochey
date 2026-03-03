@@ -2,8 +2,11 @@ import 'package:thousand_melochey/core/imports/imports.dart';
 import 'package:thousand_melochey/presentation/pages/cart/presentation/cart_page.dart';
 import 'package:thousand_melochey/presentation/pages/categories/presentation/categories_page.dart';
 import 'package:thousand_melochey/presentation/pages/categories/presentation/widgets/category_products.dart';
+import '../presentation/pages/home/data/new_products_response.dart';
+import '../presentation/pages/home/data/products_response.dart';
 import '../presentation/pages/profile/presentation/widgets/all_orders_page.dart';
 import '../presentation/pages/profile/presentation/widgets/user_addresses_page.dart';
+import '../presentation/pages/home/presentation/widgets/new_arrivals_page.dart';
 
 part 'routes.gr.dart';
 
@@ -25,5 +28,6 @@ class AppRouter extends _$AppRouter {
         CupertinoRoute(page: AllOrdersRoute.page, path: "/all_route"),
         CupertinoRoute(page: CategoryProductsRoute.page, path: "/category_products"),
         CupertinoRoute(page: UserAddressesRoute.page, path: "/user_addresses"),
+        CupertinoRoute(page: NewArrivalsRoute.page, path: "/new_arrivals"),
       ];
 }

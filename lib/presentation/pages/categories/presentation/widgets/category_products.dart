@@ -1,9 +1,8 @@
-import 'package:thousand_melochey/core/handlers/local_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
 import 'package:thousand_melochey/presentation/global_widgets/custom_pagination_widget.dart';
-import 'package:thousand_melochey/presentation/pages/cart/data/local_cart_item_model.dart';
 import 'package:thousand_melochey/presentation/pages/categories/presentation/riverpod/provider/categories_provider.dart';
-import 'package:thousand_melochey/presentation/pages/home/data/products_response.dart';
+import 'package:thousand_melochey/presentation/pages/categories/presentation/widgets/filter_modal.dart';
 import 'package:thousand_melochey/presentation/pages/home/presentation/widgets/optimized_product_item.dart';
 import '../../../../../service/localizations/localization.dart';
 
@@ -26,7 +25,10 @@ class _CategoryProductsState extends ConsumerState<CategoryProductsPage> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       final notifier = ref.read(categoriesProvider.notifier);
-      notifier.getCategoryProducts(categoryId: widget.categoryId ?? 0, isRefresh: true);
+      notifier.getCategoryProducts(
+        categoryId: widget.categoryId ?? 0,
+        isRefresh: true,
+      );
     });
     super.initState();
   }
@@ -48,6 +50,14 @@ class _CategoryProductsState extends ConsumerState<CategoryProductsPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.categoryName),
+        actions: [
+          IconButton(onPressed: () {
+            AppHelpers.showCustomModalBottomSheetWithoutIosIcon(
+              context: context,
+              modal: FilterModal(categoryId: widget.categoryId ?? 0)
+            );
+          }, icon: const Icon(CupertinoIcons.slider_horizontal_3))
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(8),
@@ -64,13 +74,14 @@ class _CategoryProductsState extends ConsumerState<CategoryProductsPage> {
                   categoryId: widget.categoryId ?? 0,
                   currentPage: currentPage + 1,
                   isRefresh: false,
+                  minPrice: notifier.filterMinPrice.text
                 );
             }
           },
           onRefresh: () async {
               await notifier.getCategoryProducts(
                 categoryId: widget.categoryId ?? 0, 
-                isRefresh: true
+                isRefresh: true,
               );
           },
           child: CustomScrollView(

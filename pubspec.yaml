@@ -1,9 +1,9 @@
 name: thousand_melochey
-description: "A new Flutter project."
+description: "1000 Мелочей"
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.3+8
+version: 1.0.5+9
 
 environment:
   sdk: '>=3.2.6 <4.0.0'
