@@ -14,6 +14,20 @@ class HomeNotifier extends StateNotifier<HomeState> {
 
   void expandDescription (bool isDescriptionExpanded) => state = state.copyWith(isDescriptionExpanded: isDescriptionExpanded);
 
+  void onSearchChanged(String value) {
+    final query = value.trim();
+    final isSearching = query.isNotEmpty;
+
+    if (state.isSearching != isSearching) {
+      state = state.copyWith(isSearching: isSearching);
+    }
+
+    getProducts(
+      searchQuery: isSearching ? query : null,
+      isRefresh: true,
+    );
+  }
+
 
   Future<void> getSearchedProducts({
     VoidCallback? checkYourNetwork,

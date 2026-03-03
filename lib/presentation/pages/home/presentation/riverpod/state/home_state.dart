@@ -16,6 +16,7 @@ class HomeState with _$HomeState {
     @Default(false) bool isError,
     @Default(false) bool isProductLoading,
     @Default(false) bool isLoadMore,
+    @Default(false) bool isSearching,
     @Default(false) bool isDescriptionExpanded,
     @Default("") String selectedCategory,
     @Default("") String jwt,

@@ -22,7 +22,6 @@ class HomePage extends ConsumerStatefulWidget {
 }
 
 class _HomePageState extends ConsumerState<HomePage> {
-
   @override
   Widget build(BuildContext context) {
     final notifier = ref.read(homeProvider.notifier);
@@ -60,47 +59,46 @@ class _HomePageState extends ConsumerState<HomePage> {
                   child: CupertinoSearchTextField(
                     controller: notifier.searchTextFieldController,
                     onChanged: (value) {
-                      notifier.getProducts(
-                        searchQuery: notifier.searchTextFieldController.text,
-                        isRefresh: true
-                      );
+                      notifier.onSearchChanged(value);
                     },
                   ),
                 ),
                 Expanded(
                   child: CustomScrollView(
                     slivers: [
-                      SliverToBoxAdapter(
-                        child: CarouselSlider(
-                          options: CarouselOptions(
-                            height: 150.h,
-                            viewportFraction: 0.85,
-                            autoPlay: true,
-                            autoPlayInterval: const Duration(seconds: 4),
-                            autoPlayAnimationDuration:
-                                const Duration(milliseconds: 800),
-                            autoPlayCurve: Curves.fastOutSlowIn,
-                            enlargeCenterPage: true,
-                            enlargeFactor: 0.2,
+                      if (!homeState.isSearching) ...[
+                        SliverToBoxAdapter(
+                          child: CarouselSlider(
+                            options: CarouselOptions(
+                              height: 150.h,
+                              viewportFraction: 0.85,
+                              autoPlay: true,
+                              autoPlayInterval: const Duration(seconds: 4),
+                              autoPlayAnimationDuration:
+                                  const Duration(milliseconds: 800),
+                              autoPlayCurve: Curves.fastOutSlowIn,
+                              enlargeCenterPage: true,
+                              enlargeFactor: 0.2,
+                            ),
+                            items: BannerData.getBanners().map((banner) {
+                              return CarouselSlideWidget(
+                                bannerConfig: banner,
+                              );
+                            }).toList(),
                           ),
-                          items: BannerData.getBanners().map((banner) {
-                            return CarouselSlideWidget(
-                              bannerConfig: banner,
-                            );
-                          }).toList(),
                         ),
-                      ),
-                      const SliverToBoxAdapter(
-                        child: SizedBox(
-                          height: 10,
+                        const SliverToBoxAdapter(
+                          child: SizedBox(
+                            height: 10,
+                          ),
                         ),
-                      ),
-                      const SliverToBoxAdapter(
-                        child: ProductCategoriesWidget()
-                      ),
-                      const SliverToBoxAdapter(
-                        child: HomeNewArrivalsSectionWidget(),
-                      ),
+                        const SliverToBoxAdapter(
+                          child: ProductCategoriesWidget()
+                        ),
+                        const SliverToBoxAdapter(
+                          child: HomeNewArrivalsSectionWidget(),
+                        ),
+                      ],
                       const ProductsListWidget()
                     ],
                   ),
