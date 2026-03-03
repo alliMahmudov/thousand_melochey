@@ -33,7 +33,7 @@ class ProductCategoriesWidget extends ConsumerWidget {
 
     if (categories.isNotEmpty) {
       return SizedBox(
-        height: 120.h,
+        height: 140.h,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: categories.length + 1,

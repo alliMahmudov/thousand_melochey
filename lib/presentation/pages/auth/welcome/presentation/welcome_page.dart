@@ -1,9 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
-import 'package:thousand_melochey/core/handlers/local_storage.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
 import 'package:vibration/vibration.dart';
-import 'package:vibration/vibration_presets.dart';
 
 @RoutePage()
 class WelcomePage extends StatefulWidget {
