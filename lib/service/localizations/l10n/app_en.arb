@@ -65,6 +65,7 @@
   "orders": "Orders",
   "price": "Price",
   "product_added_to_cart": "Product added to the cart",
+  "product_removed_from_cart": "Product removed from cart",
   "go_to_cart": "Go to cart",
   "save_favorite": "Save your favorite products\nto find them quickly later",
   "start_shopping": "Start shopping",
