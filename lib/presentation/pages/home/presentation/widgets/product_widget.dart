@@ -81,17 +81,7 @@ class _ProductWidgetState extends ConsumerState<ProductWidget> {
 
     void decrement() {
       if (productId == 0) return;
-      if (LocalStorage.instance.isAuthenticated()) {
-        cartNotifier.removeFromGlobalCart(
-          id: productId,
-          context: context,
-          success: () {
-            // cartNotifier.getCartProducts();
-          },
-        );
-      } else {
-        cartNotifier.removeFromLocalCart(productId);
-      }
+      cartNotifier.removeFromCart(context, productId);
     }
 
     final qty = quantityInCart();
@@ -113,19 +103,7 @@ class _ProductWidgetState extends ConsumerState<ProductWidget> {
                   Container(
                     alignment: Alignment.center,
                     child: widget.image != null && widget.image!.isNotEmpty
-                        ?
-                        CustomNetworkImage(
-                            imagePath: widget.image)
-                        // CachedNetworkImage(imageUrl: widget.image ?? AppAssets.emptyImagePlaceHolder)
-                    // FadeInImage.assetNetwork(
-                    //         placeholder: AppAssets.emptyImagePlaceHolder,
-                    //         image: widget.image!,
-                    //         fit: BoxFit.cover,
-                    //         imageErrorBuilder: (context, error, stackTrace) => Image.asset(
-                    //           AppAssets.emptyImagePlaceHolder,
-                    //           fit: BoxFit.cover,
-                    //         ),
-                    //       )
+                        ? CustomNetworkImage(imagePath: widget.image)
                         : Image.asset(
                             AppAssets.emptyImagePlaceHolder,
                             fit: BoxFit.cover,

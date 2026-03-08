@@ -64,6 +64,7 @@
   "orders": "Buyurtmalar",
   "price": "Narxi",
   "product_added_to_cart": "Mahsulot savatga qo'shildi",
+  "product_removed_from_cart": "Mahsulot savatdan olib tashlandi",
   "go_to_cart": "Savatga o'tish",
   "save_favorite": "Sevimli mahsulotlaringizni keyinroq tezda topish uchun ularni saqlang",
   "start_shopping": "Xarid qilishni boshlash",
