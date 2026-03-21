@@ -2,6 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:thousand_melochey/core/handlers/local_storage.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
 import 'package:thousand_melochey/presentation/pages/cart/data/local_cart_item_model.dart';
+import 'package:thousand_melochey/service/localizations/localization.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../profile/data/all_adresses_response.dart';
 import 'package:vibration/vibration.dart';
@@ -334,18 +335,25 @@ class CartNotifier extends StateNotifier<CartState> {
     state = state.copyWith(localCartItems: LocalStorage.instance.getLocalCart());
   }
 
-  Future<void> addToLocalCart(LocalCartProduct product) async {
+  Future<void> addToLocalCart(LocalCartProduct product, BuildContext context) async {
     await LocalStorage.instance.addToLocalCart(product);
     state = state.copyWith(localCartItems: LocalStorage.instance.getLocalCart());
+    if(context.mounted) {
+      AppHelpers.showSuccessToast(message: "${AppLocalization.getText(context)?.product_added_to_cart}");
+    }
+
   }
 
   getLocalCart() {
     final localCartItems = LocalStorage.instance.getLocalCart();
     state = state.copyWith(localCartItems: localCartItems);
   }
-  Future<void> removeFromLocalCart(int productId) async {
+  Future<void> removeFromLocalCart(int productId, BuildContext context) async {
     await LocalStorage.instance.removeLocalCartItem(productId);
     state = state.copyWith(localCartItems: LocalStorage.instance.getLocalCart());
+    if(context.mounted){
+      AppHelpers.showSuccessToast(message: "${AppLocalization.getText(context)?.product_removed_from_cart}");
+    }
   }
 
   Future<void> deleteFromLocalCart(int productId) async {
@@ -375,7 +383,7 @@ class CartNotifier extends StateNotifier<CartState> {
           }
       );
     } else {
-      addToLocalCart(cartProduct);
+      addToLocalCart(cartProduct, context);
     }
   }
 
@@ -389,7 +397,7 @@ class CartNotifier extends StateNotifier<CartState> {
         },
       );
     } else {
-      removeFromLocalCart(productId);
+      removeFromLocalCart(productId, context);
     }
   }
 

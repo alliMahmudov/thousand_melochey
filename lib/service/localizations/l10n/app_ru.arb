@@ -74,7 +74,7 @@
   "orders": "Заказы",
   "price": "Цена",
   "product_added_to_cart": "Товар добавлен в корзину",
-  "product_added_to_cart": "Перейти в корзину",
+  "product_removed_from_cart": "Товар удален из корзину",
   "save_favorite": "Сохраняйте понравившиеся товары,\nчтобы быстро найти их позже",
   "start_shopping": "Начать покупки",
   "comment": "Комментарий",

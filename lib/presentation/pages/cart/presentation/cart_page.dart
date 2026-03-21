@@ -221,11 +221,6 @@ class _CartPageState extends ConsumerState<CartPage> {
               onTap: () {
                 // Проверяем авторизацию перед переходом на checkout
                 if (isAuth) {
-                  if (Platform.isIOS) {
-                    HapticFeedback.heavyImpact();
-                  } else if (Platform.isAndroid) {
-                    Vibration.vibrate(duration: 50);
-                  }
                   AppNavigator.push(const CheckOutRoute());
                 } else {
                   // AppHelpers.showErrorToast(errorMessage: "Please sign in to continue");
