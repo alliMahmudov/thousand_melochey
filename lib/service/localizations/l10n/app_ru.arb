@@ -129,7 +129,10 @@
   "from": "от",
   "to": "до",
   "apply": "Применить",
-  "do_not_forget_to_pick_up_order": "Не забудьте забрать свой заказ"
+  "do_not_forget_to_pick_up_order": "Не забудьте забрать свой заказ",
+  "you_have_no_active_orders": "У вас нет активных заказов",
+  "you_have_no_finished_orders": "У вас нет завершенных заказов"
+
 
 
 

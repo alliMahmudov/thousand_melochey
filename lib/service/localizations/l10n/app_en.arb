@@ -125,7 +125,9 @@
     "from": "from",
     "to": "to",
     "apply": "Apply",
-    "do_not_forget_to_pick_up_order": "Do not forget to pick up your order"
+    "do_not_forget_to_pick_up_order": "Do not forget to pick up your order",
+    "you_have_no_active_orders": "You have no active orders",
+    "you_have_no_finished_orders": "You have no finished orders"
 
 
 

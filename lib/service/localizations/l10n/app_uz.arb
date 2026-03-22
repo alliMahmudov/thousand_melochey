@@ -124,7 +124,10 @@
     "from": "dan",
     "to": "gacha",
     "apply": "Qo'llash",
-    "do_not_forget_to_pick_up_order": "Buyurtmangizni olib ketishni unutmang"
+    "do_not_forget_to_pick_up_order": "Buyurtmangizni olib ketishni unutmang",
+    "you_have_no_active_orders": "Sizda faol buyurtmalar yo'q",
+    "you_have_no_finished_orders": "Sizda tugallangan buyurtmalar yo'q"
+
 
 
 

@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
 import 'package:thousand_melochey/presentation/global_widgets/custom_shimmer_effect.dart';
+import 'package:thousand_melochey/presentation/global_widgets/empty_page_template.dart';
 import 'package:thousand_melochey/presentation/global_widgets/money_formatter.dart';
 import 'package:thousand_melochey/service/localizations/localization.dart';
 
@@ -11,18 +13,21 @@ class AllOrdersPage extends ConsumerStatefulWidget {
   ConsumerState<AllOrdersPage> createState() => _AllOrdersPageState();
 }
 
-class _AllOrdersPageState extends ConsumerState<AllOrdersPage> with TickerProviderStateMixin{
-
-  late TabController tabController;
+class _AllOrdersPageState extends ConsumerState<AllOrdersPage> {
   @override
   void initState() {
-    tabController = TabController(length: 2, vsync: this);
+    super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       final notifier = ref.read(cartProvider.notifier);
       notifier.getOrders();
     });
-    super.initState();
   }
+
+  // @override
+  // void dispose() {
+  //   ref.read(cartProvider.notifier).selectOrderTab(0);
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +44,7 @@ class _AllOrdersPageState extends ConsumerState<AllOrdersPage> with TickerProvid
         child: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
-              child: DefaultTabController(
-                length: 2,
-                child: Padding(
+              child: Padding(
                   padding: EdgeInsets.all(12.0.sp),
                   child: Row(
                     spacing: 14,
@@ -50,7 +53,6 @@ class _AllOrdersPageState extends ConsumerState<AllOrdersPage> with TickerProvid
                         child: GestureDetector(
                           onTap: (){
                             notifier.selectOrderTab(0);
-                            tabController.animateTo(0, duration: const Duration(milliseconds: 200));
                           },
                           child: Container(
                             padding: EdgeInsets.all(12.sp),
@@ -71,7 +73,6 @@ class _AllOrdersPageState extends ConsumerState<AllOrdersPage> with TickerProvid
                         child: GestureDetector(
                           onTap: (){
                             notifier.selectOrderTab(1);
-                            tabController.animateTo(1, duration: const Duration(milliseconds: 200));
                           },
                           child: Container(
                             padding: EdgeInsets.all(12.sp),
@@ -90,17 +91,22 @@ class _AllOrdersPageState extends ConsumerState<AllOrdersPage> with TickerProvid
                       ),
                     ],
                   ),
-                ),
               ),
             ),
             CustomShimmerEffectSliver(
               isLoading: state.isLoading,
               child: SliverFillRemaining(
-                child: TabBarView(
-                  physics: const NeverScrollableScrollPhysics(),
-                    controller: tabController,
-                    children: [
-                      ListView.builder(
+                child: IndexedStack(
+                  index: state.selectedOrderTab.clamp(0, 1),
+                  sizing: StackFit.expand,
+                  children: [
+                      state.getOrders?.activeOrders?.isEmpty ?? false
+                          ? EmptyPageTemplate(
+                        icon: CupertinoIcons.tray,
+                        title: "${AppLocalization.getText(context)?.you_have_no_active_orders}",
+                        // subTitle: "${AppLocalization.getText(context)?.empty_favorite_title}",
+                      )
+                          : ListView.builder(
                           itemCount: state.getOrders?.activeOrders?.length,
                           itemBuilder: (context, index){
                             return Container(
@@ -113,11 +119,6 @@ class _AllOrdersPageState extends ConsumerState<AllOrdersPage> with TickerProvid
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
-                                  // ListTile(
-                                  //   tileColor: Colors.yellow,
-                                  //   title: Text("Order id: ${state.getOrders?.activeOrders?[index].id}"),
-                                  //   trailing: Text("\$${state.getOrders?.activeOrders?[index].totalPrice}"),
-                                  // ),
                                   Container(
                                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
                                     decoration: BoxDecoration(
@@ -159,9 +160,16 @@ class _AllOrdersPageState extends ConsumerState<AllOrdersPage> with TickerProvid
                               ),
                             );
                           }),
-                      ListView.builder(
-                          itemCount: state.getOrders?.finishedOrders?.length,
-                          itemBuilder: (context, index){
+
+                      state.getOrders?.finishedOrders?.isEmpty ?? false
+                          ? EmptyPageTemplate(
+                        icon: CupertinoIcons.tray,
+                        title: "${AppLocalization.getText(context)?.you_have_no_finished_orders}",
+                        // subTitle: "${AppLocalization.getText(context)?.empty_favorite_title}",
+                      )
+                          : ListView.builder(
+                            itemCount: state.getOrders?.finishedOrders?.length,
+                            itemBuilder: (context, index){
                             return Container(
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(12.r),
@@ -218,7 +226,8 @@ class _AllOrdersPageState extends ConsumerState<AllOrdersPage> with TickerProvid
                               ),
                             );
                           }),
-                    ]),
+                    ],
+                ),
               ),
             )
           ],

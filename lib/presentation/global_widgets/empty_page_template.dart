@@ -72,19 +72,21 @@ class EmptyPageTemplate extends ConsumerWidget {
             ),
             textAlign: TextAlign.center,
           ),
-          12.verticalSpace,
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 40),
-            child: Text(
-              subTitle ?? '',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey[600],
-                height: 1.4,
+          if(subTitle?.isNotEmpty ?? false) ...[
+            12.verticalSpace,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 40),
+              child: Text(
+                subTitle ?? '',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey[600],
+                  height: 1.4,
+                ),
               ),
             ),
-          ),
+          ],
           24.verticalSpace,
           needShopButton == true ?
           Container(
