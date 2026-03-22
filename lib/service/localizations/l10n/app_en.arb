@@ -124,7 +124,10 @@
     "max_price": "Max price",
     "from": "from",
     "to": "to",
-    "apply": "Apply"
+    "apply": "Apply",
+    "do_not_forget_to_pick_up_order": "Do not forget to pick up your order"
+
+
 
 
 

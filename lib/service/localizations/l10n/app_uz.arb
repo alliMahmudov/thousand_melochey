@@ -123,7 +123,9 @@
     "max_price": "Maksimal narx",
     "from": "dan",
     "to": "gacha",
-    "apply": "Qo'llash"
+    "apply": "Qo'llash",
+    "do_not_forget_to_pick_up_order": "Buyurtmangizni olib ketishni unutmang"
+
 
 
 

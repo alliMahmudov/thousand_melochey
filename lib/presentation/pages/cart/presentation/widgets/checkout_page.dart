@@ -6,6 +6,7 @@ import 'package:thousand_melochey/presentation/pages/cart/presentation/widgets/a
 import 'package:thousand_melochey/presentation/pages/main/riverpod/provider/main_provider.dart';
 import 'package:thousand_melochey/presentation/pages/profile/data/all_adresses_response.dart';
 import 'package:thousand_melochey/service/localizations/localization.dart';
+import 'package:toastification/toastification.dart';
 import 'package:vibration/vibration.dart';
 
 @RoutePage()
@@ -269,7 +270,6 @@ class _CheckOutPageState extends ConsumerState<CheckOutPage> {
                     return;
                   }
 
-                  // if(state.selectedUserAddress?.id != null && state.selectedUserAddress?.id != 0) {
                   if(state.deliveryType.isNotEmpty && state.paymentType.isNotEmpty) {
                     notifier.createOrder(
                         context: context,
@@ -281,81 +281,79 @@ class _CheckOutPageState extends ConsumerState<CheckOutPage> {
                             Vibration.vibrate(duration: 50);
                           }
                           AppHelpers.showSuccessToast(message: "${AppLocalization.getText(context)?.order_successfully_created}");
+
+                          showAdaptiveDialog(context: context, builder: (BuildContext context) =>
+                              AlertDialog(
+                                content: Column(
+                                  spacing: 20,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      "${state.deliveryType == "pickup"
+                                          ? AppLocalization.getText(context)?.do_not_forget_to_pick_up_order
+                                          : AppLocalization.getText(context)?.deliver_within_24_hours}",
+                                      style: TextStyle(
+                                          fontSize: 18.sp,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        gradient: const LinearGradient(
+                                          colors: [
+                                            AppColors.primaryColor,
+                                            AppColors.primaryShadeColor
+                                          ],
+                                        ),
+                                        borderRadius:
+                                        BorderRadius.circular(25),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: AppColors.primaryColor.withAlpha(70),
+                                            blurRadius: 15,
+                                            offset: const Offset(0, 5),
+                                          ),
+                                        ],
+                                      ),
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          AppNavigator.pushAndPopUntil(const MainRoute());
+                                          ref.read(mainProvider(0).notifier).incrementPageIndex(0);
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.transparent,
+                                          shadowColor: Colors.transparent,
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 40,
+                                              vertical: 16),
+                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25),),
+                                        ),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          spacing: 8,
+                                          children: [
+                                            const Icon(Icons.shopping_bag, color: AppColors.white, size: 20),
+                                            Text(
+                                              '${AppLocalization.getText(context)?.start_shopping}',
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ));
+
+                          notifier.getCartItems();
                           notifier.selectUserAddress(Address());
                           notifier.togglePaymentType("");
                           notifier.toggleDeliveryType("");
-                          showAdaptiveDialog(
-                              context: context,
-                              builder: (BuildContext context) =>
-                                  AlertDialog(
-                                    content: Column(
-                                      spacing: 20,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Text(
-                                          "${AppLocalization.getText(context)?.deliver_within_24_hours}",
-                                          style: TextStyle(
-                                              fontSize: 18.sp,
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            gradient: const LinearGradient(
-                                              colors: [
-                                                AppColors.primaryColor,
-                                                AppColors.primaryShadeColor
-                                              ],
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(25),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: AppColors.primaryColor.withAlpha(70),
-                                                blurRadius: 15,
-                                                offset: const Offset(0, 5),
-                                              ),
-                                            ],
-                                          ),
-                                          child: ElevatedButton(
-                                            onPressed: () {
-                                              AppNavigator.pushAndPopUntil(const MainRoute());
-                                              ref.read(mainProvider(0).notifier).incrementPageIndex(0);
-                                            },
-                                            style: ElevatedButton.styleFrom(
-                                              backgroundColor: Colors.transparent,
-                                              shadowColor: Colors.transparent,
-                                              padding: const EdgeInsets.symmetric(
-                                                  horizontal: 40,
-                                                  vertical: 16),
-                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25),),
-                                            ),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              spacing: 8,
-                                              children: [
-                                                const Icon(Icons.shopping_bag, color: AppColors.white, size: 20),
-                                                Text(
-                                                  '${AppLocalization.getText(context)?.start_shopping}',
-                                                  style: const TextStyle(
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: AppColors.white,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ));
+                          notifier.orderCommentController.clear();
                         }
                     );
                   }
-                  // }
-                  // else {
-                  //   AppHelpers.showErrorToast(errorMessage: "${AppLocalization.getText(context)?.select_an_address_before_saving}");
-                  // }
                 })
           ],
         ),
