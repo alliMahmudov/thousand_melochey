@@ -87,7 +87,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                         final cartProduct = state.cartProduct?.data?[index];
                         final productId = isAuth ? cartProduct?.product?.id ?? 0 : localCart[index].id ?? 0;
                         final productName = isAuth ? cartProduct?.product?.name ?? "" : localCart[index].name ?? "";
-                        final productPrice = isAuth ?  cartProduct?.product?.price ?? "" : localCart[index].price ?? "";
+                        final productPrice = isAuth ?  cartProduct?.product?.finalPriceUzs ?? "" : localCart[index].price ?? "";
                         final productImage = isAuth ?  cartProduct?.product?.image ?? "" : localCart[index].image ?? "";
                         final productDescription = isAuth ? cartProduct?.product?.description ?? "" : localCart[index].description ?? "";
                         final productQuantity = isAuth ? cartProduct?.quantity ?? 0 : localCart[index].quantity ?? 0;
