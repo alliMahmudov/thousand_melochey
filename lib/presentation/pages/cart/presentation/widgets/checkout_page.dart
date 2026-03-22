@@ -6,7 +6,6 @@ import 'package:thousand_melochey/presentation/pages/cart/presentation/widgets/a
 import 'package:thousand_melochey/presentation/pages/main/riverpod/provider/main_provider.dart';
 import 'package:thousand_melochey/presentation/pages/profile/data/all_adresses_response.dart';
 import 'package:thousand_melochey/service/localizations/localization.dart';
-import 'package:toastification/toastification.dart';
 import 'package:vibration/vibration.dart';
 
 @RoutePage()
@@ -53,11 +52,7 @@ class _CheckOutPageState extends ConsumerState<CheckOutPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           spacing: 12,
           children: [
-            AddressAnimatedField(
-                pickupType: pickupType,
-                districtName: state.selectedUserAddress?.districtName ?? "",
-                address: state.selectedUserAddress?.addressLine1 ?? "",
-                errorMessage: state.errorMessage),
+
 
             Align(
               alignment: Alignment.centerLeft,
@@ -201,14 +196,18 @@ class _CheckOutPageState extends ConsumerState<CheckOutPage> {
               ],
             ),
 
+            state.deliveryType == "courier" ? AddressAnimatedField(
+                pickupType: pickupType,
+                districtName: state.selectedUserAddress?.districtName ?? "",
+                address: state.selectedUserAddress?.addressLine1 ?? "",
+                errorMessage: state.errorMessage) : const SizedBox(),
+
             CustomTextField(
               controller: notifier.orderCommentController,
               title: "${AppLocalization.getText(context)?.comment}",
               labelText: "${AppLocalization.getText(context)?.comment_to_seller}",
               errorText: AppTextFieldErrorsStatus.status(state.errorMessage, "comment"),
             ),
-
-
 
             AddressMapWidget(
               show: pickupType
