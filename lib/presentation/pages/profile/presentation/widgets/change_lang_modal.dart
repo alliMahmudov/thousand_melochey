@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:thousand_melochey/core/handlers/local_storage.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
 import 'package:thousand_melochey/service/localizations/localization.dart';
@@ -75,7 +76,7 @@ class _ChangeLangModalState extends ConsumerState<ChangeLangModal> {
                   ListTile(
                     minTileHeight: 55.h,
                     title: const Text(
-                      "O'zbek tili",
+                      "🇺🇿 O'zbek tili",
                     ),
                     trailing: CupertinoRadio(
                         inactiveColor: Theme.of(context).canvasColor,
@@ -104,7 +105,7 @@ class _ChangeLangModalState extends ConsumerState<ChangeLangModal> {
                   ListTile(
                     minTileHeight: 55.h,
                     title: const Text(
-                      "Русский язык",
+                      "🇷🇺 Русский язык",
                     ),
                     trailing: CupertinoRadio(
                         inactiveColor: Theme.of(context).canvasColor,

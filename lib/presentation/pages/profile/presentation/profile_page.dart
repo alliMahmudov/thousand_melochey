@@ -100,22 +100,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                     LocalStorage.instance.isAuthenticated()
                         ? asUser(state: state, notifier: notifier)
                         : asGuest(),
-
-                    // Padding(
-                    //   padding: const EdgeInsets.all(16.0),
-                    //   child: TextField(
-                    //     controller: notifier.domainController,
-                    //     decoration: InputDecoration(
-                    //       hintText: "Hozirgi domain: ${LocalStorage.instance.getDomain()}",
-                    //       hintStyle: const TextStyle(color: AppColors.primaryColor),
-                    //       suffix: IconButton(onPressed: () {
-                    //         LocalStorage.instance.setDomain(ref.read(profileProvider.notifier).domainController.text);
-                    //
-                    //         FocusScope.of(context).unfocus();
-                    //       }, icon: const Icon(Icons.done))
-                    //     ),
-                    //   )
-                    // )
                   ],
                 ),
               ),
