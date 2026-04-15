@@ -32,72 +32,60 @@ class Order {
   final int? id;
   final int? orderNumber;
   final String? orderStatus;
+  final String? orderStatusDisplay;
   final String? totalPrice;
   final DateTime? date;
   final List<Item>? items;
   final String? comment;
   final OrderAddress? address;
-  final int? addressId;
   final String? paymentType;
   final String? deliveryType;
-  /// Customer phone from API (`user_phone`, `phone`, or `customer_phone`).
-  final String? userPhone;
+  final int? addressId;
 
   Order({
     this.id,
     this.orderNumber,
     this.orderStatus,
+    this.orderStatusDisplay,
     this.totalPrice,
     this.date,
     this.items,
     this.comment,
     this.address,
-    this.addressId,
     this.paymentType,
     this.deliveryType,
-    this.userPhone,
+    this.addressId,
   });
 
   factory Order.fromJson(Map<String, dynamic> json) => Order(
     id: json["id"],
     orderNumber: json["order_number"],
     orderStatus: json["order_status"],
+    orderStatusDisplay: json["order_status_display"],
     totalPrice: json["total_price"],
     date: json["date"] == null ? null : DateTime.parse(json["date"]),
     items: json["items"] == null ? [] : List<Item>.from(json["items"]!.map((x) => Item.fromJson(x))),
     comment: json["comment"],
     address: json["address"] == null ? null : OrderAddress.fromJson(json["address"]),
-    addressId: json["address_id"],
     paymentType: json["payment_type"],
     deliveryType: json["delivery_type"],
-    userPhone: _parseNullableString(json["user_phone"]) ??
-        _parseNullableString(json["phone"]) ??
-        _parseNullableString(json["customer_phone"]),
+    addressId: json["address_id"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
     "order_number": orderNumber,
     "order_status": orderStatus,
+    "order_status_display": orderStatusDisplay,
     "total_price": totalPrice,
     "date": date?.toIso8601String(),
     "items": items == null ? [] : List<dynamic>.from(items!.map((x) => x.toJson())),
     "comment": comment,
     "address": address?.toJson(),
-    "address_id": addressId,
     "payment_type": paymentType,
     "delivery_type": deliveryType,
-    "user_phone": userPhone,
+    "address_id": addressId,
   };
-}
-
-String? _parseNullableString(dynamic value) {
-  if (value == null) return null;
-  if (value is String) {
-    final t = value.trim();
-    return t.isEmpty ? null : t;
-  }
-  return value.toString();
 }
 
 class OrderAddress {
@@ -139,20 +127,28 @@ class OrderAddress {
 class Item {
   final Product? product;
   final int? quantity;
+  final String? priceAtPurchase;
+  final bool? wasOnSale;
 
   Item({
     this.product,
     this.quantity,
+    this.priceAtPurchase,
+    this.wasOnSale,
   });
 
   factory Item.fromJson(Map<String, dynamic> json) => Item(
     product: json["product"] == null ? null : Product.fromJson(json["product"]),
     quantity: json["quantity"],
+    priceAtPurchase: json["price_at_purchase"],
+    wasOnSale: json["was_on_sale"],
   );
 
   Map<String, dynamic> toJson() => {
     "product": product?.toJson(),
     "quantity": quantity,
+    "price_at_purchase": priceAtPurchase,
+    "was_on_sale": wasOnSale,
   };
 }
 
@@ -161,6 +157,10 @@ class Product {
   final String? name;
   final String? description;
   final String? finalPriceUzs;
+  final bool? isOnSale;
+  final dynamic salePriceUzs;
+  final dynamic discountPercent;
+  final dynamic discountPriceValue;
   final String? image;
   final List<String>? images;
   final double? availableQuantity;
@@ -170,6 +170,10 @@ class Product {
     this.name,
     this.description,
     this.finalPriceUzs,
+    this.isOnSale,
+    this.salePriceUzs,
+    this.discountPercent,
+    this.discountPriceValue,
     this.image,
     this.images,
     this.availableQuantity,
@@ -180,6 +184,10 @@ class Product {
     name: json["name"],
     description: json["description"],
     finalPriceUzs: json["final_price_uzs"],
+    isOnSale: json["is_on_sale"],
+    salePriceUzs: json["sale_price_uzs"],
+    discountPercent: json["discount_percent"],
+    discountPriceValue: json["discount_price_value"],
     image: json["image"],
     images: json["images"] == null ? [] : List<String>.from(json["images"]!.map((x) => x)),
     availableQuantity: json["available_quantity"],
@@ -190,6 +198,10 @@ class Product {
     "name": name,
     "description": description,
     "final_price_uzs": finalPriceUzs,
+    "is_on_sale": isOnSale,
+    "sale_price_uzs": salePriceUzs,
+    "discount_percent": discountPercent,
+    "discount_price_value": discountPriceValue,
     "image": image,
     "images": images == null ? [] : List<dynamic>.from(images!.map((x) => x)),
     "available_quantity": availableQuantity,

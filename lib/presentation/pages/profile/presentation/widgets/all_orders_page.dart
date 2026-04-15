@@ -192,7 +192,7 @@ class _OrdersListBody extends StatelessWidget {
                               borderRadius: BorderRadius.circular(20.r),
                             ),
                             child: Text(
-                              "${order.orderStatus}",
+                              "${order.orderStatusDisplay}",
                               style: TextStyle(
                                 fontSize: 13.sp,
                                 fontWeight: FontWeight.w600,
@@ -250,10 +250,6 @@ class _OrdersListBody extends StatelessWidget {
                         : "${lang?.shop_address}",
                     icon: CupertinoIcons.location_solid),
                 6.verticalSpace,
-                // OrderContactInfoWidget(title: "${lang?.phone_number}",
-                //     subTitle: "NONE{}",
-                //     icon: CupertinoIcons.phone_fill,
-                // ),
                 if (orders.isNotEmpty) ...[
                   8.verticalSpace,
                   Divider(height: 1, color: Colors.grey.shade300),
@@ -275,8 +271,7 @@ class _OrdersListBody extends StatelessWidget {
                                 ProductDetailRoute(
                                   id: product?.id,
                                   name: product?.name,
-                                  price: AppMoneyFormatter.longFormatString(
-                                      product?.finalPriceUzs),
+                                  price: AppMoneyFormatter.longFormatString(product?.finalPriceUzs),
                                   description: product?.description,
                                   image: product?.image,
                                   images: product?.images,
@@ -292,19 +287,15 @@ class _OrdersListBody extends StatelessWidget {
                                     clipBehavior: Clip.none,
                                     children: [
                                       ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(10.r),
+                                        borderRadius: BorderRadius.circular(10.r),
                                         child: AspectRatio(
                                           aspectRatio: 1,
-                                          child: product?.image?.isEmpty ??
-                                                  false
+                                          child: product?.image?.isEmpty ?? false
                                               ? ColoredBox(
                                                   color: Colors.grey.shade200,
                                                   child: Icon(
-                                                      Icons
-                                                          .image_not_supported_outlined,
-                                                      color:
-                                                          Colors.grey.shade500),
+                                                      Icons.image_not_supported_outlined,
+                                                      color: Colors.grey.shade500),
                                                 )
                                               : CachedNetworkImage(
                                                   imageUrl: "${product?.image}",
@@ -338,12 +329,10 @@ class _OrdersListBody extends StatelessWidget {
                                         top: 4,
                                         right: 4,
                                         child: Container(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 6.w, vertical: 2.h),
+                                          padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
                                           decoration: BoxDecoration(
                                             color: AppColors.primaryColor,
-                                            borderRadius:
-                                                BorderRadius.circular(8.r),
+                                            borderRadius: BorderRadius.circular(8.r),
                                           ),
                                           child: Text(
                                             '${AppLocalization.getText(context)?.order_qty ?? ''}: 1',
