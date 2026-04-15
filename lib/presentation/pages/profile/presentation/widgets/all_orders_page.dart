@@ -348,7 +348,7 @@ class _OrdersListBody extends StatelessWidget {
                                   ),
                                   6.verticalSpace,
                                   Text(
-                                    '${AppMoneyFormatter.longFormatString(product?.finalPriceUzs)} UZS',
+                                    '${AppMoneyFormatter.longFormatString(order.items?[index].priceAtPurchase)} UZS',
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     textAlign: TextAlign.center,
