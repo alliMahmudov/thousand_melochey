@@ -1,3 +1,5 @@
+import 'package:thousand_melochey/presentation/global_widgets/money_formatter.dart';
+
 import '../../../../../core/imports/imports.dart';
 import '../../../../../service/localizations/localization.dart';
 import '../../../../global_widgets/cached_network_image.dart';
@@ -103,6 +105,7 @@ class FavoriteProductsWidget extends StatelessWidget {
                             spacing: 2,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              
                               Text(
                                 '${AppLocalization.getText(context)?.price}',
                                 style: TextStyle(
@@ -111,7 +114,7 @@ class FavoriteProductsWidget extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                '${price ?? '0'} UZS',
+                                '${AppMoneyFormatter.longFormatString(price) ?? '0'} UZS',
                                 style: TextStyle(
                                   fontSize: 14.sp,
                                   fontWeight: FontWeight.bold,
