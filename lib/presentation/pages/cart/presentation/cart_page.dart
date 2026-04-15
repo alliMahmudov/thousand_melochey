@@ -88,6 +88,9 @@ class _CartPageState extends ConsumerState<CartPage> {
                         final productId = isAuth ? cartProduct?.product?.id ?? 0 : localCart[index].id ?? 0;
                         final productName = isAuth ? cartProduct?.product?.name ?? "" : localCart[index].name ?? "";
                         final productPrice = isAuth ?  cartProduct?.product?.finalPriceUzs ?? "" : localCart[index].price ?? "";
+                        final productSalePrice = isAuth ? cartProduct?.product?.salePriceUzs : localCart[index].salePriceUzs;
+                        final productIsOnSale = isAuth ? cartProduct?.product?.isOnSale : localCart[index].isOnSale;
+                        final productDiscountPercent = isAuth ? cartProduct?.product?.discountPercent : localCart[index].discountPercent;
                         final productImage = isAuth ?  cartProduct?.product?.image ?? "" : localCart[index].image ?? "";
                         final productDescription = isAuth ? cartProduct?.product?.description ?? "" : localCart[index].description ?? "";
                         final productQuantity = isAuth ? cartProduct?.quantity ?? 0 : localCart[index].quantity ?? 0;
@@ -101,6 +104,9 @@ class _CartPageState extends ConsumerState<CartPage> {
                                     id: productId,
                                     name: productName,
                                     price: productPrice,
+                                    salePriceUzs: productSalePrice,
+                                    isOnSale: productIsOnSale,
+                                    discountPercent: productDiscountPercent,
                                     description: productDescription,
                                     image: productImage,
                                     images: productListImages
@@ -110,6 +116,9 @@ class _CartPageState extends ConsumerState<CartPage> {
                             image: productImage,
                             name: productName,
                             price: productPrice,
+                            salePrice: productSalePrice,
+                            isOnSale: productIsOnSale,
+                            discountPercent: productDiscountPercent,
                             qty: productQuantity,
                             isLoading: isPending,
                             removeTap: () {
@@ -121,6 +130,9 @@ class _CartPageState extends ConsumerState<CartPage> {
                                   id: productId,
                                   name: productName,
                                   price: productPrice,
+                                  salePriceUzs: productSalePrice,
+                                  isOnSale: productIsOnSale,
+                                  discountPercent: productDiscountPercent,
                                   image: productImage,
                                   description: productDescription,
                                   images: productListImages,

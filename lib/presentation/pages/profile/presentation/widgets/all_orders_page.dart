@@ -271,7 +271,10 @@ class _OrdersListBody extends StatelessWidget {
                                 ProductDetailRoute(
                                   id: product?.id,
                                   name: product?.name,
-                                  price: AppMoneyFormatter.longFormatString(product?.finalPriceUzs),
+                                  price: product?.finalPriceUzs,
+                                  salePriceUzs: product?.salePriceUzs,
+                                  isOnSale: product?.isOnSale,
+                                  discountPercent: product?.discountPercent,
                                   description: product?.description,
                                   image: product?.image,
                                   images: product?.images,

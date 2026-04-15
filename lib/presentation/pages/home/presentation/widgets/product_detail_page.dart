@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:thousand_melochey/core/handlers/local_storage.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
-import 'package:thousand_melochey/presentation/global_widgets/money_formatter.dart';
+import 'package:thousand_melochey/presentation/global_widgets/product_price_widget.dart';
 import 'package:thousand_melochey/presentation/pages/cart/data/local_cart_item_model.dart';
 import 'package:thousand_melochey/presentation/pages/home/data/products_response.dart';
 import 'package:thousand_melochey/presentation/pages/main/riverpod/provider/main_provider.dart';
@@ -13,6 +13,9 @@ class ProductDetailPage extends ConsumerStatefulWidget {
   final int? id;
   final String? name;
   final String? price;
+  final String? salePriceUzs;
+  final bool? isOnSale;
+  final String? discountPercent;
   final String? description;
   final String? image;
   final List<String>? images;
@@ -22,6 +25,9 @@ class ProductDetailPage extends ConsumerStatefulWidget {
     required this.id,
     required this.name,
     required this.price,
+    this.salePriceUzs,
+    this.isOnSale,
+    this.discountPercent,
     required this.description,
     required this.image,
     this.images,
@@ -55,6 +61,12 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
     LocalStorage.instance.isAuthenticated() ?
     cartState.cartProduct?.data?.any((cartProduct) => cartProduct.product?.id == widget.id) :
     cartState.localCartItems.any((cartProduct) => cartProduct.id == widget.id);
+    final priceState = ProductPriceState.fromRaw(
+      originalPriceUzs: widget.price,
+      salePriceUzs: widget.salePriceUzs,
+      isOnSale: widget.isOnSale,
+      discountPercent: widget.discountPercent,
+    );
     return Scaffold(
       backgroundColor: AppColors.white,
       extendBody: true,
@@ -108,7 +120,10 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
                         Product(
                           id: widget.id,
                           name: widget.name,
-                          price: widget.price,
+                          finalPriceUzs: widget.price,
+                          salePriceUzs: widget.salePriceUzs,
+                          isOnSale: widget.isOnSale,
+                          discountPercent: widget.discountPercent,
                           description: widget.description,
                           image: widget.image,
                         ),
@@ -241,13 +256,24 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
                           ),
                         ),
                         8.verticalSpace,
-                        Text(
-                          "${AppMoneyFormatter.longFormatString(widget.price) ?? ''} UZS",
-                          style: TextStyle(
+                        ProductPriceWidget(
+                          priceState: priceState,
+                          currentPriceStyle: TextStyle(
                             color: AppColors.primaryColor,
                             fontWeight: FontWeight.w800,
                             fontSize: 22.sp,
                           ),
+                          oldPriceStyle: TextStyle(
+                            color: Colors.grey[600],
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16.sp,
+                          ),
+                          discountStyle: TextStyle(
+                            color: Colors.redAccent,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 14.sp,
+                          ),
+                          spacing: 6,
                         ),
                         12.verticalSpace,
                         Text(
@@ -298,6 +324,9 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
                         id: widget.id,
                         name: widget.name,
                         price: widget.price,
+                        salePriceUzs: widget.salePriceUzs,
+                        isOnSale: widget.isOnSale,
+                        discountPercent: widget.discountPercent,
                         image: widget.image,
                         images: widget.images,
                         description: widget.description,
@@ -356,6 +385,9 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
                           id: widget.id,
                           name: widget.name,
                           price: widget.price,
+                        salePriceUzs: widget.salePriceUzs,
+                        isOnSale: widget.isOnSale,
+                        discountPercent: widget.discountPercent,
                           image: widget.image,
                           images: widget.images,
                           description: widget.description,

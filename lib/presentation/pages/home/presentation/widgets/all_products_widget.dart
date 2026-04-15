@@ -19,10 +19,12 @@ class _ProductsListWidgetState extends ConsumerState<ProductsListWidget>
       final notifier = ref.read(homeProvider.notifier);
       final cartNotifier = ref.read(cartProvider.notifier);
       final categoryNotifier = ref.read(categoriesProvider.notifier);
+      final favoriteNotifier = ref.read(favoritesProvider.notifier);
       notifier.getProducts(isRefresh: true);
       notifier.getNewProducts();
       cartNotifier.getCartItems();
       categoryNotifier.getCategories();
+      favoriteNotifier.getFavoritesList();
     });
   }
 
@@ -109,6 +111,9 @@ class _ProductsListWidgetState extends ConsumerState<ProductsListWidget>
                     id: product.id,
                     name: product.name,
                     price: product.finalPriceUzs,
+                    salePriceUzs: product.salePriceUzs,
+                    isOnSale: product.isOnSale,
+                    discountPercent: product.discountPercent,
                     description: product.description,
                     image: product.image,
                     images: product.images,

@@ -6,12 +6,8 @@ import 'package:thousand_melochey/presentation/pages/categories/presentation/riv
 import 'package:thousand_melochey/presentation/pages/home/presentation/widgets/carousel_slide_widget.dart';
 import 'package:thousand_melochey/presentation/pages/home/presentation/widgets/all_products_widget.dart';
 import 'package:thousand_melochey/presentation/pages/home/presentation/widgets/product_categories_widget.dart';
-import 'package:thousand_melochey/presentation/pages/home/presentation/widgets/new_arrivals_widget.dart';
 import 'package:thousand_melochey/presentation/pages/home/presentation/widgets/home_new_arrivals_section_widget.dart';
 import 'package:thousand_melochey/core/config/banner_config.dart';
-import 'package:thousand_melochey/presentation/pages/home/data/products_response.dart';
-
-import '../../../../service/localizations/localization.dart';
 
 @RoutePage()
 class HomePage extends ConsumerStatefulWidget {

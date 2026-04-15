@@ -139,6 +139,9 @@ class _CategoryProductsState extends ConsumerState<CategoryProductsPage> {
                                     id: product.id ?? 0,
                                     name: product.name,
                                     price: product.finalPriceUzs,
+                                    salePriceUzs: product.salePriceUzs,
+                                    isOnSale: product.isOnSale,
+                                    discountPercent: product.discountPercent,
                                     description: product.description,
                                     image: product.image,
                                     images: product.images

@@ -97,6 +97,9 @@ abstract class _$AppRouter extends RootStackRouter {
           id: args.id,
           name: args.name,
           price: args.price,
+          salePriceUzs: args.salePriceUzs,
+          isOnSale: args.isOnSale,
+          discountPercent: args.discountPercent,
           description: args.description,
           image: args.image,
           images: args.images,
@@ -369,6 +372,9 @@ class ProductDetailRoute extends PageRouteInfo<ProductDetailRouteArgs> {
     required int? id,
     required String? name,
     required String? price,
+    String? salePriceUzs,
+    bool? isOnSale,
+    String? discountPercent,
     required String? description,
     required String? image,
     List<String>? images,
@@ -380,6 +386,9 @@ class ProductDetailRoute extends PageRouteInfo<ProductDetailRouteArgs> {
             id: id,
             name: name,
             price: price,
+            salePriceUzs: salePriceUzs,
+            isOnSale: isOnSale,
+            discountPercent: discountPercent,
             description: description,
             image: image,
             images: images,
@@ -399,6 +408,9 @@ class ProductDetailRouteArgs {
     required this.id,
     required this.name,
     required this.price,
+    this.salePriceUzs,
+    this.isOnSale,
+    this.discountPercent,
     required this.description,
     required this.image,
     this.images,
@@ -412,6 +424,12 @@ class ProductDetailRouteArgs {
 
   final String? price;
 
+  final String? salePriceUzs;
+
+  final bool? isOnSale;
+
+  final String? discountPercent;
+
   final String? description;
 
   final String? image;
@@ -420,7 +438,7 @@ class ProductDetailRouteArgs {
 
   @override
   String toString() {
-    return 'ProductDetailRouteArgs{key: $key, id: $id, name: $name, price: $price, description: $description, image: $image, images: $images}';
+    return 'ProductDetailRouteArgs{key: $key, id: $id, name: $name, price: $price, salePriceUzs: $salePriceUzs, isOnSale: $isOnSale, discountPercent: $discountPercent, description: $description, image: $image, images: $images}';
   }
 }
 

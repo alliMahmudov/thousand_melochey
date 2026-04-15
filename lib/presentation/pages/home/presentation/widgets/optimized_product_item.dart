@@ -1,8 +1,6 @@
 import 'package:thousand_melochey/core/imports/imports.dart';
 import 'package:thousand_melochey/presentation/pages/home/presentation/widgets/product_widget.dart';
 import 'package:thousand_melochey/presentation/pages/cart/data/local_cart_item_model.dart';
-
-import '../../../../../core/handlers/local_storage.dart';
 import '../../data/products_response.dart';
 
 class OptimizedProductItem extends ConsumerWidget {
@@ -35,6 +33,9 @@ class OptimizedProductItem extends ConsumerWidget {
       name: name ?? product?.name,
       image: image ?? product?.image,
       price: price ?? product?.finalPriceUzs,
+      salePrice: product?.salePriceUzs,
+      isOnSale: product?.isOnSale,
+      discountPercent: product?.discountPercent,
       id: productId,
       isFavorite: isLiked ?? false,
       onTap: () {
@@ -45,7 +46,10 @@ class OptimizedProductItem extends ConsumerWidget {
             Product(
               id: productId,
               name: product.name,
-              price: product.price,
+              finalPriceUzs: product.finalPriceUzs,
+              salePriceUzs: product.salePriceUzs,
+              isOnSale: product.isOnSale,
+              discountPercent: product.discountPercent,
               description: product.description,
               image: product.image,
             ),
@@ -57,6 +61,9 @@ class OptimizedProductItem extends ConsumerWidget {
           id: productId,
           name: name ?? product?.name,
           price: price ?? product?.finalPriceUzs,
+          salePriceUzs: product?.salePriceUzs,
+          isOnSale: product?.isOnSale,
+          discountPercent: product?.discountPercent,
           image: image ?? product?.image,
           images: product?.images,
           description: product?.description,

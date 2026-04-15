@@ -3,12 +3,16 @@ import 'package:thousand_melochey/contstants/app_assets.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
 import 'package:thousand_melochey/presentation/global_widgets/cached_network_image.dart';
 import 'package:thousand_melochey/presentation/global_widgets/money_formatter.dart';
+import 'package:thousand_melochey/presentation/global_widgets/product_price_widget.dart';
 import 'package:thousand_melochey/service/localizations/localization.dart';
 
 class CartListItemWidget extends StatelessWidget {
   final String? image;
   final String? name;
   final String? price;
+  final String? salePrice;
+  final bool? isOnSale;
+  final String? discountPercent;
   final int? qty;
   final Function() removeTap;
   final Function() addTap;
@@ -20,6 +24,9 @@ class CartListItemWidget extends StatelessWidget {
     required this.image,
     required this.name,
     required this.price,
+    this.salePrice,
+    this.isOnSale,
+    this.discountPercent,
     required this.qty,
     required this.removeTap,
     required this.addTap,
@@ -29,6 +36,12 @@ class CartListItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final priceState = ProductPriceState.fromRaw(
+      originalPriceUzs: price,
+      salePriceUzs: salePrice,
+      isOnSale: isOnSale,
+      discountPercent: discountPercent,
+    );
     return Container(
       margin: EdgeInsets.only(bottom: 12.h),
       decoration: BoxDecoration(
@@ -86,12 +99,22 @@ class CartListItemWidget extends StatelessWidget {
                       8.verticalSpace,
                       
                       // Price
-                      Text(
-                        "${AppMoneyFormatter.longFormatString(price) ?? ""} UZS",
-                        style: TextStyle(
+                      ProductPriceWidget(
+                        priceState: priceState,
+                        currentPriceStyle: TextStyle(
                           fontSize: 18.sp,
                           fontWeight: FontWeight.bold,
                           color: AppColors.primaryColor,
+                        ),
+                        oldPriceStyle: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.grey[600],
+                        ),
+                        discountStyle: TextStyle(
+                          fontSize: 12.sp,
+                          color: Colors.redAccent,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
                       
