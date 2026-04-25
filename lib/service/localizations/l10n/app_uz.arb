@@ -36,6 +36,8 @@
   "active": "Faol",
   "finished": "Tugallangan",
   "order_id": "Buyurtma raqami",
+  "order_status": "Buyurtma holati",
+  "order_created_at": "Yaratilgan",
   "order_qty": "Soni",
   "log_out_title": "Chiqishni istaysizmi?",
   "cancel": "Bekor qilish",
@@ -56,8 +58,9 @@
   "new_pass": "Yangi parol",
   "enter_new_pass": "Yangi parol kiriting",
   "create": "Yaratish",
-  "products": "Mahsulotlar",
-  "product": "Mahsulot",
+  "products": "ta mahsulotlar",
+  "many_products": " ta mahsulotlar",
+  "product": "ta mahsulot",
   "send_code_again": "Kodni qayta yuboring",
   "name": "Ism",
   "enter_name": "Ismizni kiriting",
@@ -123,7 +126,12 @@
     "max_price": "Maksimal narx",
     "from": "dan",
     "to": "gacha",
-    "apply": "Qo'llash"
+    "apply": "Qo'llash",
+    "do_not_forget_to_pick_up_order": "Buyurtmangizni olib ketishni unutmang",
+    "you_have_no_active_orders": "Sizda faol buyurtmalar yo'q",
+    "you_have_no_finished_orders": "Sizda tugallangan buyurtmalar yo'q"
+
+
 
 
 

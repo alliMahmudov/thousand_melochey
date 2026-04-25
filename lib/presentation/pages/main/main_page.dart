@@ -58,7 +58,10 @@ class _MainPageState extends ConsumerState<MainPage> {
           ),
         ],
       ),
-      bottomNavigationBar: const CustomNavBar(),
+      bottomNavigationBar: const Padding(
+        padding: EdgeInsets.only(bottom: 8),
+        child: CustomNavBar(),
+      ),
       // floatingActionButton: const Stack(
       //   children: [
       //     //CustomFloatingActionButton(),

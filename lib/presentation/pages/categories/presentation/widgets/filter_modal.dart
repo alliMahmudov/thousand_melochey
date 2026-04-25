@@ -65,10 +65,10 @@ class FilterModal extends ConsumerWidget {
             isLoading: false,
             isDisabled: false,
             onTap: () {
-              notifier.getCategoryProducts(
+              notifier.getPaginationCategoryProducts(
                   categoryId: categoryId,
                   isRefresh: true,
-                  success: (){
+                  success: () {
                     AppNavigator.pop();
                   }
               );

@@ -62,7 +62,7 @@ class FavoritesNotifier extends StateNotifier<FavoritesState> {
             id: id,
             name: null, // Временное имя, можно оставить пустым
             description: null,
-            price: null, // Временная цена
+            finalPriceUzs: null, // Временная цена
             image: null, // Временное изображение
           );
           

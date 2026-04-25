@@ -3,7 +3,6 @@ import 'package:thousand_melochey/presentation/pages/cart/presentation/cart_page
 import 'package:thousand_melochey/presentation/pages/categories/presentation/categories_page.dart';
 import 'package:thousand_melochey/presentation/pages/categories/presentation/widgets/category_products.dart';
 import '../presentation/pages/home/data/new_products_response.dart';
-import '../presentation/pages/home/data/products_response.dart';
 import '../presentation/pages/profile/presentation/widgets/all_orders_page.dart';
 import '../presentation/pages/profile/presentation/widgets/user_addresses_page.dart';
 import '../presentation/pages/home/presentation/widgets/new_arrivals_page.dart';

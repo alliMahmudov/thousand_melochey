@@ -66,25 +66,31 @@ class _CategoryProductsState extends ConsumerState<CategoryProductsPage> {
           scrollIndicatorShow: false,
           isLoadingMore: isLoadMore,
           loadMore: () {
-            final currentPage = products?.meta?.page ?? 0;
-            final hasNext = products?.meta?.hasNext ?? false;
+            final meta = products?.meta;
+            final currentPage = meta?.page ?? 0;
+            final hasNext = meta?.hasNext ??
+                (meta != null &&
+                    meta.totalPages != null &&
+                    meta.page != null &&
+                    meta.page! < meta.totalPages!);
 
             if (!isLoadMore && hasNext) {
-                notifier.getPaginationCategoryProducts(
-                  categoryId: widget.categoryId ?? 0,
-                  currentPage: currentPage + 1,
-                  isRefresh: false,
-                  minPrice: notifier.filterMinPrice.text
-                );
+              notifier.getPaginationCategoryProducts(
+                categoryId: widget.categoryId ?? 0,
+                currentPage: currentPage + 1,
+                isRefresh: false,
+              );
             }
           },
           onRefresh: () async {
-              await notifier.getCategoryProducts(
+              await notifier.getPaginationCategoryProducts(
                 categoryId: widget.categoryId ?? 0, 
                 isRefresh: true,
               );
           },
           child: CustomScrollView(
+            controller: notifier.scrollController,
+            physics: const AlwaysScrollableScrollPhysics(),
             slivers: [
               if (isLoading)
                 CustomShimmerEffectSliver(
@@ -133,6 +139,9 @@ class _CategoryProductsState extends ConsumerState<CategoryProductsPage> {
                                     id: product.id ?? 0,
                                     name: product.name,
                                     price: product.finalPriceUzs,
+                                    salePriceUzs: product.salePriceUzs,
+                                    isOnSale: product.isOnSale,
+                                    discountPercent: product.discountPercent,
                                     description: product.description,
                                     image: product.image,
                                     images: product.images

@@ -1,8 +1,4 @@
-import 'package:thousand_melochey/core/handlers/local_storage.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
-import 'package:thousand_melochey/presentation/global_widgets/custom_pagination_widget.dart';
-import 'package:thousand_melochey/presentation/pages/cart/data/cart_response.dart';
-import 'package:thousand_melochey/presentation/pages/cart/data/local_cart_item_model.dart';
 import 'package:thousand_melochey/presentation/pages/categories/presentation/riverpod/provider/categories_provider.dart';
 import 'package:thousand_melochey/service/localizations/localization.dart';
 import 'package:thousand_melochey/presentation/pages/home/presentation/widgets/optimized_product_item.dart';
@@ -23,10 +19,12 @@ class _ProductsListWidgetState extends ConsumerState<ProductsListWidget>
       final notifier = ref.read(homeProvider.notifier);
       final cartNotifier = ref.read(cartProvider.notifier);
       final categoryNotifier = ref.read(categoriesProvider.notifier);
+      final favoriteNotifier = ref.read(favoritesProvider.notifier);
       notifier.getProducts(isRefresh: true);
       notifier.getNewProducts();
       cartNotifier.getCartItems();
       categoryNotifier.getCategories();
+      favoriteNotifier.getFavoritesList();
     });
   }
 
@@ -35,8 +33,6 @@ class _ProductsListWidgetState extends ConsumerState<ProductsListWidget>
     super.build(context);
     final state = ref.watch(homeProvider);
     ref.watch(favoritesProvider); // подписка для обновления UI при изменении лайков
-    final favoriteNotifier = ref.read(favoritesProvider.notifier);
-    final cartNotifier = ref.read(cartProvider.notifier);
 
     if (state.isLoading) {
       return CustomShimmerEffectSliver(
@@ -95,7 +91,7 @@ class _ProductsListWidgetState extends ConsumerState<ProductsListWidget>
       );
     }
     return SliverPadding(
-      padding: EdgeInsets.only(bottom: 16.0.h, left: 8.w, right: 8.w), // Add some bottom padding
+      padding: EdgeInsets.only(bottom: 4.0.h, left: 8.w, right: 8.w),
       sliver: SliverGrid(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
@@ -107,18 +103,21 @@ class _ProductsListWidgetState extends ConsumerState<ProductsListWidget>
           (BuildContext context, int index) {
             final product = state.products?.data?[index];
             if (product == null) return const SizedBox.shrink();
-            
+
             return InkWell(
-              onTap: (){
+              onTap: () {
                 AppNavigator.push(
-                    ProductDetailRoute(
-                        id: product.id,
-                        name: product.name,
-                        price: product.finalPriceUzs,
-                        description: product.description,
-                        image: product.image,
-                        images: product.images
-                    )
+                  ProductDetailRoute(
+                    id: product.id,
+                    name: product.name,
+                    price: product.finalPriceUzs,
+                    salePriceUzs: product.salePriceUzs,
+                    isOnSale: product.isOnSale,
+                    discountPercent: product.discountPercent,
+                    description: product.description,
+                    image: product.image,
+                    images: product.images,
+                  ),
                 );
               },
               child: OptimizedProductItem(
@@ -130,7 +129,6 @@ class _ProductsListWidgetState extends ConsumerState<ProductsListWidget>
         ),
       ),
     );
-
   }
 
   @override

@@ -128,6 +128,8 @@ class HomeNotifier extends StateNotifier<HomeState> {
     int currentPage = 1,
     bool isRefresh = false,
   }) async {
+    if (!isRefresh && (state.isLoadMore || state.isLoading)) return;
+
     try {
       if (isRefresh) {
         state = state.copyWith(isLoading: true);

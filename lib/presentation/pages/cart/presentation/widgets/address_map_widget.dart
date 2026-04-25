@@ -1,10 +1,6 @@
-
-import 'dart:io';
-
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:thousand_melochey/contstants/app_constants.dart';
-
 import '../../../../../core/imports/imports.dart';
 import '../../../../../service/localizations/localization.dart';
 
@@ -33,7 +29,7 @@ class AddressMapWidget extends ConsumerWidget {
               child: Row(
                 spacing: 8,
                 children: [
-                  Text("${AppLocalization.getText(context)?.address}:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+                  Text("${AppLocalization.getText(context)?.address}:", style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
                   Text("${AppLocalization.getText(context)?.shop_address}"),
                 ],
               )),
@@ -57,15 +53,15 @@ class AddressMapWidget extends ConsumerWidget {
                             initialCenter: LatLng(AppConstants.shopLat, AppConstants.shopLong),
                             initialZoom: 16,
                             interactionOptions: InteractionOptions(
-                              flags: InteractiveFlag.none, // ❗ Полностью отключает действия юзера
+                              flags: InteractiveFlag.none,
                             ),
                           ),
                           children: [
                             TileLayer(
                               urlTemplate: 'https://b.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png',
-                              userAgentPackageName:
-                              Platform.isAndroid ? "uz.melochey.melochey1000" :
-                              'uz.buildingProductsGroup.melochey1000',
+                              userAgentPackageName: Platform.isAndroid
+                                  ? "uz.melochey.melochey1000"
+                                  : 'uz.buildingProductsGroup.melochey1000',
                             ),
                             const MarkerLayer(
                               markers: [

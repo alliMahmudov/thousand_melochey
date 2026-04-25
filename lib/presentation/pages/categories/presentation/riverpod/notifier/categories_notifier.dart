@@ -1,8 +1,5 @@
-import 'package:thousand_melochey/presentation/pages/categories/data/categories_response.dart';
 import 'package:thousand_melochey/presentation/pages/categories/presentation/riverpod/state/categories_state.dart';
 import 'package:thousand_melochey/presentation/pages/categories/repository/categories_repository.dart';
-import 'package:thousand_melochey/presentation/pages/home/data/category_products_response.dart';
-// import 'package:thousand_melochey/presentation/pages/home/data/category_products_response.dart';
 import '../../../../../../core/imports/imports.dart';
 import '../../../../home/data/products_response.dart';
 
@@ -187,55 +184,62 @@ class CategoriesNotifier extends StateNotifier<CategoriesState> {
     required int categoryId,
     int currentPage = 1,
     bool isRefresh = false,
-    String? minPrice,
-    String? maxPrice,
   }) async {
+    if (state.isLoading ||
+        state.isLoadMore ||
+        state.isLoadingPaginationProducts) {
+      return;
+    }
 
-    state = state.copyWith(isLoadingPaginationProducts: true);
+    state = state.copyWith(isLoadingPaginationProducts: true, isLoadMore: true);
 
     try {
-      if (isRefresh) {
-        state = state.copyWith(isLoadingPaginationProducts: true);
-      } else {
-        state = state.copyWith(isLoadMore: true);
-      }
-
       final response = await _categoriesRepository.getCategoryProducts(
         categoryId: categoryId,
         currentPage: currentPage,
-        filterMinPrice: minPrice,
-        filterMaxPrice: maxPrice,
+        filterMinPrice: filterMinPrice.text,
+        filterMaxPrice: filterMaxPrice.text,
       );
 
       response.when(
         success: (data) async {
-          List<Datum> products = List.from(state.categoryProducts?.data ?? []);
-          List<Datum> newProducts = data.data ?? [];
+          List<Product> products = List.from(state.products?.data ?? []);
+          List<Product> newProducts = data.data ?? [];
 
-          isRefresh ? products = newProducts : products.addAll(newProducts);
+          if (isRefresh) {
+            products = newProducts;
+          } else {
+            products.addAll(newProducts);
+          }
 
           state = state.copyWith(
-              isLoadingPaginationProducts: false,
-              isLoadMore: false,
-              categoryProducts: CategoryProductsResponse(
-                  data: products,
-                  meta: data.meta
-              ));
+            isLoadingPaginationProducts: false,
+            isLoadMore: false,
+            products: ProductsResponse(
+              data: products,
+              meta: data.meta,
+            ),
+          );
 
           success?.call();
         },
         failure: (failure, status, data) {
-          state = state.copyWith(isLoadingPaginationProducts: false, isLoadMore: false);
+          state = state.copyWith(
+            isLoadingPaginationProducts: false,
+            isLoadMore: false,
+          );
 
           if (failure == const NetworkExceptions.unauthorisedRequest()) {
             unAuthorised?.call();
           }
-          debugPrint('==> get category products response failure: $failure');
+          debugPrint('==> get category products pagination failure: $failure');
         },
       );
-
     } catch (e) {
-      state = state.copyWith(isLoadMore: false, isLoadingPaginationProducts: false);
+      state = state.copyWith(
+        isLoadMore: false,
+        isLoadingPaginationProducts: false,
+      );
     }
   }
 }

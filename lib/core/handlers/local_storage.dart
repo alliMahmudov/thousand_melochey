@@ -104,6 +104,9 @@ class LocalStorage {
         id: oldItem.id,
         name: oldItem.name,
         price: oldItem.price,
+        salePriceUzs: oldItem.salePriceUzs,
+        isOnSale: oldItem.isOnSale,
+        discountPercent: oldItem.discountPercent,
         image: oldItem.image,
         quantity: (oldItem.quantity ?? 1) + (product.quantity ?? 1),
       );
@@ -131,6 +134,9 @@ class LocalStorage {
           id: item.id,
           name: item.name,
           price: item.price,
+          salePriceUzs: item.salePriceUzs,
+          isOnSale: item.isOnSale,
+          discountPercent: item.discountPercent,
           image: item.image,
           quantity: (item.quantity ?? 1) - 1,
         );
@@ -170,7 +176,8 @@ class LocalStorage {
     final localCart = getLocalCart();
     double sum = 0;
     for (final item in localCart) {
-      final price = double.tryParse(item.price ?? '0') ?? 0;
+      final effectivePrice = item.salePriceUzs?.isNotEmpty == true ? item.salePriceUzs : item.price;
+      final price = double.tryParse(effectivePrice ?? '0') ?? 0;
       sum += price * (item.quantity ?? 0);
     }
     return sum;

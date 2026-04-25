@@ -240,7 +240,10 @@ class NewArrivalsWidget extends ConsumerWidget {
               child: ProductWidget(
                 id: productId,
                 name: product.name,
-                price: product.finalPriceUzs ?? product.price,
+                price: product.finalPriceUzs,
+                salePrice: product.salePriceUzs,
+                isOnSale: product.isOnSale,
+                discountPercent: product.discountPercent,
                 image: product.image,
                 isFavorite: isFavorite,
                 onTap: () => favoritesNotifier.switchGlobalFavorite(isFavorite, productId, context),
@@ -248,7 +251,10 @@ class NewArrivalsWidget extends ConsumerWidget {
                   final cartProduct = LocalCartProduct(
                     id: productId,
                     name: product.name,
-                    price: product.finalPriceUzs ?? product.price,
+                    price: product.finalPriceUzs,
+                    salePriceUzs: product.salePriceUzs,
+                    isOnSale: product.isOnSale,
+                    discountPercent: product.discountPercent,
                     image: product.image,
                     quantity: 1,
                   );

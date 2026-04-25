@@ -199,6 +199,20 @@ class AppHelpers {
     );
   }
 
+  static showWarningToast({
+    required String errorMessage,
+  }) {
+    // Закрываем все активные тосты перед показом нового
+    toastification.dismissAll();
+    return toastification.show(
+        title: Text(errorMessage),
+        // autoCloseDuration: const Duration(seconds: 2),
+        style: ToastificationStyle.flatColored,
+        type: ToastificationType.warning,
+        alignment: Alignment.topCenter
+    );
+  }
+
 }
 
 

@@ -6,12 +6,8 @@ import 'package:thousand_melochey/presentation/pages/categories/presentation/riv
 import 'package:thousand_melochey/presentation/pages/home/presentation/widgets/carousel_slide_widget.dart';
 import 'package:thousand_melochey/presentation/pages/home/presentation/widgets/all_products_widget.dart';
 import 'package:thousand_melochey/presentation/pages/home/presentation/widgets/product_categories_widget.dart';
-import 'package:thousand_melochey/presentation/pages/home/presentation/widgets/new_arrivals_widget.dart';
 import 'package:thousand_melochey/presentation/pages/home/presentation/widgets/home_new_arrivals_section_widget.dart';
 import 'package:thousand_melochey/core/config/banner_config.dart';
-import 'package:thousand_melochey/presentation/pages/home/data/products_response.dart';
-
-import '../../../../service/localizations/localization.dart';
 
 @RoutePage()
 class HomePage extends ConsumerStatefulWidget {
@@ -64,8 +60,39 @@ class _HomePageState extends ConsumerState<HomePage> {
                   ),
                 ),
                 Expanded(
-                  child: CustomScrollView(
-                    slivers: [
+                  child: NotificationListener<ScrollNotification>(
+                    onNotification: (ScrollNotification notification) {
+                      if (notification is! ScrollEndNotification) {
+                        return false;
+                      }
+                      final m = notification.metrics;
+                      if (m.maxScrollExtent <= 0 ||
+                          m.pixels < m.maxScrollExtent - 1.0) {
+                        return false;
+                      }
+                      final hs = ref.read(homeProvider);
+                      final hn = ref.read(homeProvider.notifier);
+                      if (hs.isLoadMore) return false;
+                      final hasNext = hs.products?.meta?.hasNext ??
+                          (hs.products?.meta != null &&
+                              hs.products!.meta!.totalPages != null &&
+                              hs.products!.meta!.page != null &&
+                              hs.products!.meta!.page! <
+                                  hs.products!.meta!.totalPages!);
+                      if (!hasNext) return false;
+                      final page = hs.products?.meta?.page ?? 0;
+                      final q = hn.searchTextFieldController.text.trim();
+                      hn.getProducts(
+                        currentPage: page + 1,
+                        isRefresh: false,
+                        searchQuery: hs.isSearching && q.isNotEmpty ? q : null,
+                      );
+                      return false;
+                    },
+                    child: CustomScrollView(
+                      controller: notifier.scrollController,
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      slivers: [
                       if (!homeState.isSearching) ...[
                         SliverToBoxAdapter(
                           child: CarouselSlider(
@@ -99,8 +126,22 @@ class _HomePageState extends ConsumerState<HomePage> {
                           child: HomeNewArrivalsSectionWidget(),
                         ),
                       ],
-                      const ProductsListWidget()
+                      const ProductsListWidget(),
+                      if (homeState.isLoadMore)
+                        SliverToBoxAdapter(
+                          child: Padding(
+                            padding: EdgeInsets.only(bottom: 16.h, top: 8.h),
+                            child: const Center(
+                              child: SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: CircularProgressIndicator(strokeWidth: 2),
+                              ),
+                            ),
+                          ),
+                        ),
                     ],
+                  ),
                   ),
                 ),
               ],

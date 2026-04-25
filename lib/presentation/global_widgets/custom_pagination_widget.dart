@@ -41,7 +41,9 @@ class _CustomPaginationWidgetState extends State<CustomPaginationWidget> {
       onRefresh: () => widget.onRefresh?.call() ?? Future.value(),
       notificationPredicate: (scrollNotification) {
         if (scrollNotification is ScrollEndNotification) {
-          if (scrollNotification.metrics.maxScrollExtent <= scrollNotification.metrics.pixels) {
+          final m = scrollNotification.metrics;
+          // Без maxScrollExtent > 0 при коротком списке срабатывало бы при первом кадре
+          if (m.maxScrollExtent > 0 && m.pixels >= m.maxScrollExtent - 1.0) {
             if (!widget.isLoadingMore) {
               widget.loadMore?.call();
             }

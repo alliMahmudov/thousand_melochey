@@ -1,3 +1,6 @@
+import 'package:thousand_melochey/presentation/global_widgets/money_formatter.dart';
+import 'package:thousand_melochey/presentation/global_widgets/product_price_widget.dart';
+
 import '../../../../../core/imports/imports.dart';
 import '../../../../../service/localizations/localization.dart';
 import '../../../../global_widgets/cached_network_image.dart';
@@ -6,6 +9,9 @@ class FavoriteProductsWidget extends StatelessWidget {
   final int id;
   final String name;
   final String price;
+  final String? salePrice;
+  final bool? isOnSale;
+  final String? discountPercent;
   final String image;
   final String description;
   final Function addToFavorite;
@@ -16,6 +22,9 @@ class FavoriteProductsWidget extends StatelessWidget {
     required this.id,
     required this.name,
     required this.price,
+    this.salePrice,
+    this.isOnSale,
+    this.discountPercent,
     required this.image,
     required this.description,
     required this.addToFavorite,
@@ -25,6 +34,12 @@ class FavoriteProductsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final priceState = ProductPriceState.fromRaw(
+      originalPriceUzs: price,
+      salePriceUzs: salePrice,
+      isOnSale: isOnSale,
+      discountPercent: discountPercent,
+    );
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16.sp),
       child: Container(
@@ -103,6 +118,7 @@ class FavoriteProductsWidget extends StatelessWidget {
                             spacing: 2,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              
                               Text(
                                 '${AppLocalization.getText(context)?.price}',
                                 style: TextStyle(
@@ -110,13 +126,24 @@ class FavoriteProductsWidget extends StatelessWidget {
                                   color: Colors.grey[600],
                                 ),
                               ),
-                              Text(
-                                '${price ?? '0'} UZS',
-                                style: TextStyle(
+                              ProductPriceWidget(
+                                priceState: priceState,
+                                currentPriceStyle: TextStyle(
                                   fontSize: 14.sp,
                                   fontWeight: FontWeight.bold,
                                   color: AppColors.primaryColor,
                                 ),
+                                oldPriceStyle: TextStyle(
+                                  fontSize: 12.sp,
+                                  color: Colors.grey[600],
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                discountStyle: TextStyle(
+                                  fontSize: 11.sp,
+                                  color: Colors.redAccent,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                                spacing: 2,
                               ),
                             ],
                           ),

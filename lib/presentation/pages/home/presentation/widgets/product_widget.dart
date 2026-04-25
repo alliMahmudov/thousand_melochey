@@ -3,7 +3,7 @@ import 'package:thousand_melochey/contstants/app_assets.dart';
 import 'package:thousand_melochey/core/imports/imports.dart';
 import 'package:thousand_melochey/core/handlers/local_storage.dart';
 import 'package:thousand_melochey/presentation/global_widgets/cached_network_image.dart';
-import 'package:thousand_melochey/presentation/global_widgets/money_formatter.dart';
+import 'package:thousand_melochey/presentation/global_widgets/product_price_widget.dart';
 import 'package:thousand_melochey/service/localizations/localization.dart';
 import 'package:thousand_melochey/presentation/pages/cart/data/local_cart_item_model.dart';
 import '../../../cart/data/cart_response.dart';
@@ -12,6 +12,9 @@ class ProductWidget extends ConsumerStatefulWidget {
   final int? id;
   final String? name;
   final String? price;
+  final String? salePrice;
+  final bool? isOnSale;
+  final String? discountPercent;
   final String? image;
   final bool isFavorite;
   final bool existInCart;
@@ -23,6 +26,9 @@ class ProductWidget extends ConsumerStatefulWidget {
       required this.id,
       required this.name,
       required this.price,
+      this.salePrice,
+      this.isOnSale,
+      this.discountPercent,
       required this.image,
       required this.onTap,
       required this.addToCart,
@@ -58,7 +64,7 @@ class _ProductWidgetState extends ConsumerState<ProductWidget> {
         );
         return found.quantity ?? 0;
       } else {
-        final items = cartState ?? [];
+        final items = cartState;
         final found = items.firstWhere(
           (e) => e.id == productId,
           orElse: () => LocalCartProduct(id: productId, quantity: 0),
@@ -73,6 +79,9 @@ class _ProductWidgetState extends ConsumerState<ProductWidget> {
         id: productId,
         name: widget.name,
         price: widget.price,
+        salePriceUzs: widget.salePrice,
+        isOnSale: widget.isOnSale,
+        discountPercent: widget.discountPercent,
         image: widget.image,
         quantity: 1,
       );
@@ -85,6 +94,12 @@ class _ProductWidgetState extends ConsumerState<ProductWidget> {
     }
 
     final qty = quantityInCart();
+    final priceState = ProductPriceState.fromRaw(
+      originalPriceUzs: widget.price,
+      salePriceUzs: widget.salePrice,
+      isOnSale: widget.isOnSale,
+      discountPercent: widget.discountPercent,
+    );
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -97,7 +112,7 @@ class _ProductWidgetState extends ConsumerState<ProductWidget> {
           // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             AspectRatio(
-              aspectRatio: 0.9,
+              aspectRatio: widget.isOnSale ?? false ? 0.99 : 0.9,
               child: Stack(
                 children: [
                   Container(
@@ -147,14 +162,22 @@ class _ProductWidgetState extends ConsumerState<ProductWidget> {
                     color: Colors.black,
                   ),
                 ),
-                Text(
-                  widget.price != null ? "${AppMoneyFormatter.longFormatString(widget.price)} UZS" : "",
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
+                ProductPriceWidget(
+                  priceState: priceState,
+                  currentPriceStyle: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 14.sp,
                     color: AppColors.primaryColor,
+                  ),
+                  oldPriceStyle: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 12.sp,
+                    color: Colors.grey,
+                  ),
+                  discountStyle: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 11.sp,
+                    color: Colors.redAccent,
                   ),
                 ),
                 qty > 0
